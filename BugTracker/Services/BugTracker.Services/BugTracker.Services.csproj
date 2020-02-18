@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\BugTracker.Data.Models\BugTracker.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\BugTracker.Data\BugTracker.Data.csproj" />
+  </ItemGroup>
+
+</Project>

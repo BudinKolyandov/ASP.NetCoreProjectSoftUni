@@ -5,6 +5,11 @@
 
     public class BugHistory
     {
+        public BugHistory()
+        {
+            this.Handlers = new HashSet<User>();
+        }
+
         public int Id { get; set; }
 
         public string BugId { get; set; }
