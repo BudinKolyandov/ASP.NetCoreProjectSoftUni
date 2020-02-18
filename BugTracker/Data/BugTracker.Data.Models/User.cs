@@ -6,6 +6,11 @@
 
     public class User : IdentityUser
     {
+        public User()
+        {
+            this.Projects = new HashSet<ProjectUser>();
+        }
+
         public string RealName { get; set; }
 
         public DateTime CreatedOn { get; set; }

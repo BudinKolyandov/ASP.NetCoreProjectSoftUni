@@ -7,6 +7,7 @@
         public Project()
         {
             this.Bugs = new HashSet<Bug>();
+            this.Developers = new HashSet<ProjectUser>();
         }
 
         public string Id { get; set; }

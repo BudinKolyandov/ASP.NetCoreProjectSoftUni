@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
@@ -18,6 +19,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\BugTracker.Data\BugTracker.Data.csproj" />
+    <ProjectReference Include="..\..\Services\BugTracker.Services.Mapping\BugTracker.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\BugTracker.Services\BugTracker.Services.csproj" />
+    <ProjectReference Include="..\BugTracker.Web.ViewModels\BugTracker.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

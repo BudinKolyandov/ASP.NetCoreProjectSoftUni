@@ -9,6 +9,11 @@ namespace BugTracker.Web
     using Microsoft.Extensions.Hosting;
     using BugTracker.Data.Models;
     using Microsoft.AspNetCore.Identity;
+    using BugTracker.Services.Mapping;
+    using BugTracker.Web.ViewModels;
+    using System.Reflection;
+    using Microsoft.AspNetCore.Http;
+    using BugTracker.Services.Company;
 
     public class Startup
     {
@@ -25,8 +30,10 @@ namespace BugTracker.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -37,13 +44,24 @@ namespace BugTracker.Web
                 options.Password.RequiredUniqueChars = 0;
             });
 
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<ICompanyService, CompanyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -57,6 +75,7 @@ namespace BugTracker.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
