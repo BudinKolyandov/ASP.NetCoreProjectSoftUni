@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using BugTracker.Web.ViewModels.CompanyViewModels;
 
 namespace BugTracker.Services.Company
 {
@@ -19,19 +20,23 @@ namespace BugTracker.Services.Company
         public bool CompanyExists(string id)
             => this.context.Companies.Any(e => e.Id == id);
 
-        public async Task<Data.Models.Company> Create(string name)
+        public async Task<AddCompanyViewModel> Create(string name)
         {
             if (this.context.Companies.Any(x=>x.Name == name))
             {
-                throw new ArgumentException("Company with that Name already exists");
+                return null;
             }
             var company = new Data.Models.Company{
                 Id = Guid.NewGuid().ToString(),
-                Name = name
+                Name = name,
             };
             this.context.Companies.Add(company);
             await this.context.SaveChangesAsync();
-            return company;
+            var model = new AddCompanyViewModel{
+                Name = company.Name,
+                Id = company.Id
+            };
+            return model;
         }
 
         public async Task DeleteCompany(string id)

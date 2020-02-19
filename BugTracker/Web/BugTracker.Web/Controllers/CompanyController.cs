@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BugTracker.Data;
 using BugTracker.Data.Models;
 using BugTracker.Services.Company;
 using BugTracker.Web.ViewModels;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using BugTracker.Web.ViewModels.CompanyViewModels;
 
 namespace BugTracker.Web.Controllers
 {
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService service;
@@ -56,18 +54,14 @@ namespace BugTracker.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string companyName)
+        public async Task<IActionResult> Create(string companyName, [Bind("Name")] AddCompanyViewModel companyViewModel)
         {
-            try
+            var company = await this.service.Create(companyViewModel.Name);
+            if (company == null)
             {
-                var company = await this.service.Create(companyName);
-                return this.View(company);
+                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            catch (ArgumentException ae)
-            {
-                return this.View(new ErrorViewModel { RequestId = ae.Message });
-            }
-            
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(string id)

@@ -1,12 +1,13 @@
 ﻿namespace BugTracker.Services.Company
 {
     using BugTracker.Data.Models;
+    using BugTracker.Web.ViewModels.CompanyViewModels;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface ICompanyService
     {
-        Task<Company> Create(string name);
+        Task<AddCompanyViewModel> Create(string name);
 
         Task Join(string email);
 

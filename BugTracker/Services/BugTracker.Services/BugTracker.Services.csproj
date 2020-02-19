@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\BugTracker.Data.Models\BugTracker.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\BugTracker.Data\BugTracker.Data.csproj" />
+    <ProjectReference Include="..\..\Web\BugTracker.Web.ViewModels\BugTracker.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
