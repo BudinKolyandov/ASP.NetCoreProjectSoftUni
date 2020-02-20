@@ -5,11 +5,11 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface ICompanyService
+    public interface ICompaniesService
     {
         Task<AddCompanyViewModel> Create(string name);
 
-        Task Join(string email);
+        Task<bool> Join(string username, string id);
 
         Task<Company> GetCompany(string id);
 

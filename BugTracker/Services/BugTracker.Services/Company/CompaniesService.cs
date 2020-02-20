@@ -1,18 +1,18 @@
-﻿using BugTracker.Data;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using BugTracker.Web.ViewModels.CompanyViewModels;
-
-namespace BugTracker.Services.Company
+﻿namespace BugTracker.Services.Company
 {
-    public class CompanyService : ICompanyService
+    using BugTracker.Data;
+    using System.Threading.Tasks;
+    using System;
+    using System.Linq;
+    using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
+    using BugTracker.Web.ViewModels.CompanyViewModels;
+
+    public class CompaniesService : ICompaniesService
     {
         private readonly ApplicationDbContext context;
 
-        public CompanyService(ApplicationDbContext context)
+        public CompaniesService(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -62,9 +62,19 @@ namespace BugTracker.Services.Company
             return await this.context.Companies.FirstOrDefaultAsync(x=>x.Id == id);
         }
 
-        public  Task Join(string email)
+        public async Task<bool> Join(string username, string id)
         {
-            throw new NotImplementedException();
+            var user = this.context.Users.FirstOrDefault(x => x.Email == username);
+            var company = this.context.Companies.FirstOrDefault(x => x.Id == id);
+
+            if (user == null || company == null)
+            {
+                return false;
+            }
+            user.Company = company;
+            company.Employees.Add(user);
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

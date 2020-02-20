@@ -7,15 +7,16 @@ using BugTracker.Web.ViewModels;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using BugTracker.Web.ViewModels.CompanyViewModels;
+using System;
 
 namespace BugTracker.Web.Controllers
 {
     [Authorize]
-    public class CompanyController : Controller
+    public class CompaniesController : Controller
     {
-        private readonly ICompanyService service;
+        private readonly ICompaniesService service;
 
-        public CompanyController(ICompanyService service)
+        public CompaniesController(ICompaniesService service)
         {
             this.service = service;
         }
@@ -137,6 +138,37 @@ namespace BugTracker.Web.Controllers
         {
             await this.service.DeleteCompany(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Join(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var company = await this.service.GetCompany(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Join(string id, [Bind("Id,Name")] Company company)
+        {
+            if (id != company.Id)
+            {
+                return NotFound();
+            }
+            var username = this.User.Identity.Name;
+            var result = await this.service.Join(username, id);
+            if (!result)
+            {
+                return this.View(company);
+            }
+            return Redirect("/Project/All");
         }
     }
 }

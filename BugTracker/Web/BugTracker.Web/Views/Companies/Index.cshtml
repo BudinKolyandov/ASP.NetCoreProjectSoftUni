@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BugTracker.Data.Models.Company>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All Companies";
 }
 
-<h1>Index</h1>
+<h1>All Companies</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -25,6 +25,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                <a asp-action="Join" asp-route-id="@item.Id">Join</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
