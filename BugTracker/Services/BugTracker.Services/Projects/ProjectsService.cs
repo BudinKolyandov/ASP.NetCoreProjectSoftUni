@@ -31,7 +31,7 @@ namespace BugTracker.Services.Projects
                 Name = name,
                 Status = status,
                 Description = description,
-                Company = user.Company
+                CompanyId = user.CompanyId,
             };
 
             this.context.Projects.Add(project);
@@ -45,9 +45,21 @@ namespace BugTracker.Services.Projects
             return model;
         }
 
-        public async Task<List<AllProjectsViewModel>> GetAll()
+        public async Task<List<AllProjectsViewModel>> GetAll(string userEmail)
         {
-            return await this.context.Projects
+            var user = this.context.Users.Where(x => x.Email == userEmail).First();
+            if (user == null)
+            {
+                return null;
+            }
+            var company = this.context.Companies.Where(x=>x.Id == user.CompanyId).First();
+            if (company == null)
+            {
+                return null;
+            }
+
+            return await this.context
+                .Projects.Where(x=>x.CompanyId == user.CompanyId)
                 .Select(x => new AllProjectsViewModel
                 {
                     Id = x.Id,
@@ -57,6 +69,23 @@ namespace BugTracker.Services.Projects
                     Bugs = x.Bugs
                 })
                 .ToListAsync();
+        }
+
+        public async Task<DetailsProjectViewModel> GetProject(string id)
+        {
+            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+
+            var model = new DetailsProjectViewModel
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Status = project.Status,
+                Description = project.Description,
+                Bugs = project.Bugs,
+                Developers = project.Developers
+            };
+
+            return model;
         }
     }
 }

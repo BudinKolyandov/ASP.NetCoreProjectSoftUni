@@ -18,7 +18,8 @@ namespace BugTracker.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await this.service.GetAll());
+            var userEmail = this.User.Identity.Name;
+            return View(await this.service.GetAll(userEmail));
         }
 
         public IActionResult Create()
@@ -37,6 +38,22 @@ namespace BugTracker.Web.Controllers
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await this.service.GetProject(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
         }
     }
 }

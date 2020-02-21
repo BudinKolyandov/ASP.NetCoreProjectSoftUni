@@ -8,6 +8,8 @@ namespace BugTracker.Services.Projects
     {
         Task<AddProjectViewModel> Create(string name, string status, string description, string username);
 
-        Task<List<AllProjectsViewModel>> GetAll();
+        Task<List<AllProjectsViewModel>> GetAll(string userEmail);
+
+        Task<DetailsProjectViewModel> GetProject(string id);
     }
 }
