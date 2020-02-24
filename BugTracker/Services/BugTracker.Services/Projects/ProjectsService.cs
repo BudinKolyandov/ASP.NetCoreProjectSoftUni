@@ -25,6 +25,10 @@ namespace BugTracker.Services.Projects
                 return null;
             }
             var user = this.context.Users.FirstOrDefault(x => x.Email == username);
+            if (user == null)
+            {
+                return null;
+            }
             var project = new Project
             {
                 Id = Guid.NewGuid().ToString(),
@@ -71,7 +75,7 @@ namespace BugTracker.Services.Projects
                 .ToListAsync();
         }
 
-        public async Task<DetailsProjectViewModel> GetProject(string id)
+        public async Task<DetailsProjectViewModel> GetProjectDetails(string id)
         {
             var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -86,6 +90,44 @@ namespace BugTracker.Services.Projects
             };
 
             return model;
+        }
+
+        public async Task<JoinProjectViewModel> GetProjectJoin(string id)
+        {
+            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+            var model = new JoinProjectViewModel
+            {
+                Id = project.Id,
+                Name = project.Name
+            };
+            return model;
+        }
+
+        public string Join(string userEmail, JoinProjectViewModel model)
+        {
+            var user = this.context.Users.Where(x => x.Email == userEmail).First();
+            if (user == null)
+            {
+                return null;
+            }
+            var projectUser = new ProjectUser
+            {
+                Project = this.context.Projects.First(x=>x.Id == model.Id),
+                ProjectId = model.Id,
+                UserId = user.Id
+            };
+            if (user.Projects.Contains(projectUser))
+            {
+                return null;
+            }
+            this.context.ProjectsUsers.Add(projectUser);
+            this.context.Projects
+                .First(x => x.Id == model.Id)
+                .Developers.Add(projectUser);
+            this.context.Users.First(x => x.Email == userEmail)
+                .Projects.Add(projectUser);
+            this.context.SaveChanges();
+            return model.Id;
         }
     }
 }

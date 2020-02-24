@@ -28,8 +28,7 @@ namespace BugTracker.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string companyName, [Bind("Name,Status,Description")] AddProjectViewModel projectViewModel)
+        public async Task<IActionResult> Create(string companyName, AddProjectViewModel projectViewModel)
         {
             var username =  this.User.Identity.Name;
             var project = await this.service.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, username);
@@ -47,13 +46,36 @@ namespace BugTracker.Web.Controllers
                 return NotFound();
             }
 
-            var project = await this.service.GetProject(id);
+            var project = await this.service.GetProjectDetails(id);
             if (project == null)
             {
                 return NotFound();
             }
 
             return View(project);
+        }
+
+        public async Task<IActionResult> Join(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await this.service.GetProjectJoin(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+            return View(project);
+        }
+
+        [HttpPost]
+        public IActionResult Join(JoinProjectViewModel model)
+        {
+            var userEmail = this.User.Identity.Name;
+            var result = this.service.Join(userEmail, model);
+            return this.Redirect($"/Projects/Details/{result}");
         }
     }
 }

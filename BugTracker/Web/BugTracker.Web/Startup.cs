@@ -15,6 +15,7 @@ namespace BugTracker.Web
     using Microsoft.AspNetCore.Http;
     using BugTracker.Services.Company;
     using BugTracker.Services.Projects;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Startup
     {
@@ -52,7 +53,11 @@ namespace BugTracker.Web
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
-            services.AddControllersWithViews();
+            
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             services.AddRazorPages();
 
             services.AddTransient<ICompaniesService, CompaniesService>();

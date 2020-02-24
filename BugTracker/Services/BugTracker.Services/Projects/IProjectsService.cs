@@ -10,6 +10,10 @@ namespace BugTracker.Services.Projects
 
         Task<List<AllProjectsViewModel>> GetAll(string userEmail);
 
-        Task<DetailsProjectViewModel> GetProject(string id);
+        Task<DetailsProjectViewModel> GetProjectDetails(string id);
+
+        string Join(string userEmail, JoinProjectViewModel model);
+
+        Task<JoinProjectViewModel> GetProjectJoin(string id);
     }
 }

@@ -54,8 +54,7 @@ namespace BugTracker.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string companyName, [Bind("Name")] AddCompanyViewModel companyViewModel)
+        public async Task<IActionResult> Create(string companyName, AddCompanyViewModel companyViewModel)
         {
             var company = await this.service.Create(companyViewModel.Name);
             if (company == null)
@@ -84,8 +83,7 @@ namespace BugTracker.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name")] Company company)
+        public async Task<IActionResult> Edit(string id, Company company)
         {
             if (id != company.Id)
             {
@@ -133,7 +131,6 @@ namespace BugTracker.Web.Controllers
 
         // POST: Company/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             await this.service.DeleteCompany(id);
@@ -156,7 +153,7 @@ namespace BugTracker.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Join(string id, [Bind("Id,Name")] Company company)
+        public async Task<IActionResult> Join(string id, Company company)
         {
             if (id != company.Id)
             {
