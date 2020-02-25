@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bugs)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,13 +39,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
-            @foreach (var bug in item.Bugs)
-            {
-                <th>Bugs</th>
-                <td>
-                    @Html.DisplayFor(modelBug => bug.Name)
-                </td>
-            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Bugs.Count)
+            </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

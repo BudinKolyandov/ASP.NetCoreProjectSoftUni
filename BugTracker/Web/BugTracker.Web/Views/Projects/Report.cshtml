@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Report">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProjectId" />
             <div class="form-group">
@@ -24,21 +24,21 @@
             </div>
             <div class="form-group">
                 <label asp-for="Severity" class="control-label"></label>
-                <textarea asp-for="Severity" class="form-control" rows="3"></textarea>
+                <input asp-for="Severity" class="form-control" />
                 <span asp-validation-for="Severity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <textarea asp-for="Status" class="form-control" rows="3"></textarea>
+                <input asp-for="Status" class="form-control" />
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DueDate" class="control-label"></label>
-                <textarea asp-for="DueDate" class="form-control" rows="3"></textarea>
+                <input asp-for="DueDate" class="form-control" value="@DateTime.UtcNow.Year"/>
                 <span asp-validation-for="DueDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Report" class="btn btn-primary" />
             </div>
         </form>
     </div>

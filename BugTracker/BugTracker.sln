@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Data", "Data\Bug
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Web", "Web\BugTracker.Web\BugTracker.Web.csproj", "{68506AB8-0C54-4945-8696-024CEA2B1C71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker.Web.ViewModels", "Web\BugTracker.Web.ViewModels\BugTracker.Web.ViewModels.csproj", "{42CF8F89-7276-4163-9E7E-795C0A640C29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Web.ViewModels", "Web\BugTracker.Web.ViewModels\BugTracker.Web.ViewModels.csproj", "{42CF8F89-7276-4163-9E7E-795C0A640C29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker.Services.Mapping", "Services\BugTracker.Services.Mapping\BugTracker.Services.Mapping.csproj", "{38679F7C-0C7A-4FAE-A642-5C9E083B0FD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Services.Mapping", "Services\BugTracker.Services.Mapping\BugTracker.Services.Mapping.csproj", "{38679F7C-0C7A-4FAE-A642-5C9E083B0FD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker.Services", "Services\BugTracker.Services\BugTracker.Services.csproj", "{4AD7FF7C-9A3D-4144-A77B-238E9314BFF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Services", "Services\BugTracker.Services\BugTracker.Services.csproj", "{4AD7FF7C-9A3D-4144-A77B-238E9314BFF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

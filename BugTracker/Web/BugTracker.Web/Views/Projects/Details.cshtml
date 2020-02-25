@@ -24,33 +24,45 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
+    <h1>Bugs</h1>
     @foreach (var bug in Model.Bugs)
     {
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(bug => bug.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(bug => bug.Name)
-            </dd>
-        </dl>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(bug => bug.Status)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(bug => bug.Status)
-            </dd>
-        </dl>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(bug => bug.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(bug => bug.Description)
-            </dd>
-        </dl>
-    }
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Severity
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayName(bug.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayName(bug.Status)
+                        </td>
+
+                        <td>
+                            @Html.DisplayName(bug.Severity)
+                        </td>
+                        <td>
+                            <a asp-action="Detalis" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+     }
 </div>
 <div>
     <a asp-action="Join" asp-route-id="@Model.Id">Join</a>  |

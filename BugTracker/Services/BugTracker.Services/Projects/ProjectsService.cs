@@ -78,18 +78,17 @@ namespace BugTracker.Services.Projects
         public async Task<DetailsProjectViewModel> GetProjectDetails(string id)
         {
             var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
-
-            var model = new DetailsProjectViewModel
-            {
-                Id = project.Id,
-                Name = project.Name,
-                Status = project.Status,
-                Description = project.Description,
-                Bugs = project.Bugs,
-                Developers = project.Developers
-            };
-
-            return model;
+            return await this.context.Projects.Where(x => x.Id == id)
+                .Select(x => new DetailsProjectViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Status = x.Status,
+                    Description = x.Description,
+                    Bugs = x.Bugs,
+                    Developers = x.Developers
+                })
+                .FirstAsync();
         }
 
         public async Task<JoinProjectViewModel> GetProjectJoin(string id)
@@ -161,6 +160,9 @@ namespace BugTracker.Services.Projects
                 Project = this.context.Projects.FirstOrDefault(x=>x.Id == model.ProjectId),
                 Reporter = this.context.Users.FirstOrDefault(x=>x.Id == user.Id)
             };
+            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == model.ProjectId);
+            project.Bugs.Add(bug);
+            this.context.Projects.Update(project);
             this.context.Bugs.Add(bug);
             await this.context.SaveChangesAsync();
             return model;

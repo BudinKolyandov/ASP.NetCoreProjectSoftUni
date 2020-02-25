@@ -1,12 +1,14 @@
 ﻿using BugTracker.Services.Projects;
 using BugTracker.Web.ViewModels;
 using BugTracker.Web.ViewModels.Projects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace BugTracker.Web.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly IProjectsService service;
@@ -78,7 +80,7 @@ namespace BugTracker.Web.Controllers
             return this.Redirect($"/Projects/Details/{result}");
         }
 
-        public async Task<IActionResult> ReportBug(string id)
+        public async Task<IActionResult> Report(string id)
         {
             if (id == null)
             {
@@ -94,11 +96,11 @@ namespace BugTracker.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReportBug(ReportBugProjectViewModel model)
+        public async Task<IActionResult> Report(ReportBugProjectViewModel model)
         {
             var userEmail = this.User.Identity.Name;
             var result = await this.service.Report(userEmail, model);
-            return await this.Details(result.ProjectId);
+            return this.Redirect($"/Projects/Details/{model.ProjectId}");
         }
     }
 }
