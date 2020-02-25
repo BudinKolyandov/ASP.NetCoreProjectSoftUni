@@ -15,5 +15,9 @@ namespace BugTracker.Services.Projects
         string Join(string userEmail, JoinProjectViewModel model);
 
         Task<JoinProjectViewModel> GetProjectJoin(string id);
+
+        Task<ReportBugProjectViewModel> GetProjectReport(string id);
+
+        Task<ReportBugProjectViewModel> Report(string userEmail, ReportBugProjectViewModel model);
     }
 }

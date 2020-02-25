@@ -129,5 +129,41 @@ namespace BugTracker.Services.Projects
             this.context.SaveChanges();
             return model.Id;
         }
+
+        public async Task<ReportBugProjectViewModel> GetProjectReport(string id)
+        {
+            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+            var model = new ReportBugProjectViewModel
+            {
+                ProjectId = project.Id,
+                ProjectName = project.Name
+            };
+            return model;
+        }
+
+        public async Task<ReportBugProjectViewModel> Report(string userEmail, ReportBugProjectViewModel model)
+        {
+            var user = await this.context.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
+            if (user == null)
+            {
+                return null;
+            }
+            var bug = new Bug
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = model.Name,
+                ProjectId = model.ProjectId,
+                Priority = model.Priority,
+                Severity = model.Severity,
+                Status = model.Status,
+                ReporterId = user.Id,
+                DueDate = model.DueDate,
+                Project = this.context.Projects.FirstOrDefault(x=>x.Id == model.ProjectId),
+                Reporter = this.context.Users.FirstOrDefault(x=>x.Id == user.Id)
+            };
+            this.context.Bugs.Add(bug);
+            await this.context.SaveChangesAsync();
+            return model;
+        }
     }
 }

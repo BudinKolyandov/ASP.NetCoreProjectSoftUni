@@ -77,5 +77,28 @@ namespace BugTracker.Web.Controllers
             var result = this.service.Join(userEmail, model);
             return this.Redirect($"/Projects/Details/{result}");
         }
+
+        public async Task<IActionResult> ReportBug(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await this.service.GetProjectReport(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+            return View(project);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReportBug(ReportBugProjectViewModel model)
+        {
+            var userEmail = this.User.Identity.Name;
+            var result = await this.service.Report(userEmail, model);
+            return await this.Details(result.ProjectId);
+        }
     }
 }
