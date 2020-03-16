@@ -23,13 +23,13 @@ namespace BugTracker.Web.Controllers
                 return NotFound();
             }
 
-            var project = await this.service.GetBugDetails(id);
-            if (project == null)
+            var bug = await this.service.GetBugDetails(id);
+            if (bug == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(bug);
         }
     }
 }

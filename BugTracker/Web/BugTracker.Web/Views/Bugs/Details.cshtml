@@ -1,0 +1,43 @@
+﻿@model BugTracker.Web.ViewModels.Bugs.DetailsBugsViewModel
+
+@{
+    ViewData["Title"] = "Bug Details";
+}
+
+<h1>@Model.Name</h1>
+<div>
+    <h4>Bug</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Severity)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Priority)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Severity)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

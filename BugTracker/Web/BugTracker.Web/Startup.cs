@@ -16,6 +16,7 @@ namespace BugTracker.Web
     using BugTracker.Services.Company;
     using BugTracker.Services.Projects;
     using Microsoft.AspNetCore.Mvc;
+    using BugTracker.Services.Bugs;
 
     public class Startup
     {
@@ -63,6 +64,7 @@ namespace BugTracker.Web
 
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IProjectsService, ProjectsService>();
+            services.AddTransient<IBugsService, BugsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
