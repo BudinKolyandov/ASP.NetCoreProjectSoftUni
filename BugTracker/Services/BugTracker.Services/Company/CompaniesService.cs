@@ -6,7 +6,7 @@
     using System.Linq;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
-    using BugTracker.Web.ViewModels.CompanyViewModels;
+    using BugTracker.Web.ViewModels.Companies;
 
     public class CompaniesService : ICompaniesService
     {

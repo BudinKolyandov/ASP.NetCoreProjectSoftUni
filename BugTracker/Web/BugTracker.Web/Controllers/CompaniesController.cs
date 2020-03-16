@@ -6,7 +6,7 @@ using BugTracker.Services.Company;
 using BugTracker.Web.ViewModels;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
-using BugTracker.Web.ViewModels.CompanyViewModels;
+using BugTracker.Web.ViewModels.Companies;
 using System;
 
 namespace BugTracker.Web.Controllers
