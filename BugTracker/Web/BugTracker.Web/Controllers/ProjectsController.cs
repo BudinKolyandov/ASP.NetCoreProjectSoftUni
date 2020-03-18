@@ -1,13 +1,14 @@
-﻿using BugTracker.Services.Projects;
-using BugTracker.Web.ViewModels;
-using BugTracker.Web.ViewModels.Projects;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Threading.Tasks;
-
-namespace BugTracker.Web.Controllers
+﻿namespace BugTracker.Web.Controllers
 {
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+
+    using BugTracker.Services.Projects;
+    using BugTracker.Web.ViewModels;
+    using BugTracker.Web.ViewModels.Projects;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     [Authorize]
     public class ProjectsController : Controller
     {
@@ -21,55 +22,57 @@ namespace BugTracker.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var userEmail = this.User.Identity.Name;
-            return View(await this.service.GetAll(userEmail));
+            return this.View(await this.service.GetAll(userEmail));
         }
 
         public IActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(string companyName, AddProjectViewModel projectViewModel)
         {
-            var username =  this.User.Identity.Name;
+            var username = this.User.Identity.Name;
             var project = await this.service.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, username);
             if (project == null)
             {
-                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
             }
-            return RedirectToAction(nameof(Index));
+
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var project = await this.service.GetProjectDetails(id);
             if (project == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(project);
+            return this.View(project);
         }
 
         public async Task<IActionResult> Join(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var project = await this.service.GetProjectJoin(id);
             if (project == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            return View(project);
+
+            return this.View(project);
         }
 
         [HttpPost]
@@ -84,15 +87,16 @@ namespace BugTracker.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var project = await this.service.GetProjectReport(id);
             if (project == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            return View(project);
+
+            return this.View(project);
         }
 
         [HttpPost]

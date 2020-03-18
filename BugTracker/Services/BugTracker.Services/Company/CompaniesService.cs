@@ -1,12 +1,13 @@
 ﻿namespace BugTracker.Services.Company
 {
-    using BugTracker.Data;
-    using System.Threading.Tasks;
     using System;
-    using System.Linq;
-    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using BugTracker.Data;
     using BugTracker.Web.ViewModels.Companies;
+    using Microsoft.EntityFrameworkCore;
 
     public class CompaniesService : ICompaniesService
     {
@@ -22,19 +23,22 @@
 
         public async Task<AddCompanyViewModel> Create(string name)
         {
-            if (this.context.Companies.Any(x=>x.Name == name))
+            if (this.context.Companies.Any(x => x.Name == name))
             {
                 return null;
             }
-            var company = new Data.Models.Company{
+
+            var company = new Data.Models.Company
+            {
                 Id = Guid.NewGuid().ToString(),
                 Name = name,
             };
             this.context.Companies.Add(company);
             await this.context.SaveChangesAsync();
-            var model = new AddCompanyViewModel{
+            var model = new AddCompanyViewModel
+            {
                 Name = company.Name,
-                Id = company.Id
+                Id = company.Id,
             };
             return model;
         }
@@ -59,7 +63,7 @@
 
         public async Task<Data.Models.Company> GetCompany(string id)
         {
-            return await this.context.Companies.FirstOrDefaultAsync(x=>x.Id == id);
+            return await this.context.Companies.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<bool> Join(string username, string id)
@@ -71,9 +75,10 @@
             {
                 return false;
             }
+
             user.Company = company;
             company.Employees.Add(user);
-            await context.SaveChangesAsync();
+            await this.context.SaveChangesAsync();
             return true;
         }
     }

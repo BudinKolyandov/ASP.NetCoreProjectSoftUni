@@ -1,7 +1,8 @@
 ﻿namespace BugTracker.Web.ViewModels.Projects
 {
-    using BugTracker.Data.Models;
     using System.Collections.Generic;
+
+    using BugTracker.Data.Models;
 
     public class AllProjectsViewModel
     {

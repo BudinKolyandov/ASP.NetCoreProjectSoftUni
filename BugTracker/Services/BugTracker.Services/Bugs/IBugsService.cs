@@ -1,7 +1,8 @@
 ﻿namespace BugTracker.Services.Bugs
 {
-    using BugTracker.Web.ViewModels.Bugs;
     using System.Threading.Tasks;
+
+    using BugTracker.Web.ViewModels.Bugs;
 
     public interface IBugsService
     {

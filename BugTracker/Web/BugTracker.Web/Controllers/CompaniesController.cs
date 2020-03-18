@@ -1,16 +1,16 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BugTracker.Data.Models;
-using BugTracker.Services.Company;
-using BugTracker.Web.ViewModels;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
-using BugTracker.Web.ViewModels.Companies;
-using System;
-
-namespace BugTracker.Web.Controllers
+﻿namespace BugTracker.Web.Controllers
 {
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+
+    using BugTracker.Data.Models;
+    using BugTracker.Services.Company;
+    using BugTracker.Web.ViewModels;
+    using BugTracker.Web.ViewModels.Companies;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Authorize]
     public class CompaniesController : Controller
     {
@@ -24,7 +24,7 @@ namespace BugTracker.Web.Controllers
         // GET: Company
         public async Task<IActionResult> Index()
         {
-            return View(await this.service.GetAll());
+            return this.View(await this.service.GetAll());
         }
 
         // GET: Company/Details/5
@@ -32,65 +32,60 @@ namespace BugTracker.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var company = await this.service.GetCompany(id);
             if (company == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(company);
+            return this.View(company);
         }
 
-        // GET: Company/Create
         public IActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
-        // POST: Company/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         public async Task<IActionResult> Create(string companyName, AddCompanyViewModel companyViewModel)
         {
             var company = await this.service.Create(companyViewModel.Name);
             if (company == null)
             {
-                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
             }
-            return RedirectToAction(nameof(Index));
+
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var company = await this.service.GetCompany(id);
             if (company == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            return View(company);
+
+            return this.View(company);
         }
 
-        // POST: Company/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         public async Task<IActionResult> Edit(string id, Company company)
         {
             if (id != company.Id)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 try
                 {
@@ -100,16 +95,18 @@ namespace BugTracker.Web.Controllers
                 {
                     if (!this.service.CompanyExists(company.Id))
                     {
-                        return NotFound();
+                        return this.NotFound();
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return this.RedirectToAction(nameof(this.Index));
             }
-            return View(company);
+
+            return this.View(company);
         }
 
         // GET: Company/Delete/5
@@ -117,39 +114,40 @@ namespace BugTracker.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var company = await this.service.GetCompany(id);
             if (company == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(company);
+            return this.View(company);
         }
 
-        // POST: Company/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             await this.service.DeleteCompany(id);
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Join(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var company = await this.service.GetCompany(id);
             if (company == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            return View(company);
+
+            return this.View(company);
         }
 
         [HttpPost]
@@ -157,15 +155,17 @@ namespace BugTracker.Web.Controllers
         {
             if (id != company.Id)
             {
-                return NotFound();
+                return this.NotFound();
             }
+
             var username = this.User.Identity.Name;
             var result = await this.service.Join(username, id);
             if (!result)
             {
                 return this.View(company);
             }
-            return Redirect("/Project/All");
+
+            return this.Redirect("/Project/All");
         }
     }
 }

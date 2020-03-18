@@ -1,10 +1,10 @@
 ﻿namespace BugTracker.Services.Bugs
 {
+    using System.Threading.Tasks;
+
     using BugTracker.Data;
     using BugTracker.Web.ViewModels.Bugs;
     using Microsoft.EntityFrameworkCore;
-    using System;
-    using System.Threading.Tasks;
 
     public class BugsService : IBugsService
     {
@@ -22,6 +22,7 @@
             {
                 return null;
             }
+
             var model = new DetailsBugsViewModel
             {
                 Id = bug.Id,
@@ -31,7 +32,7 @@
                 Status = bug.Status,
                 DueDate = bug.DueDate,
                 ProjectId = bug.ProjectId,
-                ReporterId = bug.ReporterId
+                ReporterId = bug.ReporterId,
             };
             return model;
         }

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BugTracker.Services.Bugs;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BugTracker.Web.Controllers
+﻿namespace BugTracker.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using BugTracker.Services.Bugs;
+    using Microsoft.AspNetCore.Mvc;
+
     public class BugsController : Controller
     {
         private readonly IBugsService service;
@@ -20,16 +21,16 @@ namespace BugTracker.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var bug = await this.service.GetBugDetails(id);
             if (bug == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(bug);
+            return this.View(bug);
         }
     }
 }

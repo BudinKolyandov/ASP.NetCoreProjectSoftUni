@@ -6,6 +6,11 @@
 
     public class ApplicationDbContext : IdentityDbContext<User>
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<User> AspNetUsers { get; set; }
 
         public DbSet<Bug> Bugs { get; set; }
@@ -19,11 +24,6 @@
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<ProjectUser> ProjectsUsers { get; set; }
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
-            : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,11 +40,8 @@
                 .WithMany(x => x.Projects)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
             });
-
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

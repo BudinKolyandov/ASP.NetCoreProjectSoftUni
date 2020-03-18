@@ -1,28 +1,29 @@
-namespace BugTracker.Web
+﻿namespace BugTracker.Web
 {
+    using System.Reflection;
+
+    using BugTracker.Data;
+    using BugTracker.Data.Models;
+    using BugTracker.Services.Bugs;
+    using BugTracker.Services.Company;
+    using BugTracker.Services.Mapping;
+    using BugTracker.Services.Projects;
+    using BugTracker.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using BugTracker.Data;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using BugTracker.Data.Models;
-    using Microsoft.AspNetCore.Identity;
-    using BugTracker.Services.Mapping;
-    using BugTracker.Web.ViewModels;
-    using System.Reflection;
-    using Microsoft.AspNetCore.Http;
-    using BugTracker.Services.Company;
-    using BugTracker.Services.Projects;
-    using Microsoft.AspNetCore.Mvc;
-    using BugTracker.Services.Bugs;
 
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -32,7 +33,7 @@ namespace BugTracker.Web
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
@@ -55,7 +56,6 @@ namespace BugTracker.Web
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
-            
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -80,9 +80,11 @@ namespace BugTracker.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
+           // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

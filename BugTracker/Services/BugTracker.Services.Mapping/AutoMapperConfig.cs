@@ -20,6 +20,7 @@
             {
                 return;
             }
+
             initialized = true;
 
             var types = assemblies.SelectMany(a => a.GetExportedTypes()).ToList();

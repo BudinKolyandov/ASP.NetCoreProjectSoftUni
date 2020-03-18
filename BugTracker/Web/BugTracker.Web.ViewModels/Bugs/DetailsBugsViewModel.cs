@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace BugTracker.Web.ViewModels.Bugs
+﻿namespace BugTracker.Web.ViewModels.Bugs
 {
+    using System;
+
     public class DetailsBugsViewModel
     {
         public string Id { get; set; }
@@ -9,7 +9,7 @@ namespace BugTracker.Web.ViewModels.Bugs
         public string Name { get; set; }
 
         public string ProjectId { get; set; }
-        
+
         public string ReporterId { get; set; }
 
         public string Priority { get; set; }

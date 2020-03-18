@@ -1,6 +1,7 @@
 ﻿namespace BugTracker.Data.Migrations
 {
     using System;
+
     using Microsoft.EntityFrameworkCore.Migrations;
 
     public partial class InitialCreate : Migration
@@ -14,7 +15,7 @@
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -26,7 +27,7 @@
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -41,7 +42,7 @@
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -62,7 +63,7 @@
                     Name = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    CompanyId = table.Column<string>(nullable: true)
+                    CompanyId = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -80,7 +81,7 @@
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    RoleId = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -101,7 +102,7 @@
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -115,7 +116,7 @@
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -129,7 +130,7 @@
                     UserId = table.Column<string>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    Value = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -146,7 +147,7 @@
                     Priority = table.Column<string>(nullable: true),
                     Severity = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true),
-                    DueDate = table.Column<DateTime>(nullable: false)
+                    DueDate = table.Column<DateTime>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -169,7 +170,7 @@
                     FieldName = table.Column<string>(nullable: true),
                     OldValue = table.Column<string>(nullable: true),
                     NewValue = table.Column<string>(nullable: true),
-                    ModifiedOn = table.Column<DateTime>(nullable: false)
+                    ModifiedOn = table.Column<DateTime>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -206,7 +207,7 @@
                     AccessLevel = table.Column<string>(nullable: true),
                     CompanyId = table.Column<string>(nullable: true),
                     BugHistoryId = table.Column<int>(nullable: true),
-                    BugId = table.Column<string>(nullable: true)
+                    BugId = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -243,7 +244,7 @@
                     Headline = table.Column<string>(nullable: true),
                     Body = table.Column<string>(nullable: true),
                     DatePosted = table.Column<DateTime>(nullable: false),
-                    CompanyId = table.Column<string>(nullable: true)
+                    CompanyId = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -273,7 +274,7 @@
                 columns: table => new
                 {
                     ProjectId = table.Column<string>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {

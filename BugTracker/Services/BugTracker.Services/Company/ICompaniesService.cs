@@ -1,9 +1,10 @@
 ﻿namespace BugTracker.Services.Company
 {
-    using BugTracker.Data.Models;
-    using BugTracker.Web.ViewModels.Companies;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using BugTracker.Data.Models;
+    using BugTracker.Web.ViewModels.Companies;
 
     public interface ICompaniesService
     {

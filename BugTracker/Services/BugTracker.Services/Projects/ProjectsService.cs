@@ -1,14 +1,15 @@
-﻿using BugTracker.Data;
-using BugTracker.Data.Models;
-using BugTracker.Web.ViewModels.Projects;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BugTracker.Services.Projects
+﻿namespace BugTracker.Services.Projects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using BugTracker.Data;
+    using BugTracker.Data.Models;
+    using BugTracker.Web.ViewModels.Projects;
+    using Microsoft.EntityFrameworkCore;
+
     public class ProjectsService : IProjectsService
     {
         private readonly ApplicationDbContext context;
@@ -24,11 +25,13 @@ namespace BugTracker.Services.Projects
             {
                 return null;
             }
+
             var user = this.context.Users.FirstOrDefault(x => x.Email == username);
             if (user == null)
             {
                 return null;
             }
+
             var project = new Project
             {
                 Id = Guid.NewGuid().ToString(),
@@ -44,7 +47,7 @@ namespace BugTracker.Services.Projects
             {
                 Name = project.Name,
                 Status = project.Status,
-                Description = project.Description
+                Description = project.Description,
             };
             return model;
         }
@@ -56,21 +59,22 @@ namespace BugTracker.Services.Projects
             {
                 return null;
             }
-            var company = this.context.Companies.Where(x=>x.Id == user.CompanyId).First();
+
+            var company = this.context.Companies.Where(x => x.Id == user.CompanyId).First();
             if (company == null)
             {
                 return null;
             }
 
             return await this.context
-                .Projects.Where(x=>x.CompanyId == user.CompanyId)
+                .Projects.Where(x => x.CompanyId == user.CompanyId)
                 .Select(x => new AllProjectsViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Status = x.Status,
                     Description = x.Description,
-                    Bugs = x.Bugs
+                    Bugs = x.Bugs,
                 })
                 .ToListAsync();
         }
@@ -86,7 +90,7 @@ namespace BugTracker.Services.Projects
                     Status = x.Status,
                     Description = x.Description,
                     Bugs = x.Bugs,
-                    Developers = x.Developers
+                    Developers = x.Developers,
                 })
                 .FirstAsync();
         }
@@ -97,7 +101,7 @@ namespace BugTracker.Services.Projects
             var model = new JoinProjectViewModel
             {
                 Id = project.Id,
-                Name = project.Name
+                Name = project.Name,
             };
             return model;
         }
@@ -109,16 +113,18 @@ namespace BugTracker.Services.Projects
             {
                 return null;
             }
+
             var projectUser = new ProjectUser
             {
-                Project = this.context.Projects.First(x=>x.Id == model.Id),
+                Project = this.context.Projects.First(x => x.Id == model.Id),
                 ProjectId = model.Id,
-                UserId = user.Id
+                UserId = user.Id,
             };
             if (user.Projects.Contains(projectUser))
             {
                 return null;
             }
+
             this.context.ProjectsUsers.Add(projectUser);
             this.context.Projects
                 .First(x => x.Id == model.Id)
@@ -135,7 +141,7 @@ namespace BugTracker.Services.Projects
             var model = new ReportBugProjectViewModel
             {
                 ProjectId = project.Id,
-                ProjectName = project.Name
+                ProjectName = project.Name,
             };
             return model;
         }
@@ -147,6 +153,7 @@ namespace BugTracker.Services.Projects
             {
                 return null;
             }
+
             var bug = new Bug
             {
                 Id = Guid.NewGuid().ToString(),
@@ -157,8 +164,8 @@ namespace BugTracker.Services.Projects
                 Status = model.Status,
                 ReporterId = user.Id,
                 DueDate = model.DueDate,
-                Project = this.context.Projects.FirstOrDefault(x=>x.Id == model.ProjectId),
-                Reporter = this.context.Users.FirstOrDefault(x=>x.Id == user.Id)
+                Project = this.context.Projects.FirstOrDefault(x => x.Id == model.ProjectId),
+                Reporter = this.context.Users.FirstOrDefault(x => x.Id == user.Id),
             };
             var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == model.ProjectId);
             project.Bugs.Add(bug);

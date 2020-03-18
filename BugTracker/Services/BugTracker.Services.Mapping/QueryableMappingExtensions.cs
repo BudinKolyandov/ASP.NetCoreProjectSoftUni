@@ -16,6 +16,7 @@
             {
                 throw new ArgumentException(nameof(source));
             }
+
             return source.ProjectTo(AutoMapperConfig.MapperInstance.ConfigurationProvider, null, membersToExpand);
         }
 
