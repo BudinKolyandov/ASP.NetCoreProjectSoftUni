@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using BugTracker.Data.Models.Enums;
+
     public class ReportBugProjectViewModel
     {
         public string Name { get; set; }
@@ -11,11 +13,11 @@
 
         public string ProjectName { get; set; }
 
-        public string Priority { get; set; }
+        public Priority Priority { get; set; }
 
-        public string Severity { get; set; }
+        public Severity Severity { get; set; }
 
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DueDate { get; set; }

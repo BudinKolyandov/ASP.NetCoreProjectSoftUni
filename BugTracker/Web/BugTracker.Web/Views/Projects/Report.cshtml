@@ -1,4 +1,5 @@
 ﻿@model BugTracker.Web.ViewModels.Projects.ReportBugProjectViewModel
+@using BugTracker.Data.Models.Enums
 
 @{
     ViewData["Title"] = "ReportBug";
@@ -19,17 +20,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Priority" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <select asp-for="Priority" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"></select>
+                <span asp-validation-for="Priority" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Severity" class="control-label"></label>
-                <input asp-for="Severity" class="form-control" />
+                <select asp-for="Severity" asp-items="Html.GetEnumSelectList<Severity>()" class="form-control"></select>
                 <span asp-validation-for="Severity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
