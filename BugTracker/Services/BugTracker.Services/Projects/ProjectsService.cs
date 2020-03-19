@@ -7,6 +7,7 @@
 
     using BugTracker.Data;
     using BugTracker.Data.Models;
+    using BugTracker.Data.Models.Enums;
     using BugTracker.Web.ViewModels.Projects;
     using Microsoft.EntityFrameworkCore;
 
@@ -159,9 +160,9 @@
                 Id = Guid.NewGuid().ToString(),
                 Name = model.Name,
                 ProjectId = model.ProjectId,
-                Priority = model.Priority,
-                Severity = model.Severity,
-                Status = model.Status,
+                Priority = Enum.Parse<Priority>(model.Priority),
+                Severity = Enum.Parse<Severity>(model.Severity),
+                Status = Enum.Parse<Status>(model.Status),
                 ReporterId = user.Id,
                 DueDate = model.DueDate,
                 Project = this.context.Projects.FirstOrDefault(x => x.Id == model.ProjectId),

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using BugTracker.Data.Models.Enums;
+
     public class Bug
     {
         public Bug()
@@ -22,11 +24,11 @@
 
         public User Reporter { get; set; }
 
-        public string Priority { get; set; }
+        public Priority Priority { get; set; }
 
-        public string Severity { get; set; }
+        public Severity Severity { get; set; }
 
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         public DateTime DueDate { get; set; }
 

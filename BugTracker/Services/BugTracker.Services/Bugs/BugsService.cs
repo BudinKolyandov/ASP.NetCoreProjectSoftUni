@@ -1,8 +1,10 @@
 ﻿namespace BugTracker.Services.Bugs
 {
+    using System;
     using System.Threading.Tasks;
 
     using BugTracker.Data;
+    using BugTracker.Data.Models.Enums;
     using BugTracker.Web.ViewModels.Bugs;
     using Microsoft.EntityFrameworkCore;
 
@@ -27,9 +29,9 @@
             {
                 Id = bug.Id,
                 Name = bug.Name,
-                Priority = bug.Priority,
-                Severity = bug.Severity,
-                Status = bug.Status,
+                Priority = Enum.GetName(typeof(Priority), bug.Priority),
+                Severity = Enum.GetName(typeof(Severity), bug.Severity),
+                Status = Enum.GetName(typeof(Status), bug.Status),
                 DueDate = bug.DueDate,
                 ProjectId = bug.ProjectId,
                 ReporterId = bug.ReporterId,

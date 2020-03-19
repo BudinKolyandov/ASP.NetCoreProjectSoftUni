@@ -48,11 +48,11 @@
                             @Html.DisplayName(bug.Name)
                         </td>
                         <td>
-                            @Html.DisplayName(bug.Status)
+                            @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
                         </td>
 
                         <td>
-                            @Html.DisplayName(bug.Severity)
+                            @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
                         </td>
                         <td>
                             <a asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>

@@ -10,6 +10,7 @@
         public User()
         {
             this.Projects = new HashSet<ProjectUser>();
+            this.CreatedOn = DateTime.UtcNow;
         }
 
         public string RealName { get; set; }
