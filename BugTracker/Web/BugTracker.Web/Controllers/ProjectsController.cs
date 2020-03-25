@@ -22,7 +22,13 @@
         public async Task<IActionResult> Index()
         {
             var userEmail = this.User.Identity.Name;
-            return this.View(await this.service.GetAll(userEmail));
+            var viewModel = await this.service.GetAll(userEmail);
+            if (viewModel == null)
+            {
+                return this.RedirectToAction("Index", "Companies");
+            }
+
+            return this.View();
         }
 
         public IActionResult Create()

@@ -1,11 +1,13 @@
 ﻿namespace BugTracker.Data.Models
 {
+    using System;
     using System.Collections.Generic;
 
     public class Project
     {
         public Project()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.Bugs = new HashSet<Bug>();
             this.Developers = new HashSet<ProjectUser>();
         }
@@ -20,10 +22,10 @@
 
         public string CompanyId { get; set; }
 
-        public Company Company { get; set; }
+        public virtual Company Company { get; set; }
 
-        public ICollection<Bug> Bugs { get; set; }
+        public virtual ICollection<Bug> Bugs { get; set; }
 
-        public ICollection<ProjectUser> Developers { get; set; }
+        public virtual ICollection<ProjectUser> Developers { get; set; }
     }
 }

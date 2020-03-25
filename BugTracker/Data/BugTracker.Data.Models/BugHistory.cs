@@ -14,7 +14,7 @@
 
         public string BugId { get; set; }
 
-        public Bug Bug { get; set; }
+        public virtual Bug Bug { get; set; }
 
         public string FieldName { get; set; }
 
@@ -24,6 +24,6 @@
 
         public DateTime ModifiedOn { get; set; }
 
-        public ICollection<User> Handlers { get; set; }
+        public virtual ICollection<User> Handlers { get; set; }
     }
 }

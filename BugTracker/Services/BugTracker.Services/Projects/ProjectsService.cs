@@ -7,7 +7,6 @@
 
     using BugTracker.Data;
     using BugTracker.Data.Models;
-    using BugTracker.Data.Models.Enums;
     using BugTracker.Web.ViewModels.Projects;
     using Microsoft.EntityFrameworkCore;
 
@@ -61,11 +60,12 @@
                 return null;
             }
 
-            var company = this.context.Companies.Where(x => x.Id == user.CompanyId).First();
-            if (company == null)
+            if (user.CompanyId == null)
             {
                 return null;
             }
+
+            var company = this.context.Companies.Where(x => x.Id == user.CompanyId).First();
 
             return await this.context
                 .Projects.Where(x => x.CompanyId == user.CompanyId)

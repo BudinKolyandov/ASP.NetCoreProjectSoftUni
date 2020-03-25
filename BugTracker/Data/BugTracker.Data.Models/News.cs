@@ -8,11 +8,11 @@
 
         public string ProjectId { get; set; }
 
-        public Project Project { get; set; }
+        public virtual Project Project { get; set; }
 
         public string PosterId { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public string Headline { get; set; }
 
