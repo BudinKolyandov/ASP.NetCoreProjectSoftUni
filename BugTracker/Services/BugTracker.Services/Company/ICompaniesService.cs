@@ -8,17 +8,17 @@
 
     public interface ICompaniesService
     {
-        Task<AddCompanyViewModel> Create(string name);
+        Task<string> Create(AddCompanyInputModel model, string userId);
 
         Task<bool> Join(string username, string id);
 
-        Task<Company> GetCompany(string id);
+        T GetById<T>(string id);
 
-        Task EditCompany(Company company);
+        Task EditCompany(EditCompanyInputModel model);
 
         Task DeleteCompany(string id);
 
-        Task<List<Company>> GetAll();
+        IEnumerable<T> GetAll<T>(int? count = null);
 
         bool CompanyExists(string id);
     }

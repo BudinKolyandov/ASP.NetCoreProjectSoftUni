@@ -1,4 +1,4 @@
-﻿@model BugTracker.Data.Models.Company
+﻿@model BugTracker.Web.ViewModels.Companies.EditCompanyViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -19,11 +19,60 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+@if (Model.Projects.Count > 0)
+{
+    var projectName = "Name";
+    var projectDescription = "Description";
+    var projectStatus = "Status";
+    var projectBugs = "Bugs";
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => projectName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => projectDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => projectStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => projectBugs)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model.Projects)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => project.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => project.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => project.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => project.Bugs.Count)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <div>
     <a asp-action="Index">Back to List</a>

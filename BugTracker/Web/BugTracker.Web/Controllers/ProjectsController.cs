@@ -25,6 +25,7 @@
             var viewModel = await this.service.GetAll(userEmail);
             if (viewModel == null)
             {
+                this.TempData["message"] = "You need to join a Company to view it's projects";
                 return this.RedirectToAction("Index", "Companies");
             }
 

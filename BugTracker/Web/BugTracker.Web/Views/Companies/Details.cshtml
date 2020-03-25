@@ -1,4 +1,4 @@
-﻿@model BugTracker.Data.Models.Company
+﻿@model BugTracker.Web.ViewModels.Companies.DetailsCompanyViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,13 +10,52 @@
     <h4>Company</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+    @if (Model.Projects.Count > 0)
+    {
+        <h4 class="text-center">Projects</h4>
+        @foreach (var project in Model.Projects)
+        {
+            <dl class="row">
+                <dt class="ccol-sm-2">
+                    @Html.DisplayNameFor(model => project.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => project.Name)
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="ccol-sm-2">
+                    @Html.DisplayNameFor(model => project.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => project.Description)
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="ccol-sm-2">
+                    @Html.DisplayNameFor(model => project.Bugs)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => project.Bugs.Count)
+                </dd>
+            </dl>
+        }
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

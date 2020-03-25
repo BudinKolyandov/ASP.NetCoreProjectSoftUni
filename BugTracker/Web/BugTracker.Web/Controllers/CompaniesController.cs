@@ -1,41 +1,45 @@
 ﻿namespace BugTracker.Web.Controllers
 {
-    using System.Diagnostics;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
     using BugTracker.Services.Company;
-    using BugTracker.Web.ViewModels;
     using BugTracker.Web.ViewModels.Companies;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
 
     [Authorize]
     public class CompaniesController : Controller
     {
         private readonly ICompaniesService service;
+        private readonly UserManager<User> userManager;
 
-        public CompaniesController(ICompaniesService service)
+        public CompaniesController(
+            ICompaniesService service,
+            UserManager<User> userManager)
         {
             this.service = service;
+            this.userManager = userManager;
         }
 
-        // GET: Company
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return this.View(await this.service.GetAll());
+            var viewModel = new IndexViewModel
+            {
+                Companies = this.service.GetAll<IndexCompanyViewModel>(),
+            };
+            return this.View(viewModel);
         }
 
-        // GET: Company/Details/5
-        public async Task<IActionResult> Details(string id)
+        public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var company = await this.service.GetCompany(id);
+            var company = this.service.GetById<DetailsCompanyViewModel>(id);
             if (company == null)
             {
                 return this.NotFound();
@@ -50,25 +54,33 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string companyName, AddCompanyViewModel companyViewModel)
+        public async Task<IActionResult> Create(AddCompanyInputModel input)
         {
-            var company = await this.service.Create(companyViewModel.Name);
-            if (company == null)
+            if (!this.ModelState.IsValid)
             {
-                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+                return this.View(input);
             }
 
-            return this.RedirectToAction(nameof(this.Index));
+            var user = await this.userManager.GetUserAsync(this.User);
+            var companyId = await this.service.Create(input, user.Id);
+
+            if (companyId == null)
+            {
+                this.TempData["message"] = "A company with the same name already exists";
+                return this.RedirectToAction("Index", "Companies");
+            }
+
+            return this.RedirectToAction(nameof(this.Details), new { id = companyId });
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Edit(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var company = await this.service.GetCompany(id);
+            var company = this.service.GetById<EditCompanyViewModel>(id);
             if (company == null)
             {
                 return this.NotFound();
@@ -78,46 +90,30 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, Company company)
+        public async Task<IActionResult> Edit(EditCompanyInputModel company)
         {
-            if (id != company.Id)
+            if (!this.service.CompanyExists(company.Id))
             {
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                try
-                {
-                    await this.service.EditCompany(company);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!this.service.CompanyExists(company.Id))
-                    {
-                        return this.NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            return this.View(company);
+            await this.service.EditCompany(company);
+            return this.RedirectToAction(nameof(this.Details), new { id = company.Id });
         }
 
-        // GET: Company/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var company = await this.service.GetCompany(id);
+            var company = this.service.GetById<Company>(id);
             if (company == null)
             {
                 return this.NotFound();
@@ -134,14 +130,14 @@
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        public async Task<IActionResult> Join(string id)
+        public IActionResult Join(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var company = await this.service.GetCompany(id);
+            var company = this.service.GetById<Company>(id);
             if (company == null)
             {
                 return this.NotFound();

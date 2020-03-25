@@ -6,41 +6,46 @@
     using System.Threading.Tasks;
 
     using BugTracker.Data;
+    using BugTracker.Data.Models;
+    using BugTracker.Services.Mapping;
     using BugTracker.Web.ViewModels.Companies;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     public class CompaniesService : ICompaniesService
     {
         private readonly ApplicationDbContext context;
+        private readonly UserManager<User> userManager;
 
-        public CompaniesService(ApplicationDbContext context)
+        public CompaniesService(
+            ApplicationDbContext context,
+            UserManager<User> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
         public bool CompanyExists(string id)
             => this.context.Companies.Any(e => e.Id == id);
 
-        public async Task<AddCompanyViewModel> Create(string name)
+        public async Task<string> Create(AddCompanyInputModel model, string userId)
         {
-            if (this.context.Companies.Any(x => x.Name == name))
+            if (this.context.Companies.Any(x => x.Name == model.Name))
             {
                 return null;
             }
 
             var company = new Data.Models.Company
             {
-                Id = Guid.NewGuid().ToString(),
-                Name = name,
+                Name = model.Name,
+                Description = model.Description,
             };
-            this.context.Companies.Add(company);
+            var user = this.context.Users.Where(x => x.Id == userId).FirstOrDefault();
+            await this.userManager.AddToRoleAsync(user, "CompanyAdministrator");
+            user.CompanyId = company.Id;
+            await this.context.Companies.AddAsync(company);
             await this.context.SaveChangesAsync();
-            var model = new AddCompanyViewModel
-            {
-                Name = company.Name,
-                Id = company.Id,
-            };
-            return model;
+            return company.Id;
         }
 
         public async Task DeleteCompany(string id)
@@ -50,20 +55,31 @@
             await this.context.SaveChangesAsync();
         }
 
-        public async Task EditCompany(Data.Models.Company company)
+        public async Task EditCompany(EditCompanyInputModel model)
         {
+            var company = await this.context.Companies.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+            company.Name = model.Name;
+            company.Description = model.Description;
             this.context.Companies.Update(company);
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<List<Data.Models.Company>> GetAll()
+        public IEnumerable<T> GetAll<T>(int? count = null)
         {
-            return await this.context.Companies.ToListAsync();
+            IQueryable<Company> query = this.context.Companies.OrderBy(x => x.Name);
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
         }
 
-        public async Task<Data.Models.Company> GetCompany(string id)
+        public T GetById<T>(string id)
         {
-            return await this.context.Companies.FirstOrDefaultAsync(x => x.Id == id);
+            var company = this.context.Companies
+                .Where(x => x.Id == id).To<T>().FirstOrDefault();
+            return company;
         }
 
         public async Task<bool> Join(string username, string id)
