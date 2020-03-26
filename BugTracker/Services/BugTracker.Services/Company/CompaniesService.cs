@@ -35,14 +35,22 @@
                 return null;
             }
 
+            var user = this.context.Users.Where(x => x.Id == userId).FirstOrDefault();
             var company = new Data.Models.Company
             {
                 Name = model.Name,
                 Description = model.Description,
+                AdminId = user.Id,
             };
-            var user = this.context.Users.Where(x => x.Id == userId).FirstOrDefault();
+
+            var userCompany = new CompanyUser
+            {
+                CompanyId = company.Id,
+                UserId = user.Id,
+            };
+
             await this.userManager.AddToRoleAsync(user, "CompanyAdministrator");
-            user.CompanyId = company.Id;
+            user.Companies.Add(userCompany);
             await this.context.Companies.AddAsync(company);
             await this.context.SaveChangesAsync();
             return company.Id;
@@ -82,20 +90,32 @@
             return company;
         }
 
-        public async Task<bool> Join(string username, string id)
+        public async Task<string> Join(string username, string id)
         {
             var user = this.context.Users.FirstOrDefault(x => x.Email == username);
             var company = this.context.Companies.FirstOrDefault(x => x.Id == id);
 
             if (user == null || company == null)
             {
-                return false;
+                return null;
             }
 
-            user.Company = company;
-            company.Employees.Add(user);
+            var companyUser = new CompanyUser
+            {
+                CompanyId = company.Id,
+                UserId = user.Id,
+            };
+
+            var existingRelationCheck = this.context.CompaniesUsers.Where(x => x.UserId == user.Id && x.CompanyId == company.Id).FirstOrDefault();
+            if (existingRelationCheck != null)
+            {
+                return company.Id;
+            }
+
+            user.Companies.Add(companyUser);
+            company.Employees.Add(companyUser);
             await this.context.SaveChangesAsync();
-            return true;
+            return company.Id;
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿@model BugTracker.Web.ViewModels.Projects.IndexViewModel
 
 @{
-    ViewData["Title"] = "Company Projects";
+    ViewData["Title"] = "Projects of your Companies";
 }
 
-<h1>Company Projects</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<hr class="w-100"/>
+<hr class="w-100" />
 @if (TempData["message"] != null)
 {
     <p class="alert alert-danger text-center">@TempData["message"]</p>

@@ -63,12 +63,6 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (user.Company != null)
-            {
-                this.TempData["message"] = "You have joined a company already";
-                return this.RedirectToAction("Index", "Projects");
-            }
-
             var companyId = await this.service.Create(input, user.Id);
 
             if (companyId == null)
@@ -162,19 +156,14 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            if (user.Company != null)
-            {
-                this.TempData["message"] = "You have joined a company already";
-                return this.RedirectToAction("Index", "Projects");
-            }
 
             var result = await this.service.Join(user.UserName, id);
-            if (!result)
+            if (result == null)
             {
                 return this.View(company);
             }
 
-            return this.Redirect("/Project/All");
+            return this.Redirect("/Projects/Index");
         }
     }
 }

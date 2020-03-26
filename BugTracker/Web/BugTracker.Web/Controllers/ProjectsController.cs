@@ -1,38 +1,43 @@
 ﻿namespace BugTracker.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
     using BugTracker.Services.Bugs;
+    using BugTracker.Services.Company;
     using BugTracker.Services.Projects;
     using BugTracker.Web.ViewModels;
     using BugTracker.Web.ViewModels.Projects;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore.Internal;
 
     [Authorize]
     public class ProjectsController : Controller
     {
         private readonly IProjectsService projectsService;
-        private readonly IBugsService bugsService;
+        private readonly ICompaniesService companiesService;
         private readonly UserManager<User> userManager;
 
         public ProjectsController(
             IProjectsService projectsService,
-            IBugsService bugsService,
+            ICompaniesService companiesService,
             UserManager<User> userManager)
         {
             this.projectsService = projectsService;
-            this.bugsService = bugsService;
+            this.companiesService = companiesService;
             this.userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            if (user.CompanyId == null)
+            var companyCheck = this.projectsService.UserHasCompany(user.UserName);
+            if (!companyCheck)
             {
                 this.TempData["message"] = "You need to join a Company to view it's projects";
                 return this.RedirectToAction("Index", "Companies");
@@ -48,14 +53,29 @@
 
         public IActionResult Create()
         {
-            return this.View();
+            var companies = this.companiesService.GetAll<CreateProjectCompaniesListModel>();
+            var viewModel = new AddProjectViewModel
+            {
+                CompaniesList = new List<CreateProjectCompaniesListModel>(),
+            };
+            foreach (var company in companies)
+            {
+                viewModel.CompaniesList.Add(company);
+            }
+
+            return this.View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(AddProjectViewModel projectViewModel)
         {
-            var username = this.User.Identity.Name;
-            var project = await this.projectsService.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, username);
+            if (this.ModelState.IsValid)
+            {
+                return this.View(projectViewModel);
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            var project = await this.projectsService.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, user.UserName, projectViewModel.CompanyName);
             if (project == null)
             {
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });

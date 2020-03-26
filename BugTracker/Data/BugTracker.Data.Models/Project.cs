@@ -20,6 +20,10 @@
 
         public string Description { get; set; }
 
+        public string AdminId { get; set; }
+
+        public User Admin { get; set; }
+
         public string CompanyId { get; set; }
 
         public virtual Company Company { get; set; }

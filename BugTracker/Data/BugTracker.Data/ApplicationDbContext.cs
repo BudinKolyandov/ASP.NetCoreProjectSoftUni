@@ -31,6 +31,10 @@
 
         public DbSet<ProjectUser> ProjectsUsers { get; set; }
 
+        public DbSet<CompanyUser> CompaniesUsers { get; set; }
+
+        public DbSet<AssignmentUser> AssignmentsUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -54,11 +58,33 @@
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<Assignment>(a =>
+            modelBuilder.Entity<CompanyUser>(cu =>
             {
-                a.HasOne(x => x.Assignee)
+                cu.HasKey(x => new { x.CompanyId, x.UserId });
+
+                cu.HasOne(x => x.Company)
+                .WithMany(x => x.Employees)
+                .HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                cu.HasOne(x => x.User)
+                .WithMany(x => x.Companies)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<AssignmentUser>(au =>
+            {
+                au.HasKey(x => new { x.UserId, x.AssignmentId });
+
+                au.HasOne(x => x.Assignment)
+                .WithMany(x => x.Assignees)
+                .HasForeignKey(x => x.AssignmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                au.HasOne(x => x.User)
                 .WithMany(x => x.Assignments)
-                .HasForeignKey(x => x.AssigneeId)
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
         }

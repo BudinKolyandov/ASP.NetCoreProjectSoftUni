@@ -10,7 +10,7 @@
     {
         Task<string> Create(AddCompanyInputModel model, string userId);
 
-        Task<bool> Join(string username, string id);
+        Task<string> Join(string username, string id);
 
         T GetById<T>(string id);
 

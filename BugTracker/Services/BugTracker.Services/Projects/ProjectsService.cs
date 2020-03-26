@@ -25,7 +25,7 @@
             this.userManager = userManager;
         }
 
-        public async Task<AddProjectViewModel> Create(string name, string status, string description, string username)
+        public async Task<AddProjectViewModel> Create(string name, string status, string description, string username, string companyId)
         {
             if (this.context.Projects.Any(x => x.Name == name))
             {
@@ -38,19 +38,23 @@
                 return null;
             }
 
+            var company = this.context.Companies.Where(x => x.Id == companyId).First();
+
             var project = new Project
             {
                 Name = name,
                 Status = status,
                 Description = description,
-                CompanyId = user.CompanyId,
+                CompanyId = company.Id,
+                AdminId = user.Id,
             };
 
-            await this.userManager.AddToRoleAsync(user, "CompanyAdministrator");
+            await this.userManager.AddToRoleAsync(user, "ProjectAdministrator");
             this.context.Projects.Add(project);
             await this.context.SaveChangesAsync();
             var model = new AddProjectViewModel
             {
+                Id = project.Id,
                 Name = project.Name,
                 Status = project.Status,
                 Description = project.Description,
@@ -66,12 +70,15 @@
                 return null;
             }
 
-            if (user.CompanyId == null)
+            var companies = this.context.CompaniesUsers.Where(x => x.UserId == user.Id);
+            List<string> ids = new List<string>();
+            foreach (var company in companies)
             {
-                return null;
+                ids.Add(company.CompanyId);
             }
 
-            IQueryable<Project> query = this.context.Projects.OrderBy(x => x.Name);
+            var projects = this.context.Projects.Where(x => ids.Contains(x.CompanyId));
+            IQueryable<Project> query = projects.OrderBy(x => x.Name);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -126,7 +133,6 @@
 
             var bug = new Bug
             {
-                Id = Guid.NewGuid().ToString(),
                 Name = model.Name,
                 ProjectId = model.ProjectId,
                 Priority = model.Priority,
@@ -143,6 +149,18 @@
             this.context.Bugs.Add(bug);
             await this.context.SaveChangesAsync();
             return model;
+        }
+
+        public bool UserHasCompany(string username)
+        {
+            var user = this.context.Users.Where(x => x.UserName == username).FirstOrDefault();
+            var companyUser = this.context.CompaniesUsers.Where(x => x.UserId == user.Id).FirstOrDefault();
+            if (companyUser == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

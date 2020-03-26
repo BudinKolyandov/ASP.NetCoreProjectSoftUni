@@ -11,6 +11,8 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Projects = new HashSet<ProjectUser>();
+            this.Companies = new HashSet<CompanyUser>();
+            this.Assignments = new HashSet<AssignmentUser>();
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
@@ -23,13 +25,11 @@
 
         public string AccessLevel { get; set; }
 
-        public string CompanyId { get; set; }
-
-        public virtual Company Company { get; set; }
-
         public virtual ICollection<ProjectUser> Projects { get; set; }
 
-        public virtual ICollection<Assignment> Assignments { get; set; }
+        public virtual ICollection<CompanyUser> Companies { get; set; }
+
+        public virtual ICollection<AssignmentUser> Assignments { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

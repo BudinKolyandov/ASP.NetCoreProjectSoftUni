@@ -1,16 +1,22 @@
 ﻿namespace BugTracker.Data.Models
 {
     using System;
+    using System.Collections.Generic;
 
     using BugTracker.Data.Models.Enums;
 
     public class Assignment
     {
+        public Assignment()
+        {
+            this.Assignees = new HashSet<AssignmentUser>();
+        }
+
         public int Id { get; set; }
 
-        public string AssigneeId { get; set; }
+        public string AssignedById { get; set; }
 
-        public virtual User Assignee { get; set; }
+        public virtual User AssignedBy { get; set; }
 
         public string BugId { get; set; }
 
@@ -27,5 +33,7 @@
         public Priority Priority { get; set; }
 
         public DateTime DueDate { get; set; }
+
+        public virtual ICollection<AssignmentUser> Assignees { get; set; }
     }
 }
