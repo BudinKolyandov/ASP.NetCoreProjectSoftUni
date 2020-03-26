@@ -25,38 +25,42 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
+</div>
     @if (Model.Projects.Count > 0)
     {
+        <hr />
         <h4 class="text-center">Projects</h4>
-        @foreach (var project in Model.Projects)
-        {
-            <dl class="row">
-                <dt class="ccol-sm-2">
-                    @Html.DisplayNameFor(model => project.Name)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => project.Name)
-                </dd>
-            </dl>
-            <dl class="row">
-                <dt class="ccol-sm-2">
-                    @Html.DisplayNameFor(model => project.Description)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => project.Description)
-                </dd>
-            </dl>
-            <dl class="row">
-                <dt class="ccol-sm-2">
-                    @Html.DisplayNameFor(model => project.Bugs)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => project.Bugs.Count)
-                </dd>
-            </dl>
-        }
+        <div>
+            @foreach (var project in Model.Projects)
+            {
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => project.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => project.Name)
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => project.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => project.Description)
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => project.Bugs)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => project.Bugs.Count)
+                    </dd>
+                </dl>
+            }
+        </div>
     }
-</div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

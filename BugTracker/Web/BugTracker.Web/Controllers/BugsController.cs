@@ -1,11 +1,7 @@
 ﻿namespace BugTracker.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
     using BugTracker.Services.Bugs;
+    using BugTracker.Web.ViewModels.Bugs;
     using Microsoft.AspNetCore.Mvc;
 
     public class BugsController : Controller
@@ -17,14 +13,14 @@
             this.service = service;
         }
 
-        public async Task<IActionResult> Details(string id)
+        public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var bug = await this.service.GetBugDetails(id);
+            var bug = this.service.GetById<DetailsBugsViewModel>(id);
             if (bug == null)
             {
                 return this.NotFound();

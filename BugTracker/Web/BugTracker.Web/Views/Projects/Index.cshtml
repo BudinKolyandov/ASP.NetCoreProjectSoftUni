@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BugTracker.Web.ViewModels.Projects.AllProjectsViewModel>
+﻿@model BugTracker.Web.ViewModels.Projects.IndexViewModel
 
 @{
     ViewData["Title"] = "Company Projects";
@@ -9,45 +9,54 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bugs)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bugs.Count)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<hr class="w-100"/>
+@if (TempData["message"] != null)
+{
+    <p class="alert alert-danger text-center">@TempData["message"]</p>
+}
 
+@if (Model.Projects != null)
+{
+    var projectData = Model.Projects.FirstOrDefault();
+    <table class="table w-100">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => projectData.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => projectData.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => projectData.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => projectData.Bugs)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Projects)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bugs.Count)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

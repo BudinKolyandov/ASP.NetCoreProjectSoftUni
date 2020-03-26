@@ -3,8 +3,9 @@
     using System.Collections.Generic;
 
     using BugTracker.Data.Models;
+    using BugTracker.Services.Mapping;
 
-    public class DetailsProjectViewModel
+    public class DetailsProjectViewModel : IMapFrom<Project>
     {
         public string Id { get; set; }
 

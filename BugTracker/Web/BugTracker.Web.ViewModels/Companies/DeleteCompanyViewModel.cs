@@ -1,9 +1,9 @@
-﻿namespace BugTracker.Web.ViewModels.Projects
+﻿namespace BugTracker.Web.ViewModels.Companies
 {
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
 
-    public class JoinProjectViewModel : IMapFrom<Project>
+    public class DeleteCompanyViewModel : IMapFrom<Company>
     {
         public string Id { get; set; }
 

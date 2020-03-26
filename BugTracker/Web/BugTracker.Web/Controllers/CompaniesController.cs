@@ -62,6 +62,13 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
+
+            if (user.Company != null)
+            {
+                this.TempData["message"] = "You have joined a company already";
+                return this.RedirectToAction("Index", "Projects");
+            }
+
             var companyId = await this.service.Create(input, user.Id);
 
             if (companyId == null)
@@ -113,7 +120,7 @@
                 return this.NotFound();
             }
 
-            var company = this.service.GetById<Company>(id);
+            var company = this.service.GetById<DeleteCompanyViewModel>(id);
             if (company == null)
             {
                 return this.NotFound();
@@ -137,7 +144,7 @@
                 return this.NotFound();
             }
 
-            var company = this.service.GetById<Company>(id);
+            var company = this.service.GetById<JoinCompanyViewModel>(id);
             if (company == null)
             {
                 return this.NotFound();
@@ -147,15 +154,21 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Join(string id, Company company)
+        public async Task<IActionResult> Join(string id, JoinCompanyViewModel company)
         {
             if (id != company.Id)
             {
                 return this.NotFound();
             }
 
-            var username = this.User.Identity.Name;
-            var result = await this.service.Join(username, id);
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user.Company != null)
+            {
+                this.TempData["message"] = "You have joined a company already";
+                return this.RedirectToAction("Index", "Projects");
+            }
+
+            var result = await this.service.Join(user.UserName, id);
             if (!result)
             {
                 return this.View(company);

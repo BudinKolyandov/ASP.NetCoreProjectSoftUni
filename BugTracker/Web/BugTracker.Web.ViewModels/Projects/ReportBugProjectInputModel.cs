@@ -3,9 +3,11 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using BugTracker.Data.Models;
     using BugTracker.Data.Models.Enums;
+    using BugTracker.Services.Mapping;
 
-    public class ReportBugProjectViewModel
+    public class ReportBugProjectInputModel : IMapFrom<Bug>
     {
         public string Name { get; set; }
 

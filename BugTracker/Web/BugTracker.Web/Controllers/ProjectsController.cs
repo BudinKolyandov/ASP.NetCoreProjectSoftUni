@@ -3,33 +3,47 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
 
+    using BugTracker.Data.Models;
+    using BugTracker.Services.Bugs;
     using BugTracker.Services.Projects;
     using BugTracker.Web.ViewModels;
     using BugTracker.Web.ViewModels.Projects;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
     public class ProjectsController : Controller
     {
-        private readonly IProjectsService service;
+        private readonly IProjectsService projectsService;
+        private readonly IBugsService bugsService;
+        private readonly UserManager<User> userManager;
 
-        public ProjectsController(IProjectsService service)
+        public ProjectsController(
+            IProjectsService projectsService,
+            IBugsService bugsService,
+            UserManager<User> userManager)
         {
-            this.service = service;
+            this.projectsService = projectsService;
+            this.bugsService = bugsService;
+            this.userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            var userEmail = this.User.Identity.Name;
-            var viewModel = await this.service.GetAll(userEmail);
-            if (viewModel == null)
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user.CompanyId == null)
             {
                 this.TempData["message"] = "You need to join a Company to view it's projects";
                 return this.RedirectToAction("Index", "Companies");
             }
 
-            return this.View();
+            var viewModel = new IndexViewModel
+            {
+                Projects = this.projectsService.GetAll<IndexProjectViewModel>(user.UserName),
+            };
+
+            return this.View(viewModel);
         }
 
         public IActionResult Create()
@@ -38,26 +52,26 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string companyName, AddProjectViewModel projectViewModel)
+        public async Task<IActionResult> Create(AddProjectViewModel projectViewModel)
         {
             var username = this.User.Identity.Name;
-            var project = await this.service.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, username);
+            var project = await this.projectsService.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, username);
             if (project == null)
             {
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
             }
 
-            return this.RedirectToAction(nameof(this.Index));
+            return this.RedirectToAction(nameof(this.Details), new { id = project.Id });
         }
 
-        public async Task<IActionResult> Details(string id)
+        public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var project = await this.service.GetProjectDetails(id);
+            var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
             if (project == null)
             {
                 return this.NotFound();
@@ -66,14 +80,14 @@
             return this.View(project);
         }
 
-        public async Task<IActionResult> Join(string id)
+        public IActionResult Join(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var project = await this.service.GetProjectJoin(id);
+            var project = this.projectsService.GetById<JoinProjectViewModel>(id);
             if (project == null)
             {
                 return this.NotFound();
@@ -86,32 +100,38 @@
         public IActionResult Join(JoinProjectViewModel model)
         {
             var userEmail = this.User.Identity.Name;
-            var result = this.service.Join(userEmail, model);
+            var result = this.projectsService.Join(userEmail, model);
             return this.Redirect($"/Projects/Details/{result}");
         }
 
-        public async Task<IActionResult> Report(string id)
+        public IActionResult Report(string id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var project = await this.service.GetProjectReport(id);
+            var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
             if (project == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(project);
+            var viewModel = new ReportBugProjectInputModel
+            {
+                ProjectId = project.Id,
+                ProjectName = project.Name,
+            };
+
+            return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Report(ReportBugProjectViewModel model)
+        public async Task<IActionResult> Report(ReportBugProjectInputModel model)
         {
             var userEmail = this.User.Identity.Name;
-            var result = await this.service.Report(userEmail, model);
-            return this.Redirect($"/Projects/Details/{model.ProjectId}");
+            var result = await this.projectsService.Report(userEmail, model);
+            return this.Redirect($"/Projects/Details/{result.ProjectId}");
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace BugTracker.Data.Migrations
+﻿namespace BugTracker.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddedDescriptionToCompany : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

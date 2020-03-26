@@ -7,16 +7,22 @@
 
     using BugTracker.Data;
     using BugTracker.Data.Models;
+    using BugTracker.Services.Mapping;
     using BugTracker.Web.ViewModels.Projects;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     public class ProjectsService : IProjectsService
     {
         private readonly ApplicationDbContext context;
+        private readonly UserManager<User> userManager;
 
-        public ProjectsService(ApplicationDbContext context)
+        public ProjectsService(
+            ApplicationDbContext context,
+            UserManager<User> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
         public async Task<AddProjectViewModel> Create(string name, string status, string description, string username)
@@ -34,13 +40,13 @@
 
             var project = new Project
             {
-                Id = Guid.NewGuid().ToString(),
                 Name = name,
                 Status = status,
                 Description = description,
                 CompanyId = user.CompanyId,
             };
 
+            await this.userManager.AddToRoleAsync(user, "CompanyAdministrator");
             this.context.Projects.Add(project);
             await this.context.SaveChangesAsync();
             var model = new AddProjectViewModel
@@ -52,7 +58,7 @@
             return model;
         }
 
-        public async Task<List<AllProjectsViewModel>> GetAll(string userEmail)
+        public IEnumerable<T> GetAll<T>(string userEmail, int? count = null)
         {
             var user = this.context.Users.Where(x => x.Email == userEmail).First();
             if (user == null)
@@ -65,46 +71,20 @@
                 return null;
             }
 
-            var company = this.context.Companies.Where(x => x.Id == user.CompanyId).First();
-
-            return await this.context
-                .Projects.Where(x => x.CompanyId == user.CompanyId)
-                .Select(x => new AllProjectsViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Status = x.Status,
-                    Description = x.Description,
-                    Bugs = x.Bugs,
-                })
-                .ToListAsync();
-        }
-
-        public async Task<DetailsProjectViewModel> GetProjectDetails(string id)
-        {
-            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
-            return await this.context.Projects.Where(x => x.Id == id)
-                .Select(x => new DetailsProjectViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Status = x.Status,
-                    Description = x.Description,
-                    Bugs = x.Bugs,
-                    Developers = x.Developers,
-                })
-                .FirstAsync();
-        }
-
-        public async Task<JoinProjectViewModel> GetProjectJoin(string id)
-        {
-            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
-            var model = new JoinProjectViewModel
+            IQueryable<Project> query = this.context.Projects.OrderBy(x => x.Name);
+            if (count.HasValue)
             {
-                Id = project.Id,
-                Name = project.Name,
-            };
-            return model;
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public T GetById<T>(string id)
+        {
+            var project = this.context.Projects
+                .Where(x => x.Id == id).To<T>().FirstOrDefault();
+            return project;
         }
 
         public string Join(string userEmail, JoinProjectViewModel model)
@@ -136,18 +116,7 @@
             return model.Id;
         }
 
-        public async Task<ReportBugProjectViewModel> GetProjectReport(string id)
-        {
-            var project = await this.context.Projects.FirstOrDefaultAsync(x => x.Id == id);
-            var model = new ReportBugProjectViewModel
-            {
-                ProjectId = project.Id,
-                ProjectName = project.Name,
-            };
-            return model;
-        }
-
-        public async Task<ReportBugProjectViewModel> Report(string userEmail, ReportBugProjectViewModel model)
+        public async Task<ReportBugProjectInputModel> Report(string userEmail, ReportBugProjectInputModel model)
         {
             var user = await this.context.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
             if (user == null)

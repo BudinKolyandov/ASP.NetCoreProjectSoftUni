@@ -14,6 +14,5 @@
         public string Description { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
-
     }
 }

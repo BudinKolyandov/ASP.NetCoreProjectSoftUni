@@ -9,16 +9,12 @@
     {
         Task<AddProjectViewModel> Create(string name, string status, string description, string username);
 
-        Task<List<AllProjectsViewModel>> GetAll(string userEmail);
+        IEnumerable<T> GetAll<T>(string userEmail, int? count = null);
 
-        Task<DetailsProjectViewModel> GetProjectDetails(string id);
+        T GetById<T>(string id);
 
         string Join(string userEmail, JoinProjectViewModel model);
 
-        Task<JoinProjectViewModel> GetProjectJoin(string id);
-
-        Task<ReportBugProjectViewModel> GetProjectReport(string id);
-
-        Task<ReportBugProjectViewModel> Report(string userEmail, ReportBugProjectViewModel model);
+        Task<ReportBugProjectInputModel> Report(string userEmail, ReportBugProjectInputModel model);
     }
 }
