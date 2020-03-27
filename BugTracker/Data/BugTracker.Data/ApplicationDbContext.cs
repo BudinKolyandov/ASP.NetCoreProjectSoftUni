@@ -50,12 +50,12 @@
                 pu.HasOne(x => x.Project)
                 .WithMany(x => x.Developers)
                 .HasForeignKey(x => x.ProjectId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
                 pu.HasOne(x => x.User)
                 .WithMany(x => x.Projects)
                 .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<CompanyUser>(cu =>
@@ -65,12 +65,12 @@
                 cu.HasOne(x => x.Company)
                 .WithMany(x => x.Employees)
                 .HasForeignKey(x => x.CompanyId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
                 cu.HasOne(x => x.User)
                 .WithMany(x => x.Companies)
                 .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<AssignmentUser>(au =>
@@ -80,12 +80,12 @@
                 au.HasOne(x => x.Assignment)
                 .WithMany(x => x.Assignees)
                 .HasForeignKey(x => x.AssignmentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
                 au.HasOne(x => x.User)
                 .WithMany(x => x.Assignments)
                 .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             });
         }
 

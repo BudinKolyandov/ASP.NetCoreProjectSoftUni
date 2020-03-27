@@ -55,7 +55,7 @@
             var model = new AddProjectViewModel
             {
                 Id = project.Id,
-                Name = project.Name,
+                ProjectName = project.Name,
                 Status = project.Status,
                 Description = project.Description,
             };
@@ -161,6 +161,13 @@
             }
 
             return true;
+        }
+
+        public async Task DeleteProject(string id)
+        {
+            var project = await this.context.Projects.FindAsync(id);
+            this.context.Projects.Remove(project);
+            await this.context.SaveChangesAsync();
         }
     }
 }

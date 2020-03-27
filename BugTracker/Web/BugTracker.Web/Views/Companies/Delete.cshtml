@@ -18,6 +18,7 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
+    <div class="alert alert-danger text-center">This action will delete all the company's project's and all it's bugs! This Operation can not be reversed!</div>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />

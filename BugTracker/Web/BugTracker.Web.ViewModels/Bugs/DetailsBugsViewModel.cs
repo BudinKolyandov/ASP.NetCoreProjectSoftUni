@@ -2,7 +2,10 @@
 {
     using System;
 
-    public class DetailsBugsViewModel
+    using BugTracker.Data.Models;
+    using BugTracker.Services.Mapping;
+
+    public class DetailsBugsViewModel : IMapFrom<Bug>
     {
         public string Id { get; set; }
 

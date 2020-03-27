@@ -5,7 +5,7 @@
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
 
-    public class EditCompanyViewModel : IMapFrom<Company>
+    public class ProjectCompanyViewModel : IMapFrom<Project>
     {
         public string Id { get; set; }
 
@@ -13,6 +13,8 @@
 
         public string Description { get; set; }
 
-        public virtual ICollection<ProjectCompanyViewModel> Projects { get; set; }
+        public string Status { get; set; }
+
+        public ICollection<Bug> Bugs { get; set; }
     }
 }

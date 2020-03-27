@@ -1,18 +1,20 @@
-﻿namespace BugTracker.Web.ViewModels.Companies
+﻿namespace BugTracker.Web.ViewModels.Projects
 {
     using System.Collections.Generic;
 
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
 
-    public class EditCompanyViewModel : IMapFrom<Company>
+    public class DeleteProjectViewModel : IMapFrom<Project>
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
+        public string Status { get; set; }
+
         public string Description { get; set; }
 
-        public virtual ICollection<ProjectCompanyViewModel> Projects { get; set; }
+        public ICollection<Bug> Bugs { get; set; }
     }
 }

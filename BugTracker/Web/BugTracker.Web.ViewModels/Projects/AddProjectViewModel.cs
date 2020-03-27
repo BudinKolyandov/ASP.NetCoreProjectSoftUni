@@ -11,7 +11,7 @@
         public string Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string ProjectName { get; set; }
 
         [Required]
         public string Status { get; set; }
@@ -19,7 +19,7 @@
         public string Description { get; set; }
 
         [Required]
-        public string CompanyName { get; set; }
+        public string Name { get; set; }
 
         public List<CreateProjectCompaniesListModel> CompaniesList { get; set; }
     }

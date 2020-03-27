@@ -25,49 +25,99 @@
         </dd>
     </dl>
     <h1>Bugs</h1>
-    @foreach (var bug in Model.Bugs)
-    {
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Severity
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @Html.DisplayName(bug.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                        </td>
-
-                        <td>
-                            @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-     }
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Severity
+                    </th>
+                    <th>
+                        Bug Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bug in Model.Bugs)
+                {
+                    @if (bug.Priority.ToString() == "High")
+                    {
+                <tr class="bg-danger text-white">
+                    <td>
+                        @Html.DisplayName(bug.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                    </td>
+                    <td>
+                        @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                    </td>
+                    <td>
+                        @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                    </td>
+                    <td>
+                        <a class="text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                    </td>
+                </tr>
+                    }
+                    else if (bug.Priority.ToString() == "Medium")
+                    {
+            <tr class="bg-warning text-white">
+                <td>
+                    @Html.DisplayName(bug.Name)
+                </td>
+                <td>
+                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                </td>
+                <td>
+                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                </td>
+                <td>
+                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                </td>
+                <td>
+                    <a class="text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                </td>
+            </tr>
+                    }
+                    else if (bug.Priority.ToString() == "Low")
+                    {
+            <tr class="bg-secondary text-white text">
+                <td>
+                    @Html.DisplayName(bug.Name)
+                </td>
+                <td>
+                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                </td>
+                <td>
+                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                </td>
+                <td>
+                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                </td>
+                <td>
+                    <a class="text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                </td>
+            </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <div>
     <a asp-action="Join" asp-route-id="@Model.Id">Join</a>  |
     <a asp-action="Report" asp-route-id="@Model.Id">Report a bug</a>  |
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>  |
+    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>  |
     <a asp-action="Index">Back to List</a>
 </div>
 

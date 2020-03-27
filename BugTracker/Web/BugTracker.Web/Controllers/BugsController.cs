@@ -2,8 +2,10 @@
 {
     using BugTracker.Services.Bugs;
     using BugTracker.Web.ViewModels.Bugs;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     public class BugsController : Controller
     {
         private readonly IBugsService service;

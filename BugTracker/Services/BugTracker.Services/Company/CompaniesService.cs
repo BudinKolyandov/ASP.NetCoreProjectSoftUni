@@ -59,6 +59,8 @@
         public async Task DeleteCompany(string id)
         {
             var company = await this.context.Companies.FindAsync(id);
+            this.context.RemoveRange(this.context.CompaniesUsers.Where(x => x.CompanyId == id));
+            this.context.RemoveRange(this.context.Projects.Where(x => x.CompanyId == id));
             this.context.Companies.Remove(company);
             await this.context.SaveChangesAsync();
         }

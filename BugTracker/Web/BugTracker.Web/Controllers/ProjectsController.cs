@@ -2,11 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
-    using BugTracker.Services.Bugs;
     using BugTracker.Services.Company;
     using BugTracker.Services.Projects;
     using BugTracker.Web.ViewModels;
@@ -14,7 +12,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore.Internal;
 
     [Authorize]
     public class ProjectsController : Controller
@@ -69,13 +66,13 @@
         [HttpPost]
         public async Task<IActionResult> Create(AddProjectViewModel projectViewModel)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.View(projectViewModel);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            var project = await this.projectsService.Create(projectViewModel.Name, projectViewModel.Status, projectViewModel.Description, user.UserName, projectViewModel.CompanyName);
+            var project = await this.projectsService.Create(projectViewModel.ProjectName, projectViewModel.Status, projectViewModel.Description, user.UserName, projectViewModel.Name);
             if (project == null)
             {
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
@@ -152,6 +149,30 @@
             var userEmail = this.User.Identity.Name;
             var result = await this.projectsService.Report(userEmail, model);
             return this.Redirect($"/Projects/Details/{result.ProjectId}");
+        }
+
+        public IActionResult Delete(string id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var company = this.projectsService.GetById<DeleteProjectViewModel>(id);
+            if (company == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(company);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            await this.projectsService.DeleteProject(id);
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

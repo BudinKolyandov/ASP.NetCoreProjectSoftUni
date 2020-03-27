@@ -31,24 +31,21 @@
 </div>
 @if (Model.Projects.Count > 0)
 {
-    var projectName = "Name";
-    var projectDescription = "Description";
-    var projectStatus = "Status";
-    var projectBugs = "Bugs";
+    var projectInfo = Model.Projects.First();
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => projectName)
+                    @Html.DisplayNameFor(model => projectInfo.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => projectDescription)
+                    @Html.DisplayNameFor(model => projectInfo.Description)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => projectStatus)
+                    @Html.DisplayNameFor(model => projectInfo.Status)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => projectBugs)
+                    @Html.DisplayNameFor(model => projectInfo.Bugs)
                 </th>
             </tr>
         </thead>

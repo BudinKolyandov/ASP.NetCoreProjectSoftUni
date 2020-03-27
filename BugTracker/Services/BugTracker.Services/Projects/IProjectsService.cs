@@ -13,6 +13,8 @@
 
         bool UserHasCompany(string username);
 
+        Task DeleteProject(string id);
+
         T GetById<T>(string id);
 
         string Join(string userEmail, JoinProjectViewModel model);

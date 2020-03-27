@@ -13,6 +13,6 @@
 
         public string Description { get; set; }
 
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<ProjectCompanyViewModel> Projects { get; set; }
     }
 }
