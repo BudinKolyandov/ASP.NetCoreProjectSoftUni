@@ -11,14 +11,20 @@
     <h4>Company</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectsCount)
+        </dd>
     </dl>
-    <div class="alert alert-danger text-center">This action will delete all the company's project's and all it's bugs! This Operation can not be reversed!</div>
+    <div class="alert alert-danger text-center">This action will delete all the company's projects and all of their bugs! This Operation can not be reversed!</div>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
