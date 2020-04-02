@@ -74,63 +74,6 @@
             return this.RedirectToAction(nameof(this.Details), new { id = companyId });
         }
 
-        public IActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var company = this.service.GetById<EditCompanyViewModel>(id);
-            if (company == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.View(company);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(EditCompanyInputModel company)
-        {
-            if (!this.service.CompanyExists(company.Id))
-            {
-                return this.NotFound();
-            }
-
-            if (!this.ModelState.IsValid)
-            {
-                return this.RedirectToAction(nameof(this.Index));
-            }
-
-            await this.service.EditCompany(company);
-            return this.RedirectToAction(nameof(this.Details), new { id = company.Id });
-        }
-
-        public IActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var company = this.service.GetById<DeleteCompanyViewModel>(id);
-            if (company == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.View(company);
-        }
-
-        [HttpPost]
-        [ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            await this.service.DeleteCompany(id);
-            return this.RedirectToAction(nameof(this.Index));
-        }
-
         public IActionResult Join(string id)
         {
             if (id == null)

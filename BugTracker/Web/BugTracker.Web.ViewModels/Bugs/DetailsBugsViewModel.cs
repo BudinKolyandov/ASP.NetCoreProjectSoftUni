@@ -11,6 +11,8 @@
 
         public string Name { get; set; }
 
+        public string Details { get; set; }
+
         public string ProjectId { get; set; }
 
         public string ReporterId { get; set; }

@@ -20,6 +20,8 @@
 
         IEnumerable<T> GetAll<T>(int? count = null);
 
+        IEnumerable<T> GetAllAdmin<T>(string userId, int? count = null);
+
         bool CompanyExists(string id);
     }
 }

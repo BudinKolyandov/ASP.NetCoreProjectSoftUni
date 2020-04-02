@@ -73,6 +73,7 @@
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            // Result without return url ("/")
             returnUrl = returnUrl ?? this.Url.Content("~/");
 
             if (this.ModelState.IsValid)

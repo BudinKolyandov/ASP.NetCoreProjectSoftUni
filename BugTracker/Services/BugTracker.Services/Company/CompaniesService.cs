@@ -85,6 +85,19 @@
             return query.To<T>().ToList();
         }
 
+        public IEnumerable<T> GetAllAdmin<T>(string userId, int? count = null)
+        {
+            IQueryable<Company> query = this.context.Companies
+                .Where(x => x.AdminId == userId)
+                .OrderBy(x => x.Name);
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
         public T GetById<T>(string id)
         {
             var company = this.context.Companies

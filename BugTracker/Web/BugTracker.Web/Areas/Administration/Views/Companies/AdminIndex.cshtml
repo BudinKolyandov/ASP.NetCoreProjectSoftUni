@@ -1,16 +1,10 @@
 ﻿@model BugTracker.Web.ViewModels.Companies.IndexViewModel
 
 @{
-    ViewData["Title"] = "All Companies";
+    ViewData["Title"] = "Your Companies";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-@if (TempData["message"] != null)
-{
-    <div class="alert alert alert-danger text-center">@TempData["message"]</div>
-}
-
+    <h1>@ViewData["Title"]</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -21,10 +15,9 @@
             <div class="card-body">
                 <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                 <p class="card-text">@Html.DisplayFor(modelitem => item.Description)</p>
-                <a asp-action="Join" asp-route-id="@item.Id">Join</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
             </div>
         </div>
-        <br />
     }
 </div>
