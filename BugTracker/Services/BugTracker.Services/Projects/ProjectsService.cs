@@ -134,6 +134,7 @@
             var bug = new Bug
             {
                 Name = model.Name,
+                Description = model.Description,
                 ProjectId = model.ProjectId,
                 Priority = model.Priority,
                 Severity = model.Severity,

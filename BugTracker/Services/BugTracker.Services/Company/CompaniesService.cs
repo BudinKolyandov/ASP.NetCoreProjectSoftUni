@@ -85,7 +85,7 @@
             return query.To<T>().ToList();
         }
 
-        public IEnumerable<T> GetAllAdmin<T>(string userId, int? count = null)
+        public IEnumerable<T> GetAllForUser<T>(string userId, int? count = null)
         {
             IQueryable<Company> query = this.context.Companies
                 .Where(x => x.AdminId == userId)

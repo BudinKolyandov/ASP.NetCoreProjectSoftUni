@@ -28,9 +28,35 @@
             var user = this.userManager.GetUserId(this.User);
             var viewModel = new IndexViewModel
             {
-                Companies = this.service.GetAllAdmin<IndexCompanyViewModel>(user),
+                Companies = this.service.GetAllForUser<IndexCompanyViewModel>(user),
             };
             return this.View(viewModel);
+        }
+
+        public IActionResult Create()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AddCompanyInputModel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var companyId = await this.service.Create(input, user.Id);
+
+            if (companyId == null)
+            {
+                this.TempData["message"] = "A company with the same name already exists";
+                return this.RedirectToAction("Index", "Companies");
+            }
+
+            return this.RedirectToAction("Details", "Companies", new { area = string.Empty, id = companyId });
         }
 
         public IActionResult Edit(string id)

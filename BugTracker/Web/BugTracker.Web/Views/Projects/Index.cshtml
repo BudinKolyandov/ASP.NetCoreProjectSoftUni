@@ -6,9 +6,12 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (this.User.IsInRole("CompanyAdministrator") || this.User.IsInRole("ProjectAdministrator"))
+{
+    <p>
+        <a class="btn btn-primary" asp-area="Administration" asp-controller="Projects" asp-action="Create">Create a new Project</a>
+    </p>
+}
 <hr class="w-100" />
 @if (TempData["message"] != null)
 {
@@ -55,8 +58,7 @@
                         @Html.DisplayFor(modelItem => item.Bugs.Count)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> 
                     </td>
                 </tr>
             }

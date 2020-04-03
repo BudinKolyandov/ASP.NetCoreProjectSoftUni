@@ -12,7 +12,7 @@
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create a new Company</a>
 </p>
 <div class="row">
     @foreach (var item in Model.Companies)
@@ -21,8 +21,8 @@
             <div class="card-body">
                 <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                 <p class="card-text">@Html.DisplayFor(modelitem => item.Description)</p>
-                <a asp-action="Join" asp-route-id="@item.Id">Join</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a class="btn btn-primary" asp-action="Join" asp-route-id="@item.Id">Join</a> 
+                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
             </div>
         </div>
         <br />

@@ -65,7 +65,7 @@
                         @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
                     </td>
                     <td>
-                        <a class="text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                        <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
                     </td>
                 </tr>
                     }
@@ -85,7 +85,7 @@
                     @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
                 </td>
                 <td>
-                    <a class="text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                    <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
                 </td>
             </tr>
                     }
@@ -105,7 +105,7 @@
                     @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
                 </td>
                 <td>
-                    <a class="text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                    <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
                 </td>
             </tr>
                     }
@@ -115,10 +115,8 @@
     </div>
 </div>
 <div>
-    <a asp-action="Join" asp-route-id="@Model.Id">Join</a>  |
-    <a asp-action="Report" asp-route-id="@Model.Id">Report a bug</a>  |
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>  |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Report" asp-route-id="@Model.Id">Report a bug</a>
+    <a class="btn btn-primary" asp-action="Index">Back to your Projects</a>
 </div>
 
 
