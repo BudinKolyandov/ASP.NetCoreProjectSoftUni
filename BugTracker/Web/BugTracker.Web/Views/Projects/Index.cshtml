@@ -18,7 +18,7 @@
     <div class="alert alert-danger text-center">@TempData["message"]</div>
 }
 
-@if (Model.Projects != null)
+@if (Model.Projects.Count() > 0)
 {
     var projectData = Model.Projects.FirstOrDefault();
     <table class="table w-100">
@@ -64,4 +64,8 @@
             }
         </tbody>
     </table>
+}
+else
+{
+<p>The companies you have joined currently don't have any projects. You can <a asp-controller="Companies" asp-action="Create">create</a> a new company for yourself and create projects for it.</p>
 }
