@@ -6,39 +6,111 @@
 
 <h1>@Model.Name</h1>
 <div>
-    <h4>Bug</h4>
+    <h4>@Html.DisplayNameFor(model => model.ReporterFullName)</h4>
+    <p>@Html.DisplayFor(model => model.ReporterFullName)</p>
+</div>
+<div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-        <dd class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Severity)
-        </dd>
-        <dd class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DueDate)
-        </dd>
-        <dd class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayFor(model => model.Priority)
-        </dt>
-        <dd class="col-sm-2">
-            @Html.DisplayFor(model => model.Severity)
-        </dd>
-        <dd class="col-sm-2">
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dd class="col-sm-2">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
+    <div class="container container-fluid">
+        <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+            @if (Model.Priority.ToString() == "High")
+            {
+                <div class="p-2 alert alert-danger">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Priority)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Priority)</p>
+                </div>
+            }
+            @if (Model.Priority.ToString() == "Medium")
+            {
+                <div class="p-2 alert alert-warning">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Priority)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Priority)</p>
+                </div>
+            }
+            @if (Model.Priority.ToString() == "Low")
+            {
+                <div class="p-2 alert alert-dark">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Priority)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Priority)</p>
+                </div>
+            }
+            @if (Model.Severity.ToString() == "Critical")
+            {
+                <div class="p-2 alert alert-danger offset-sm-1">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Severity)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Severity)</p>
+                </div>
+            }
+            @if (Model.Severity.ToString() == "Major")
+            {
+                <div class="p-2 alert alert-warning offset-sm-1">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Severity)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Severity)</p>
+                </div>
+            }
+            @if (Model.Severity.ToString() == "Moderate")
+            {
+                <div class="p-2 alert alert-dark offset-sm-1">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Severity)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Severity)</p>
+                </div>
+            }
+            @if (Model.Severity.ToString() == "Minor")
+            {
+                <div class="p-2 alert alert-secondary offset-sm-1">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Severity)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Severity)</p>
+                </div>
+            }
+            @if (Model.Severity.ToString() == "Trivial")
+            {
+                <div class="p-2 alert alert-info offset-sm-1">
+                    <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Severity)</h4>
+                    <p class="mb-0">@Html.DisplayFor(model => model.Severity)</p>
+                </div>
+            }
+            <div class="p-2 alert offset-sm-1">
+                <h4 class="alert-heading">@Html.DisplayNameFor(model => model.Status)</h4>
+                <p class="mb-0">@Html.DisplayFor(model => model.Status)</p>
+            </div>
+        </div>
+        <div class="card w-50 text-center">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayNameFor(model => model.Description)</h5>
+                <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+            </div>
+        </div>
+        <div>
+            <h4>@Html.DisplayNameFor(model => model.DueDate)</h4>
+            <p>@Html.DisplayFor(model => model.DueDate)</p>
+        </div>
+        <br />
+        <div>
+            @if (Model.Assignments.Count != 0)
+            {
+                <h2 class="col-6 text-center">Assignments:</h2>
+                @foreach (var assignment in Model.Assignments)
+                {
+                    <dl class="col">
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.Title)</dt>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.Description)</dt>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
+                    </dl>
+                    <dl>
+                        <dd class="col-sm-2">@Html.DisplayFor(model => assignment.Title)</dd>
+                        <dd class="col-sm-2">@Html.DisplayFor(model => assignment.Description)</dd>
+                        <dd class="col-sm-2">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
+                    </dl>
+                }
+            }
+        </div>
+    </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a> |
-    <a asp-action="Details" asp-controller="Projects" asp-route-id="@Model.ProjectId">Project Info</a>
+    @if (this.User.IsInRole("CompanyAdministrator") || this.User.IsInRole("ProjectAdministrator"))
+    {
+        <a class="btn btn-primary" asp-area="Administration" asp-controller="Assignments"  asp-action="Create" asp-route-id="@Model.Id">Create Assignment</a>
+    }
+    <a class="btn btn-primary" asp-action="Details" asp-controller="Projects" asp-route-id="@Model.ProjectId">Back to Project details</a>
 </div>

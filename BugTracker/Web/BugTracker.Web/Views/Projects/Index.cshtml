@@ -58,14 +58,14 @@
                         @Html.DisplayFor(modelItem => item.Bugs.Count)
                     </td>
                     <td>
-                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else
+@if (!this.User.IsInRole("CompanyAdministrator") && !this.User.IsInRole("ProjectAdministrator"))
 {
-<p>The companies you have joined currently don't have any projects. You can <a asp-controller="Companies" asp-action="Create">create</a> a new company for yourself and create projects for it.</p>
+    <p>The companies you have joined currently don't have any projects. Contact the companies administrators for more information or <a asp-controller="Companies" asp-action="Create">create</a> a new company for yourself and create projects for it.</p>
 }

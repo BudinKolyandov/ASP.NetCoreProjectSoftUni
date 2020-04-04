@@ -25,7 +25,7 @@
             this.userManager = userManager;
         }
 
-        public async Task<AddProjectViewModel> Create(string name, string status, string description, string username, string companyId)
+        public async Task<AddProjectInputModel> Create(string name, string status, string description, string username, string companyId)
         {
             if (this.context.Projects.Any(x => x.Name == name))
             {
@@ -52,7 +52,7 @@
             await this.userManager.AddToRoleAsync(user, "ProjectAdministrator");
             this.context.Projects.Add(project);
             await this.context.SaveChangesAsync();
-            var model = new AddProjectViewModel
+            var model = new AddProjectInputModel
             {
                 Id = project.Id,
                 ProjectName = project.Name,

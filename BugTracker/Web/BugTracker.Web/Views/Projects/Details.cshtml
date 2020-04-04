@@ -42,6 +42,9 @@
                         Severity
                     </th>
                     <th>
+                        Due date
+                    </th>
+                    <th>
                         Bug Details
                     </th>
                 </tr>
@@ -65,6 +68,9 @@
                         @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
                     </td>
                     <td>
+                        @Html.DisplayName(bug.DueDate.ToString("d"))
+                    </td>
+                    <td>
                         <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
                     </td>
                 </tr>
@@ -85,6 +91,9 @@
                     @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
                 </td>
                 <td>
+                    @Html.DisplayName(bug.DueDate.ToString("d"))
+                </td>
+                <td>
                     <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
                 </td>
             </tr>
@@ -103,6 +112,9 @@
                 </td>
                 <td>
                     @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                </td>
+                <td>
+                    @Html.DisplayName(bug.DueDate.ToString("d"))
                 </td>
                 <td>
                     <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>

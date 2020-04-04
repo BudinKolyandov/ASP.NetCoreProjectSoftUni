@@ -35,7 +35,7 @@
         {
             var userId = this.userManager.GetUserId(this.User);
             var companies = this.companiesService.GetAllForUser<CreateProjectCompaniesListModel>(userId);
-            var viewModel = new AddProjectViewModel
+            var viewModel = new AddProjectInputModel
             {
                 CompaniesList = new List<CreateProjectCompaniesListModel>(),
             };
@@ -48,7 +48,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddProjectViewModel projectViewModel)
+        public async Task<IActionResult> Create(AddProjectInputModel projectViewModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -62,7 +62,7 @@
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
             }
 
-            return this.RedirectToAction("IndexAdmin", "Companies");
+            return this.RedirectToAction("AdminIndex", "Companies");
         }
 
         public IActionResult Delete(string id)

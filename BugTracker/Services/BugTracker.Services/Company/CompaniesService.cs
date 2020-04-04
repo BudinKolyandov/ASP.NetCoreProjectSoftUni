@@ -51,6 +51,7 @@
 
             await this.userManager.AddToRoleAsync(user, "CompanyAdministrator");
             user.Companies.Add(userCompany);
+            company.Employees.Add(userCompany);
             await this.context.Companies.AddAsync(company);
             await this.context.SaveChangesAsync();
             return company.Id;

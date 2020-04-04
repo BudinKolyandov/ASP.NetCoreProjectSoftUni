@@ -5,6 +5,7 @@
     using BugTracker.Data;
     using BugTracker.Data.Models;
     using BugTracker.Data.Seeding;
+    using BugTracker.Services.Assignments;
     using BugTracker.Services.Bugs;
     using BugTracker.Services.Company;
     using BugTracker.Services.Mapping;
@@ -68,6 +69,7 @@
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IProjectsService, ProjectsService>();
             services.AddTransient<IBugsService, BugsService>();
+            services.AddTransient<IAssignmentsService, AssignmentsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

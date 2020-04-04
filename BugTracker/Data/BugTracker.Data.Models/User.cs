@@ -19,7 +19,7 @@
             this.CreatedOn = DateTime.UtcNow;
         }
 
-        public string RealName { get; set; }
+        public string FullName { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

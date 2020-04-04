@@ -80,7 +80,7 @@
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (this.ModelState.IsValid)
             {
-                var user = new User { UserName = this.Input.Email, Email = this.Input.Email, RealName = this.Input.RealName };
+                var user = new User { UserName = this.Input.Email, Email = this.Input.Email, FullName = this.Input.RealName };
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {

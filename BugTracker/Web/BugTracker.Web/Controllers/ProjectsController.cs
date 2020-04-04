@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
@@ -17,16 +18,13 @@
     public class ProjectsController : Controller
     {
         private readonly IProjectsService projectsService;
-        private readonly ICompaniesService companiesService;
         private readonly UserManager<User> userManager;
 
         public ProjectsController(
             IProjectsService projectsService,
-            ICompaniesService companiesService,
             UserManager<User> userManager)
         {
             this.projectsService = projectsService;
-            this.companiesService = companiesService;
             this.userManager = userManager;
         }
 
@@ -61,6 +59,8 @@
                 return this.NotFound();
             }
 
+            project.Bugs = project.Bugs.OrderBy(x => x.Priority).ToList();
+
             return this.View(project);
         }
 
@@ -89,6 +89,11 @@
         [HttpPost]
         public async Task<IActionResult> Report(ReportBugProjectInputModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             var userEmail = this.User.Identity.Name;
             var result = await this.projectsService.Report(userEmail, model);
             return this.Redirect($"/Projects/Details/{result.ProjectId}");

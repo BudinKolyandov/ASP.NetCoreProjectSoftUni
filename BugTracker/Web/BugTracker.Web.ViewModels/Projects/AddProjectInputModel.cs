@@ -6,7 +6,7 @@
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
 
-    public class AddProjectViewModel : IMapFrom<Project>
+    public class AddProjectInputModel : IMapFrom<Project>
     {
         public string Id { get; set; }
 
