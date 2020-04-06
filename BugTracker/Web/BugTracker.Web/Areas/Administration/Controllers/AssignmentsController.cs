@@ -32,6 +32,7 @@
 
             var viewModel = new CreateAssignmentInputModel
             {
+                BugId = id,
                 Users = new List<CreateAssignnmentUserViewModel>(),
             };
             viewModel.Users = this.assignmentsService.GetAllUsersInCompany<CreateAssignnmentUserViewModel>(id);

@@ -91,12 +91,12 @@
                 <h2 class="col-6 text-center">Assignments:</h2>
                 @foreach (var assignment in Model.Assignments)
                 {
-                    <dl class="col">
+                    <dl class="row">
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.Title)</dt>
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.Description)</dt>
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
                     </dl>
-                    <dl>
+                    <dl class="row">
                         <dd class="col-sm-2">@Html.DisplayFor(model => assignment.Title)</dd>
                         <dd class="col-sm-2">@Html.DisplayFor(model => assignment.Description)</dd>
                         <dd class="col-sm-2">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
