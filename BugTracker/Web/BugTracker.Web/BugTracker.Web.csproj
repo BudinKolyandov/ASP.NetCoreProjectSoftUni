@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\BugTracker.Data\BugTracker.Data.csproj" />
     <ProjectReference Include="..\..\Services\BugTracker.Services.Mapping\BugTracker.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\BugTracker.Services.Messaging\BugTracker.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\BugTracker.Services\BugTracker.Services.csproj" />
     <ProjectReference Include="..\BugTracker.Web.ViewModels\BugTracker.Web.ViewModels.csproj" />
   </ItemGroup>

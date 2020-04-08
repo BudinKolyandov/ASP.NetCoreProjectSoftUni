@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Services", "Serv
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BugTracker.Common", "BugTracker.Common", "{D60AE0B2-34EB-4D73-8E2A-E66D5DE14348}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{F6C4AC10-0309-4696-A7DD-ECD47CDE5AD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{F6C4AC10-0309-4696-A7DD-ECD47CDE5AD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker.Services.Messaging", "Services\BugTracker.Services.Messaging\BugTracker.Services.Messaging.csproj", "{1E15D405-492B-42E9-9119-01219910D8F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{F6C4AC10-0309-4696-A7DD-ECD47CDE5AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6C4AC10-0309-4696-A7DD-ECD47CDE5AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6C4AC10-0309-4696-A7DD-ECD47CDE5AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E15D405-492B-42E9-9119-01219910D8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E15D405-492B-42E9-9119-01219910D8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E15D405-492B-42E9-9119-01219910D8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E15D405-492B-42E9-9119-01219910D8F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{38679F7C-0C7A-4FAE-A642-5C9E083B0FD3} = {5854D2CF-4938-4C19-A70D-07B181C37E4A}
 		{4AD7FF7C-9A3D-4144-A77B-238E9314BFF4} = {5854D2CF-4938-4C19-A70D-07B181C37E4A}
 		{F6C4AC10-0309-4696-A7DD-ECD47CDE5AD2} = {D60AE0B2-34EB-4D73-8E2A-E66D5DE14348}
+		{1E15D405-492B-42E9-9119-01219910D8F3} = {5854D2CF-4938-4C19-A70D-07B181C37E4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF8FF413-80E7-4DC6-A6BA-D015728745C8}

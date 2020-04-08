@@ -9,6 +9,7 @@
     using BugTracker.Services.Bugs;
     using BugTracker.Services.Company;
     using BugTracker.Services.Mapping;
+    using BugTracker.Services.Messaging;
     using BugTracker.Services.Projects;
     using BugTracker.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
@@ -66,6 +67,8 @@
 
             services.AddSingleton(this.configuration);
 
+            // services.AddTransient<IEmailSender>(x => new SendGridEmailSender("Key");
+            services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IProjectsService, ProjectsService>();
             services.AddTransient<IBugsService, BugsService>();
