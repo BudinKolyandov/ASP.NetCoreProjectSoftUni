@@ -6,9 +6,11 @@
     using BugTracker.Data.Models;
     using BugTracker.Services.Assignments;
     using BugTracker.Web.ViewModels.Assignments;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     [Area("Administration")]
     public class AssignmentsController : Controller
     {

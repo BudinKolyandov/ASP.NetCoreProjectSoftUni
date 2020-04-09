@@ -1,6 +1,7 @@
 ﻿namespace BugTracker.Web.ViewModels.Projects
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
@@ -15,8 +16,6 @@
 
         public string Description { get; set; }
 
-        public ICollection<Bug> Bugs { get; set; }
-
-        public ICollection<ProjectUser> Developers { get; set; }
+        public ICollection<DetailsProjectBugViewModel> Bugs { get; set; }
     }
 }

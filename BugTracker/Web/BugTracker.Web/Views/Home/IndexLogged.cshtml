@@ -1,0 +1,45 @@
+﻿@model BugTracker.Web.ViewModels.Assignments.IndexLoggedViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="text-center text-dark">
+        <h1 class="display-4">Welcome to my Bug Tracker</h1>
+        <hr />
+        <h4>News</h4>
+        <div class="card-columns">
+            @foreach (var news in Model.News)
+            {
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@news.Headline</h5>
+                        <p class="card-text">@news.Body</p>
+                        <p class="card-footer">
+                            Project: @news.ProjectName,
+                            Posted On: @news.DatePosted
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+        <hr />
+        <h4>Assignments</h4>
+        <div class="card-columns">
+            @foreach (var assignment in Model.Assignments)
+            {
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@assignment.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@assignment.BugName</h6>
+                        <p class="card-text">@assignment.Description</p>
+                        <p class="card-footer">
+                            Created on: @assignment.CreatedOn,
+                            Due date: @assignment.DueDate
+                        </p>
+                        <a class="btn btn-primary" asp-controller="Bugs" asp-action="Details" asp-route-id="@assignment.BugId">Bug Details</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>

@@ -11,6 +11,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Assignments = new HashSet<Assignment>();
+            this.BugHistories = new HashSet<BugHistory>();
         }
 
         public string Id { get; set; }
@@ -38,6 +39,8 @@
         public Status Status { get; set; }
 
         public DateTime DueDate { get; set; }
+
+        public virtual ICollection<BugHistory> BugHistories { get; set; }
 
         public virtual ICollection<Assignment> Assignments { get; set; }
     }

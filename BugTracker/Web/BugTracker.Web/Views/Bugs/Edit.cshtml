@@ -1,0 +1,64 @@
+﻿@model BugTracker.Web.ViewModels.Bugs.EditBugViewModel
+@using BugTracker.Data.Models.Enums
+
+@{
+    ViewData["Title"] = "Edit bug";
+}
+
+<h1>Report Bug</h1>
+<h4>Project: @Model.ProjectName</h4>
+<hr />
+<div class="container">
+    <div class="row align-items-start">
+        <div class="col-md-10">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ProjectId" />
+                <div class="row">
+                    <div class="form-group col-md-5">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" placeholder="Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="DueDate" class="control-label"></label>
+                        <input asp-for="DueDate" class="form-control" value="@DateTime.UtcNow.Date" />
+                        <span asp-validation-for="DueDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label asp-for="Priority" class="control-label"></label>
+                        <select asp-for="Priority" asp-items="Html.GetEnumSelectList<Priority>()" class="form-control"></select>
+                        <span asp-validation-for="Priority" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label asp-for="Severity" class="control-label"></label>
+                        <select asp-for="Severity" asp-items="Html.GetEnumSelectList<Severity>()" class="form-control"></select>
+                        <span asp-validation-for="Severity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label asp-for="Status" class="control-label"></label>
+                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-9">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea style="resize:none" rows="5" asp-for="Description" class="form-control" placeholder="Write a description of the bug and the steps for it's reproduction."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Edit" class="btn btn-primary" />
+                </div>
+                <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.Id">Back to Bug details</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

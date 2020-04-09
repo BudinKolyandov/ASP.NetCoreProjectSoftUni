@@ -9,7 +9,7 @@
     {
         Task<AddProjectInputModel> Create(string name, string status, string description, string username, string companyId);
 
-        IEnumerable<T> GetAll<T>(string userEmail, int? count = null);
+        IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? count = null);
 
         bool UserHasCompany(string username);
 

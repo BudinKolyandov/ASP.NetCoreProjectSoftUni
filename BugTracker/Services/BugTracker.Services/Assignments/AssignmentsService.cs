@@ -8,15 +8,21 @@
     using BugTracker.Data;
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
+    using BugTracker.Services.Messaging;
     using BugTracker.Web.ViewModels.Assignments;
+    using Microsoft.EntityFrameworkCore.Internal;
 
     public class AssignmentsService : IAssignmentsService
     {
         private readonly ApplicationDbContext context;
+        private readonly IEmailSender emailSender;
 
-        public AssignmentsService(ApplicationDbContext context)
+        public AssignmentsService(
+            ApplicationDbContext context,
+            IEmailSender emailSender)
         {
             this.context = context;
+            this.emailSender = emailSender;
         }
 
         public async Task<int> CreateAssignnment(string userId, CreateAssignmentInputModel model)
@@ -31,6 +37,9 @@
                 Priority = model.Priority,
                 Title = model.Title,
             };
+            var bug = this.context.Bugs.Where(x => x.Id == model.BugId).First();
+            var project = this.context.Projects.Where(x => x.Bugs.Any(x => x.Id == model.BugId)).First();
+            var assignedBy = this.context.Users.Where(x => x.Id == userId).First();
             var user = this.context.Users.Where(x => x.Id == model.AssigneeId).First();
             if (user == null)
             {
@@ -47,7 +56,21 @@
             assignment.Assignees.Add(assignmentUser);
             await this.context.Assignments.AddAsync(assignment);
             await this.context.SaveChangesAsync();
+            await this.emailSender.SendEmailAsync(assignedBy.Email, assignedBy.FullName, user.Email, "New assignment", $"You have a new Assignment regarding {project.Name}!");
             return assignment.Id;
+        }
+
+        public IEnumerable<T> GetAllForUser<T>(string userId, int? count = null)
+        {
+            IQueryable<Assignment> query = this.context.Assignments
+                .Where(x => x.Assignees.Any(x => x.UserId == userId))
+                .OrderBy(x => x.CreatedOn);
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
         }
 
         public IEnumerable<T> GetAllUsersInCompany<T>(string bugId, int? count = null)

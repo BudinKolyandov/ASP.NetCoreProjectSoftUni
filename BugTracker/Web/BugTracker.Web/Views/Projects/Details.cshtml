@@ -26,25 +26,28 @@
     </dl>
     <h1>Bugs</h1>
     <div>
-        <table class="table">
+        <table class="table table-hover text-center">
             <thead>
                 <tr>
-                    <th>
+                    <th scope="col">
                         Name
                     </th>
-                    <th>
+                    <th scope="col">
                         Priority
                     </th>
-                    <th>
+                    <th scope="col">
                         Status
                     </th>
-                    <th>
+                    <th scope="col">
                         Severity
                     </th>
-                    <th>
+                    <th scope="col">
                         Due date
                     </th>
-                    <th>
+                    <th scope="col">
+                        Assigned
+                    </th>
+                    <th scope="col">
                         Bug Details
                     </th>
                 </tr>
@@ -54,72 +57,81 @@
                 {
                     @if (bug.Priority.ToString() == "High")
                     {
-                <tr class="bg-danger text-white">
-                    <td>
-                        @Html.DisplayName(bug.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                    </td>
-                    <td>
-                        @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                    </td>
-                    <td>
-                        @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                    </td>
-                    <td>
-                        @Html.DisplayName(bug.DueDate.ToString("d"))
-                    </td>
-                    <td>
-                        <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                    </td>
-                </tr>
+                        <tr class="table-danger text-dark">
+                            <td>
+                                @Html.DisplayName(bug.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                            </td>
+                            <td>
+                                @Html.DisplayName(bug.DueDate.ToString("d"))
+                            </td>
+                            <td>
+                                @Html.DisplayName(bug.Assigned)
+                            </td>
+                            <td>
+                                <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                            </td>
+                        </tr>
                     }
                     else if (bug.Priority.ToString() == "Medium")
                     {
-            <tr class="bg-warning text-white">
-                <td>
-                    @Html.DisplayName(bug.Name)
-                </td>
-                <td>
-                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                </td>
-                <td>
-                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                </td>
-                <td>
-                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                </td>
-                <td>
-                    @Html.DisplayName(bug.DueDate.ToString("d"))
-                </td>
-                <td>
-                    <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                </td>
-            </tr>
+                        <tr class="table-warning text-dark">
+                            <td>
+                                @Html.DisplayName(bug.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                            </td>
+                            <td>
+                                @Html.DisplayName(bug.DueDate.ToString("d"))
+                            </td>
+                            <td>
+                                @Html.DisplayName(bug.Assigned)
+                            </td>
+                            <td>
+                                <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                            </td>
+                        </tr>
                     }
                     else if (bug.Priority.ToString() == "Low")
                     {
-            <tr class="bg-secondary text-white text">
-                <td>
-                    @Html.DisplayName(bug.Name)
-                </td>
-                <td>
-                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                </td>
-                <td>
-                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                </td>
-                <td>
-                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                </td>
-                <td>
-                    @Html.DisplayName(bug.DueDate.ToString("d"))
-                </td>
-                <td>
-                    <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                </td>
-            </tr>
+                        <tr class="table-secondary text-dark">
+                            <td>
+                                @Html.DisplayName(bug.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                            </td>
+                            <td>
+                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                            </td>
+                            <td>
+                                @Html.DisplayName(bug.DueDate.ToString("d"))
+                            </td>
+                            <td>
+                                @Html.DisplayName(bug.Assigned)
+                            </td>
+                            <td>
+                                <a class="btn-sm btn-primary text-white" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                            </td>
+                        </tr>
                     }
                 }
             </tbody>

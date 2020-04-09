@@ -7,5 +7,7 @@
     public interface IBugsService
     {
         T GetById<T>(string id);
+
+        Task<string> EditBug(EditBugViewModel model);
     }
 }

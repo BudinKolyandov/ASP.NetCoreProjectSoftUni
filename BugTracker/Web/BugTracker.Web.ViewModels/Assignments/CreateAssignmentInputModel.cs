@@ -12,12 +12,15 @@
     {
         public string BugId { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         public Priority Priority { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         public DateTime DueDate { get; set; }
 

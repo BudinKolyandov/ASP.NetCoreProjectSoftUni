@@ -173,10 +173,10 @@ namespace BugTracker.Data.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NewValue")
+                    b.Property<string>("NewDescriptionValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OldValue")
+                    b.Property<string>("OldDescriptionValue")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -532,7 +532,7 @@ namespace BugTracker.Data.Migrations
             modelBuilder.Entity("BugTracker.Data.Models.BugHistory", b =>
                 {
                     b.HasOne("BugTracker.Data.Models.Bug", "Bug")
-                        .WithMany()
+                        .WithMany("BugHistories")
                         .HasForeignKey("BugId");
                 });
 

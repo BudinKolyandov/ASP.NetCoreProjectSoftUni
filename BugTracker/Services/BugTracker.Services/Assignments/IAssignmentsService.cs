@@ -10,5 +10,7 @@
         IEnumerable<T> GetAllUsersInCompany<T>(string bugId, int? count = null);
 
         Task<int> CreateAssignnment(string userId, CreateAssignmentInputModel model);
+
+        IEnumerable<T> GetAllForUser<T>(string userId, int? count = null);
     }
 }

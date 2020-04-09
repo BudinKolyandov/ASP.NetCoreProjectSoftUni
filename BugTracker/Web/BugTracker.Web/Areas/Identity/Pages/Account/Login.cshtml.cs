@@ -85,10 +85,17 @@
                     this.Input.Password,
                     this.Input.RememberMe,
                     lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
+                    if (returnUrl != "/")
+                    {
+                        this.logger.LogInformation("User logged in.");
+                        return this.LocalRedirect(returnUrl);
+                    }
+
                     this.logger.LogInformation("User logged in.");
-                    return this.LocalRedirect(returnUrl);
+                    return this.RedirectToAction("IndexLogged", "Home", new { area = string.Empty });
                 }
 
                 if (result.RequiresTwoFactor)

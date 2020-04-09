@@ -62,7 +62,7 @@
             return model;
         }
 
-        public IEnumerable<T> GetAll<T>(string userEmail, int? count = null)
+        public IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? count = null)
         {
             var user = this.context.Users.Where(x => x.Email == userEmail).First();
             if (user == null)

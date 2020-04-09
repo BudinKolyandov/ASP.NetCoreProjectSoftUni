@@ -1,14 +1,10 @@
 ﻿namespace BugTracker.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
-    using BugTracker.Services.Company;
     using BugTracker.Services.Projects;
-    using BugTracker.Web.ViewModels;
     using BugTracker.Web.ViewModels.Projects;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -40,7 +36,7 @@
 
             var viewModel = new IndexViewModel
             {
-                Projects = this.projectsService.GetAll<IndexProjectViewModel>(user.UserName),
+                Projects = this.projectsService.GetAllProjectsByUserEmail<IndexProjectViewModel>(user.UserName),
             };
 
             return this.View(viewModel);
@@ -59,7 +55,7 @@
                 return this.NotFound();
             }
 
-            project.Bugs = project.Bugs.OrderBy(x => x.Priority).ToList();
+            project.Bugs = project.Bugs.OrderBy(x => x.Priority).ThenBy(x => x.Severity).ToList();
 
             return this.View(project);
         }

@@ -18,9 +18,9 @@
 
         public string FieldName { get; set; }
 
-        public string OldValue { get; set; }
+        public string OldDescriptionValue { get; set; }
 
-        public string NewValue { get; set; }
+        public string NewDescriptionValue { get; set; }
 
         public DateTime ModifiedOn { get; set; }
 

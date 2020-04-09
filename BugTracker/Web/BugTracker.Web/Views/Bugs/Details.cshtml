@@ -110,7 +110,8 @@
 <div>
     @if (this.User.IsInRole("CompanyAdministrator") || this.User.IsInRole("ProjectAdministrator"))
     {
-        <a class="btn btn-primary" asp-area="Administration" asp-controller="Assignments"  asp-action="Create" asp-route-id="@Model.Id">Create Assignment</a>
+        <a class="btn btn-primary" asp-area="Administration" asp-controller="Assignments" asp-action="Create" asp-route-id="@Model.Id">Create Assignment</a>
     }
+    <a class="btn btn-primary" asp-action="Edit" asp-controller="Bugs" asp-route-id="@Model.Id">Edit</a>
     <a class="btn btn-primary" asp-action="Details" asp-controller="Projects" asp-route-id="@Model.ProjectId">Back to Project details</a>
 </div>
