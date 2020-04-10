@@ -68,8 +68,7 @@
 
             services.AddSingleton(this.configuration);
 
-            // services.AddTransient<IEmailSender>(x => new SendGridEmailSender("Key");
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration.GetValue<string>("SendGrid:Key")));
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IProjectsService, ProjectsService>();

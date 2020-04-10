@@ -11,16 +11,18 @@
         <div class="card-columns">
             @foreach (var news in Model.News)
             {
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@news.Headline</h5>
-                        <p class="card-text">@news.Body</p>
-                        <p class="card-footer">
-                            Project: @news.ProjectName,
-                            Posted On: @news.DatePosted
-                        </p>
-                    </div>
+            <div class="card border-left-info shadow mb-4" style="width: 18rem;">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">@news.Headline</h5>
                 </div>
+                <div class="card-body">
+                    <p class="card-text">@news.Body</p>
+                    <p class="card-footer">
+                        Project: @news.ProjectName,
+                        Posted On: @news.DatePosted
+                    </p>
+                </div>
+            </div>
             }
         </div>
         <hr />
@@ -28,18 +30,21 @@
         <div class="card-columns">
             @foreach (var assignment in Model.Assignments)
             {
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@assignment.Title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@assignment.BugName</h6>
-                        <p class="card-text">@assignment.Description</p>
-                        <p class="card-footer">
-                            Created on: @assignment.CreatedOn,
-                            Due date: @assignment.DueDate
-                        </p>
-                        <a class="btn btn-primary" asp-controller="Bugs" asp-action="Details" asp-route-id="@assignment.BugId">Bug Details</a>
-                    </div>
+            <div class="card border-left-warning shadow mb-4" style="width: 18rem;">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">@assignment.Title</h5>
+                    <hr />
+                    <h6 class="card-subtitle mb-2 text-muted">Bug: @assignment.BugName</h6>
                 </div>
+                <div class="card-body">
+                    <p class="card-text">@assignment.Description</p>
+                    <p class="card-footer">
+                        Created on: @assignment.CreatedOn,
+                        Due date: @assignment.DueDate
+                    </p>
+                    <a class="btn btn-primary" asp-controller="Bugs" asp-action="Details" asp-route-id="@assignment.BugId">Bug Details</a>
+                </div>
+            </div>
             }
         </div>
     </div>

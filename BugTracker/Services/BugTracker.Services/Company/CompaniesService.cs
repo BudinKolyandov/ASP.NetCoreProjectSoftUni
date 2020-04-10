@@ -8,6 +8,7 @@
     using BugTracker.Data;
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
+    using BugTracker.Services.Messaging;
     using BugTracker.Web.ViewModels.Companies;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,16 @@
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<User> userManager;
+        private readonly IEmailSender emailSender;
 
         public CompaniesService(
             ApplicationDbContext context,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IEmailSender emailSender)
         {
             this.context = context;
             this.userManager = userManager;
+            this.emailSender = emailSender;
         }
 
         public bool CompanyExists(string id)
@@ -116,17 +120,20 @@
                 return null;
             }
 
-            var companyUser = new CompanyUser
-            {
-                CompanyId = company.Id,
-                UserId = user.Id,
-            };
-
             var existingRelationCheck = this.context.CompaniesUsers.Where(x => x.UserId == user.Id && x.CompanyId == company.Id).FirstOrDefault();
             if (existingRelationCheck != null)
             {
                 return company.Id;
             }
+
+            var admin = this.context.Users.Where(x => x.Id == company.AdminId).FirstOrDefault();
+            await this.emailSender.SendEmailAsync(user.Email, user.FullName, admin.Email, "Join Company", $"Hello,{Environment.NewLine}{user.FullName} wants to join your company. You can Acept or decline from  the administration page in your profile!");
+
+            var companyUser = new CompanyUser
+            {
+                CompanyId = company.Id,
+                UserId = user.Id,
+            };
 
             user.Companies.Add(companyUser);
             company.Employees.Add(companyUser);

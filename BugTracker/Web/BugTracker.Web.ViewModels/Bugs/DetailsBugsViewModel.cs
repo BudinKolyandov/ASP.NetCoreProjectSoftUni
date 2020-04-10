@@ -30,6 +30,8 @@
         [Display(Name = "Due date")]
         public DateTime DueDate { get; set; }
 
+        public virtual ICollection<BugHistoryDetailsViewModel> BugHistories { get; set; }
+
         public virtual ICollection<AssigmnentsDetailsViewModel> Assignments { get; set; }
     }
 }

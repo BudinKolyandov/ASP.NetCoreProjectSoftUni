@@ -57,7 +57,7 @@
             }
             else
             {
-                return this.RedirectToAction("Index", "Projects", new { area = string.Empty });
+                return this.RedirectToAction("Details", "Bugs", new { id = model.BugId, area = string.Empty });
             }
         }
     }
