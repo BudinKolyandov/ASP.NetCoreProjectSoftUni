@@ -33,6 +33,8 @@
 
         public DbSet<CompanyUser> CompaniesUsers { get; set; }
 
+        public DbSet<JoinRequest> JoinsRequests { get; set; }
+
         public DbSet<AssignmentUser> AssignmentsUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

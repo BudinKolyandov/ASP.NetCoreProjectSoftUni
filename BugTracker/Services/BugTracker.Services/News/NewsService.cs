@@ -19,6 +19,17 @@
             this.context = context;
         }
 
+        public object CompanyCheck(string id)
+        {
+            var companyUser = this.context.CompaniesUsers.Where(x => x.UserId == id).FirstOrDefault();
+            if (companyUser == null)
+            {
+                return null;
+            }
+
+            return companyUser.UserId;
+        }
+
         public async Task<int> CreateNews(string userId, CreateNewsInputModel model)
         {
             var news = new News

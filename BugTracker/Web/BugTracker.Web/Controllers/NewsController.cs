@@ -30,10 +30,18 @@
         public async Task<IActionResult> Create()
         {
             var user = await this.userManager.GetUserAsync(this.User);
+            var companyCheck = this.newsService.CompanyCheck(user.Id);
+            if (companyCheck == null)
+            {
+                this.TempData["message"] = "You need to join a company in order to write news for it's projects!";
+                return this.RedirectToAction("Index", "Companies");
+            }
+
             var viewModel = new CreateNewsInputModel
             {
                 Projects = this.projectsService.GetAllProjectsByUserEmail<CreateNewsProjectInputModel>(user.Email),
             };
+
             return this.View(viewModel);
         }
 

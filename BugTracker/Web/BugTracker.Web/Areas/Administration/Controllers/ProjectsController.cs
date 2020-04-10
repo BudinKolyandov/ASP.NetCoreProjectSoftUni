@@ -34,7 +34,7 @@
         public IActionResult Create()
         {
             var userId = this.userManager.GetUserId(this.User);
-            var companies = this.companiesService.GetAllForUser<CreateProjectCompaniesListModel>(userId);
+            var companies = this.companiesService.GetAllForAdminUser<CreateProjectCompaniesListModel>(userId);
             var viewModel = new AddProjectInputModel
             {
                 CompaniesList = new List<CreateProjectCompaniesListModel>(),

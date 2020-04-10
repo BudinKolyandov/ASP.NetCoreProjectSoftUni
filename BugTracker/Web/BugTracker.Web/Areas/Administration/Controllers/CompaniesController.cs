@@ -29,7 +29,7 @@
             var user = this.userManager.GetUserId(this.User);
             var viewModel = new IndexViewModel
             {
-                Companies = this.service.GetAllForUser<IndexCompanyViewModel>(user),
+                Companies = this.service.GetAllForAdminUser<IndexCompanyViewModel>(user),
             };
             return this.View(viewModel);
         }
@@ -58,6 +58,30 @@
             }
 
             return this.RedirectToAction("Details", "Companies", new { area = string.Empty, id = companyId });
+        }
+
+        public async Task<IActionResult> Requests()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var requests = this.service.GetAllForUsersForAproval<RequestsToJoinViewModel>(user.Id);
+            return this.View(requests);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Requests(string companyId, string userId)
+        {
+            if (companyId == null || userId == null)
+            {
+                return this.NotFound();
+            }
+
+            var requests = await this.service.Aprove(userId, companyId);
+            if (requests == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.RedirectToAction("Requests");
         }
 
         public IActionResult Edit(string id)

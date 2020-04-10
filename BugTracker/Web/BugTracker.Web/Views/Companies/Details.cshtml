@@ -5,10 +5,13 @@
 }
 
 <h1>Details</h1>
-
 <div>
     <h4>Company</h4>
     <hr />
+    @if (this.User.IsInRole("AwaitingAproval"))
+    {
+        <div class="alert alert-danger">Your Join request is send to the company administrator and is awaiting aproval.</div>
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)

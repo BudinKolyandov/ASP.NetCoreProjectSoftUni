@@ -98,15 +98,20 @@
                 return this.NotFound();
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-
-            var result = await this.service.Join(user.UserName, id);
-            if (result == null)
+            if (!this.ModelState.IsValid)
             {
                 return this.View(company);
             }
 
-            return this.Redirect("/Projects/Index");
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var companyId = await this.service.Join(user.UserName, id);
+            if (companyId == null)
+            {
+                return this.BadRequest();
+            }
+
+            return this.RedirectToAction("Details", "Companies", new { id = companyId });
         }
     }
 }

@@ -6,6 +6,6 @@
     {
         public const string AdministratorRoleName = "Administrator";
 
-        public static ICollection<string> Roles => new List<string>(new string[] { "CompanyAdministrator", "ProjectAdministrator" });
+        public static ICollection<string> Roles => new List<string>(new string[] { "CompanyAdministrator", "ProjectAdministrator", "AwaitingAproval" });
     }
 }

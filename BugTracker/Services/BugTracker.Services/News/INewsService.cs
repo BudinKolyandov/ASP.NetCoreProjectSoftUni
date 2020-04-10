@@ -10,5 +10,7 @@
         Task<int> CreateNews(string userId, CreateNewsInputModel model);
 
         IEnumerable<T> GetAllForUser<T>(string userId, int? count = null);
+
+        object CompanyCheck(string id);
     }
 }

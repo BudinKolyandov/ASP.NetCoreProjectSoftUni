@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BugTracker.Web.ViewModels.Companies.RequestsToJoinViewModel>
+
+@{
+    ViewData["Title"] = "Join requests";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Count() == 0)
+{
+    <div>You currently don't have any requests</div>
+}
+else
+{
+    @foreach (var item in Model)
+    {
+        <div class="card border-left-info text-center shadow mb-4" style="width: 18rem;">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Company name<br />@item.CompanyName</h5>
+                <h5 class="m-0 font-weight-bold text-primary">User name<br />@item.UserFullName</h5>
+            </div>
+            <div class="card-body">
+                @{
+                    var parms = new Dictionary<string, string>
+            {
+                { "companyId", item.CompanyId },
+                { "userId", item.UserId }
+            };
+                }
+                <form asp-action="Requests" asp-all-route-data="parms" method="post">
+                    <div class="form-group">
+                        <input type="submit" value="Aprove" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+}

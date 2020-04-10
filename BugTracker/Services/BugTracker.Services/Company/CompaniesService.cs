@@ -90,7 +90,7 @@
             return query.To<T>().ToList();
         }
 
-        public IEnumerable<T> GetAllForUser<T>(string userId, int? count = null)
+        public IEnumerable<T> GetAllForAdminUser<T>(string userId, int? count = null)
         {
             IQueryable<Company> query = this.context.Companies
                 .Where(x => x.AdminId == userId)
@@ -123,18 +123,55 @@
             var existingRelationCheck = this.context.CompaniesUsers.Where(x => x.UserId == user.Id && x.CompanyId == company.Id).FirstOrDefault();
             if (existingRelationCheck != null)
             {
-                return company.Id;
+                return null;
+            }
+
+            var existingJoinRequestCheck = this.context.JoinsRequests.Where(x => x.UserId == user.Id && x.CompanyId == company.Id).FirstOrDefault();
+            if (existingJoinRequestCheck != null)
+            {
+                return null;
             }
 
             var admin = this.context.Users.Where(x => x.Id == company.AdminId).FirstOrDefault();
-            await this.emailSender.SendEmailAsync(user.Email, user.FullName, admin.Email, "Join Company", $"Hello,{Environment.NewLine}{user.FullName} wants to join your company. You can Acept or decline from  the administration page in your profile!");
+            await this.emailSender.SendEmailAsync(user.Email, user.FullName, admin.Email, "Join Company", $"Hello,{Environment.NewLine}{user.FullName} wants to join your company {company.Name}. You can Aprove or Decline from the administration page in your profile!");
+            await this.userManager.AddToRoleAsync(user, "AwaitingAproval");
 
+            var joinRequest = new JoinRequest
+            {
+                UserId = user.Id,
+                AdminId = admin.Id,
+                CompanyId = company.Id,
+            };
+            await this.context.JoinsRequests.AddAsync(joinRequest);
+            await this.context.SaveChangesAsync();
+            return company.Id;
+        }
+
+        public IEnumerable<T> GetAllForUsersForAproval<T>(string userId, int? count = null)
+        {
+            IQueryable<JoinRequest> query = this.context.JoinsRequests
+                .Where(x => x.AdminId == userId);
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public async Task<string> Aprove(string userId, string companyId)
+        {
+            var user = this.context.Users.FirstOrDefault(x => x.Id == userId);
+            var company = this.context.Companies.FirstOrDefault(x => x.Id == companyId);
             var companyUser = new CompanyUser
             {
                 CompanyId = company.Id,
                 UserId = user.Id,
             };
 
+            var joinRequest = this.context.JoinsRequests.Where(x => x.UserId == userId && x.CompanyId == companyId).First();
+            this.context.JoinsRequests.Remove(joinRequest);
+            await this.userManager.RemoveFromRolesAsync(user, new List<string> { "AwaitingAproval" });
             user.Companies.Add(companyUser);
             company.Employees.Add(companyUser);
             await this.context.SaveChangesAsync();
