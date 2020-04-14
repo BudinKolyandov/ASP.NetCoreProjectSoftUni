@@ -44,29 +44,23 @@
 
         public IActionResult Details(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
             if (project == null)
             {
                 return this.NotFound();
             }
 
-            project.Bugs = project.Bugs.OrderBy(x => x.Priority).ThenBy(x => x.Severity).ToList();
+            project.Bugs = project.Bugs
+                .Where(x => x.Status != Data.Models.Enums.Status.Closed)
+                .OrderBy(x => x.Priority)
+                .ThenBy(x => x.Severity)
+                .ToList();
 
             return this.View(project);
         }
 
         public IActionResult Report(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
             if (project == null)
             {

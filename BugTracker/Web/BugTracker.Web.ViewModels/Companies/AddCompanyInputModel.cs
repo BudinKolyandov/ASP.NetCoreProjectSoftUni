@@ -1,5 +1,6 @@
 ﻿namespace BugTracker.Web.ViewModels.Companies
 {
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using BugTracker.Data.Models;
@@ -10,9 +11,11 @@
         public string Id { get; set; }
 
         [Required]
+        [DisplayName("Name*")]
         public string Name { get; set; }
 
         [Required]
+        [DisplayName("Description*")]
         public string Description { get; set; }
     }
 }

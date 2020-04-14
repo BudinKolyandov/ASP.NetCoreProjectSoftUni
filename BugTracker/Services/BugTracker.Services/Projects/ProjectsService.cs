@@ -25,7 +25,7 @@
             this.userManager = userManager;
         }
 
-        public async Task<AddProjectInputModel> Create(string name, string status, string description, string username, string companyId)
+        public async Task<AddProjectInputModel> Create(string name, string description, string username, string companyId)
         {
             if (this.context.Projects.Any(x => x.Name == name))
             {
@@ -43,7 +43,6 @@
             var project = new Project
             {
                 Name = name,
-                Status = status,
                 Description = description,
                 CompanyId = company.Id,
                 AdminId = user.Id,
@@ -56,7 +55,6 @@
             {
                 Id = project.Id,
                 ProjectName = project.Name,
-                Status = project.Status,
                 Description = project.Description,
             };
             return model;

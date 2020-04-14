@@ -4,26 +4,26 @@
     ViewData["Title"] = "Bug Details";
 }
 
-<h1>@Model.Name</h1>
-<div class="container container-fluid">
-    <div class="d-flex text-center flex-wrap flex-row bd-highlight mb-3">
-        <div class="col-lg-2 mb-4">
-            <h4>@Html.DisplayNameFor(model => model.ReporterFullName)</h4>
-            <p>@Html.DisplayFor(model => model.ReporterFullName)</p>
-        </div>
-        <div class="col-lg-2 mb-4">
-            <h4>@Html.DisplayNameFor(model => model.DueDate)</h4>
-            <p>@Html.DisplayFor(model => model.DueDate)</p>
+    <div class="container text-center container-fluid">
+        <h1 class="col-lg-12">BugName: @Model.Name</h1>
+        <div class="d-flex text-center flex-wrap flex-row bd-highlight mb-3">
+            <div class="col-lg-6">
+                <h4>@Html.DisplayNameFor(model => model.ReporterFullName)</h4>
+                <p>@Html.DisplayFor(model => model.ReporterFullName)</p>
+            </div>
+            <div class="col-lg-6">
+                <h4>@Html.DisplayNameFor(model => model.DueDate)</h4>
+                <p>@Html.DisplayFor(model => model.DueDate)</p>
+            </div>
         </div>
     </div>
-</div>
 <div>
     <hr />
     <div class="container container-fluid">
-        <div class="d-flex text-center flex-wrap flex-row bd-highlight mb-3">
+        <div class="text-center mx-auto card-columns bd-highlight col-12 mb-3">
             @if (Model.Priority.ToString() == "High")
             {
-                <div class="p-2 card bg-danger text-white shadow">
+                <div class="card bg-danger text-white shadow">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Priority)
                         <div>@Html.DisplayFor(model => model.Priority)</div>
@@ -32,7 +32,7 @@
             }
             @if (Model.Priority.ToString() == "Medium")
             {
-                <div class="p-2 card bg-warning text-white shadow">
+                <div class="card bg-warning text-white shadow">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Priority)
                         <div>@Html.DisplayFor(model => model.Priority)</div>
@@ -41,7 +41,7 @@
             }
             @if (Model.Priority.ToString() == "Low")
             {
-                <div class="p-2 card bg-dark text-white shadow">
+                <div class="card bg-dark text-white shadow">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Priority)
                         <div>@Html.DisplayFor(model => model.Priority)</div>
@@ -50,7 +50,7 @@
             }
             @if (Model.Severity.ToString() == "Critical")
             {
-                <div class="p-2 card bg-danger text-white shadow offset-sm-1">
+                <div class="card bg-danger text-white shadow offset-sm-1">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Severity)
                         <div>@Html.DisplayFor(model => model.Severity)</div>
@@ -59,7 +59,7 @@
             }
             @if (Model.Severity.ToString() == "Major")
             {
-                <div class="p-2 card bg-warning text-white shadow offset-sm-1">
+                <div class="card bg-warning text-white shadow offset-sm-1">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Severity)
                         <div>@Html.DisplayFor(model => model.Severity)</div>
@@ -68,7 +68,7 @@
             }
             @if (Model.Severity.ToString() == "Moderate")
             {
-                <div class="p-2 card bg-dark text-white shadow offset-sm-1">
+                <div class="card bg-dark text-white shadow offset-sm-1">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Severity)
                         <div>@Html.DisplayFor(model => model.Severity)</div>
@@ -77,7 +77,7 @@
             }
             @if (Model.Severity.ToString() == "Minor")
             {
-                <div class="p-2 card bg-secondary text-white shadow offset-sm-1">
+                <div class="card bg-secondary text-white shadow offset-sm-1">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Severity)
                         <div>@Html.DisplayFor(model => model.Severity)</div>
@@ -86,21 +86,21 @@
             }
             @if (Model.Severity.ToString() == "Trivial")
             {
-                <div class="p-2 card bg-info text-white shadow offset-sm-1">
+                <div class="card bg-info text-white shadow offset-sm-1">
                     <div class="card-body">
                         @Html.DisplayNameFor(model => model.Severity)
                         <div>@Html.DisplayFor(model => model.Severity)</div>
                     </div>
                 </div>
             }
-            <div class="p-2 card bg offset-sm-1">
+            <div class="card bg shadow offset-sm-1">
                 <div class="card-body">
                     @Html.DisplayNameFor(model => model.Status)
                     <div>@Html.DisplayFor(model => model.Status)</div>
                 </div>
             </div>
         </div>
-        <div class="card w-50 text-center">
+        <div class="card w-75 mx-auto shadow text-info text-center">
             <div class="card-body">
                 <h5 class="card-title">@Html.DisplayNameFor(model => model.Description)</h5>
                 <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
@@ -110,38 +110,39 @@
         <div>
             @if (Model.Assignments.Count != 0)
             {
-                <h2 class="col-6 text-center">Assignments:</h2>
+                <h2 class="row-12 text-center">Assignments:</h2>
                 @foreach (var assignment in Model.Assignments)
                 {
                     <dl class="row">
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.Title)</dt>
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.Description)</dt>
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.Title)</dt>
+                        <dt class="col-sm-6">@Html.DisplayNameFor(model => assignment.Description)</dt>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
                     </dl>
                     <dl class="row">
-                        <dd class="col-sm-2">@Html.DisplayFor(model => assignment.Title)</dd>
-                        <dd class="col-sm-2">@Html.DisplayFor(model => assignment.Description)</dd>
-                        <dd class="col-sm-2">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
+                        <dd class="col-sm-3">@Html.DisplayFor(model => assignment.Title)</dd>
+                        <dd class="col-sm-6">@Html.DisplayFor(model => assignment.Description)</dd>
+                        <dd class="col-sm-3">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
                     </dl>
                 }
+                <hr />
             }
         </div>
         <div>
             @if (Model.BugHistories.Count != 0)
             {
-                <h2 class="col-6 text-center">Bug History:</h2>
+                <h2 class="row-12 text-center">Bug History:</h2>
                 @foreach (var history in Model.BugHistories)
                 {
                     <dl class="row">
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => history.FieldName)</dt>
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => history.OldDescriptionValue)</dt>
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => history.NewDescriptionValue)</dt>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => history.ChangedValueName)</dt>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => history.OldValue)</dt>
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => history.NewValue)</dt>
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => history.ModifiedOn)</dt>
                     </dl>
                     <dl class="row">
-                        <dd class="col-sm-2">@Html.DisplayFor(model => history.FieldName)</dd>
-                        <dd class="col-sm-2">@Html.DisplayFor(model => history.OldDescriptionValue)</dd>
-                        <dd class="col-sm-2">@Html.DisplayFor(model => history.NewDescriptionValue)</dd>
+                        <dd class="col-sm-2">@Html.DisplayFor(model => history.ChangedValueName)</dd>
+                        <dd class="col-sm-4">@Html.DisplayFor(model => history.OldValue)</dd>
+                        <dd class="col-sm-4">@Html.DisplayFor(model => history.NewValue)</dd>
                         <dd class="col-sm-2">@Html.DisplayFor(model => history.ModifiedOn)</dd>
                     </dl>
                 }
@@ -151,6 +152,7 @@
 </div>
 
 <div>
+    <a class="btn btn-primary" asp-action="AddChange" asp-controller="Bugs" asp-route-id="@Model.Id">Add change to Bug history</a>
     @if (this.User.IsInRole("CompanyAdministrator") || this.User.IsInRole("ProjectAdministrator"))
     {
         <a class="btn btn-primary" asp-area="Administration" asp-controller="Assignments" asp-action="Create" asp-route-id="@Model.Id">Create Assignment</a>

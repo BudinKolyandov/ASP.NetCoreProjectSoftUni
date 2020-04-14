@@ -24,119 +24,122 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
-    <h1>Bugs</h1>
-    <div>
-        <table class="table table-bordered table-hover text-center">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Name
-                    </th>
-                    <th scope="col">
-                        Priority
-                    </th>
-                    <th scope="col">
-                        Status
-                    </th>
-                    <th scope="col">
-                        Severity
-                    </th>
-                    <th scope="col">
-                        Due date
-                    </th>
-                    <th scope="col">
-                        Assigned
-                    </th>
-                    <th scope="col">
-                        Bug Details
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var bug in Model.Bugs)
-                {
-                    @if (bug.Priority.ToString() == "High")
+    @if (Model.Bugs.Count > 0)
+    {
+        <h1>Bugs</h1>
+        <div>
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Name
+                        </th>
+                        <th scope="col">
+                            Priority
+                        </th>
+                        <th scope="col">
+                            Status
+                        </th>
+                        <th scope="col">
+                            Severity
+                        </th>
+                        <th scope="col">
+                            Due date
+                        </th>
+                        <th scope="col">
+                            Assigned
+                        </th>
+                        <th scope="col">
+                            Bug Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var bug in Model.Bugs)
                     {
-                        <tr style="transform: rotate(0);" class="table-danger text-dark">
-                            <td>
-                                @Html.DisplayName(bug.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                            </td>
-                            <td>
-                                @Html.DisplayName(bug.DueDate.ToString("d"))
-                            </td>
-                            <td>
-                                @Html.DisplayName(bug.Assigned)
-                            </td>
-                            <th scope="row">
-                                <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                            </th>
-                        </tr>
+                        @if (bug.Priority.ToString() == "High")
+                        {
+                            <tr style="transform: rotate(0);" class="table-danger text-dark">
+                                <td>
+                                    @Html.DisplayName(bug.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.DueDate.ToString("d"))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.Assigned)
+                                </td>
+                                <th scope="row">
+                                    <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                                </th>
+                            </tr>
+                        }
+                        else if (bug.Priority.ToString() == "Medium")
+                        {
+                            <tr style="transform: rotate(0);" class="table-warning text-dark">
+                                <td>
+                                    @Html.DisplayName(bug.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.DueDate.ToString("d"))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.Assigned)
+                                </td>
+                                <th scope="row">
+                                    <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                                </th>
+                            </tr>
+                        }
+                        else if (bug.Priority.ToString() == "Low")
+                        {
+                            <tr style="transform: rotate(0);" class="table-secondary text-dark">
+                                <td>
+                                    @Html.DisplayName(bug.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.DueDate.ToString("d"))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.Assigned)
+                                </td>
+                                <th scope="row">
+                                    <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                                </th>
+                            </tr>
+                        }
                     }
-                    else if (bug.Priority.ToString() == "Medium")
-                    {
-                        <tr style="transform: rotate(0);" class="table-warning text-dark">
-                            <td>
-                                @Html.DisplayName(bug.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                            </td>
-                            <td>
-                                @Html.DisplayName(bug.DueDate.ToString("d"))
-                            </td>
-                            <td>
-                                @Html.DisplayName(bug.Assigned)
-                            </td>
-                            <th scope="row">
-                                <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                            </th>
-                        </tr>
-                    }
-                    else if (bug.Priority.ToString() == "Low")
-                    {
-                        <tr style="transform: rotate(0);" class="table-secondary text-dark">
-                            <td>
-                                @Html.DisplayName(bug.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                            </td>
-                            <td>
-                                @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                            </td>
-                            <td>
-                                @Html.DisplayName(bug.DueDate.ToString("d"))
-                            </td>
-                            <td>
-                                @Html.DisplayName(bug.Assigned)
-                            </td>
-                            <th scope="row">
-                                <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                            </th>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 <div>
     <a class="btn btn-primary" asp-action="Report" asp-route-id="@Model.Id">Report a bug</a>

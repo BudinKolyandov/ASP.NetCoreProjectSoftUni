@@ -86,11 +86,6 @@
 
         public IActionResult Edit(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var company = this.service.GetById<EditCompanyViewModel>(id);
             if (company == null)
             {
@@ -103,14 +98,14 @@
         [HttpPost]
         public async Task<IActionResult> Edit(EditCompanyInputModel company)
         {
-            if (!this.service.CompanyExists(company.Id))
-            {
-                return this.NotFound();
-            }
-
             if (!this.ModelState.IsValid)
             {
                 return this.View(company);
+            }
+
+            if (!this.service.CompanyExists(company.Id))
+            {
+                return this.NotFound();
             }
 
             await this.service.EditCompany(company);
@@ -119,11 +114,6 @@
 
         public IActionResult Delete(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var company = this.service.GetById<DeleteCompanyViewModel>(id);
             if (company == null)
             {

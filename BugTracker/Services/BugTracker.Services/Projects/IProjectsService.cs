@@ -7,7 +7,7 @@
 
     public interface IProjectsService
     {
-        Task<AddProjectInputModel> Create(string name, string status, string description, string username, string companyId);
+        Task<AddProjectInputModel> Create(string name, string description, string username, string companyId);
 
         IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? count = null);
 

@@ -23,10 +23,16 @@
 
         public string ProjectName { get; set; }
 
+        [Required]
+        [Display(Name = "Priority*")]
         public Priority Priority { get; set; }
 
+        [Required]
+        [Display(Name = "Severity*")]
         public Severity Severity { get; set; }
 
+        [Required]
+        [Display(Name = "Status*")]
         public Status Status { get; set; }
 
         [Required(ErrorMessage = "The Due date field is required.")]

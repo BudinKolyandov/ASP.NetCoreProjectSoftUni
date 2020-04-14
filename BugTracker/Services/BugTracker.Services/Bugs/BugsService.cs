@@ -18,7 +18,7 @@
             this.context = dbContext;
         }
 
-        public async Task<string> EditBug(EditBugViewModel model)
+        public async Task<string> AddBugChange(AddBuggChangeInputModel model)
         {
             var bug = this.context.Bugs.Where(x => x.Id == model.Id).FirstOrDefault();
             if (bug == null)
@@ -29,11 +29,24 @@
             var bugHistory = new BugHistory
             {
                 BugId = bug.Id,
-                OldDescriptionValue = bug.Description,
+                ChangedValueName = model.ChangedValueName,
+                OldValue = model.OldValue,
                 ModifiedOn = DateTime.UtcNow,
-                NewDescriptionValue = model.Description,
+                NewValue = model.NewValue,
             };
             await this.context.BugsHistories.AddAsync(bugHistory);
+            await this.context.SaveChangesAsync();
+            return bugHistory.BugId;
+        }
+
+        public async Task<string> EditBug(EditBugViewModel model)
+        {
+            var bug = this.context.Bugs.Where(x => x.Id == model.Id).FirstOrDefault();
+            if (bug == null)
+            {
+                return null;
+            }
+
             bug.ModifiedOn = DateTime.UtcNow;
             bug.Description = model.Description;
             bug.Name = model.Name;

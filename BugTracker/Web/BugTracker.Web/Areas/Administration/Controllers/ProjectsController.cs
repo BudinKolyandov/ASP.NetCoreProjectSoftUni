@@ -56,7 +56,7 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            var project = await this.projectsService.Create(projectViewModel.ProjectName, projectViewModel.Status, projectViewModel.Description, user.UserName, projectViewModel.Name);
+            var project = await this.projectsService.Create(projectViewModel.ProjectName, projectViewModel.Description, user.UserName, projectViewModel.Name);
             if (project == null)
             {
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
@@ -67,11 +67,6 @@
 
         public IActionResult Delete(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var company = this.projectsService.GetById<DeleteProjectViewModel>(id);
             if (company == null)
             {

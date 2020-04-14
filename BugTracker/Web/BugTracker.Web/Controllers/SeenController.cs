@@ -28,6 +28,11 @@
         [HttpPost]
         public async Task<ActionResult<NewsResponseModel>> Seen(NewsInputModel inputModel)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
+
             var userId = this.userManager.GetUserId(this.User);
             await this.newsService.SeenChange(inputModel.NewsId, userId);
             return new NewsResponseModel { NewsId = inputModel.NewsId };

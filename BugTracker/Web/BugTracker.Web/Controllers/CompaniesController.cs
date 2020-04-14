@@ -34,11 +34,6 @@
 
         public IActionResult Details(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var company = this.service.GetById<DetailsCompanyViewModel>(id);
             if (company == null)
             {
@@ -76,11 +71,6 @@
 
         public IActionResult Join(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var company = this.service.GetById<JoinCompanyViewModel>(id);
             if (company == null)
             {
@@ -93,11 +83,6 @@
         [HttpPost]
         public async Task<IActionResult> Join(string id, JoinCompanyViewModel company)
         {
-            if (id != company.Id)
-            {
-                return this.NotFound();
-            }
-
             if (!this.ModelState.IsValid)
             {
                 return this.View(company);

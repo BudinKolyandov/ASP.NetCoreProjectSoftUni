@@ -9,5 +9,7 @@
         T GetById<T>(string id);
 
         Task<string> EditBug(EditBugViewModel model);
+
+        Task<string> AddBugChange(AddBuggChangeInputModel model);
     }
 }
