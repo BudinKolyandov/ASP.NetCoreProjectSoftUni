@@ -64,6 +64,10 @@
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
@@ -103,8 +107,6 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
-            app.UseStatusCodePagesWithRedirects("/StatusCode?code={0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -6,6 +6,8 @@
 
     public class IndexLoggedNewsViewModel : IMapFrom<BugTracker.Data.Models.News>
     {
+        public int Id { get; set; }
+
         public string ProjectName { get; set; }
 
         public string UserFullName { get; set; }

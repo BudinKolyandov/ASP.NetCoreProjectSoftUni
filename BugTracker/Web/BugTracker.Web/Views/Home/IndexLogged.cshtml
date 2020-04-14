@@ -4,57 +4,84 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center text-dark">
-        <h1 class="display-4">Welcome to my Bug Tracker</h1>
-        <hr />
-        @if (Model.News.Count() > 0)
-        {
+<div class="text-center text-dark">
+    <h1 class="display-4">Welcome to my Bug Tracker</h1>
+    <hr />
+    @if (Model.News.Count() > 0)
+    {
         <h4>News</h4>
         <div class="card-columns">
             @foreach (var news in Model.News)
             {
-            <div class="card border-left-info shadow mb-4" style="width: 18rem;">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">@news.Headline</h5>
+                <div class="card border-left-info shadow mb-4 col-md3" id="@news.Id">
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">@news.Headline</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@news.Body</p>
+                        <p class="card-footer">
+                            Project: @news.ProjectName,
+                            Posted On: @news.DatePosted
+                        </p>
+                        <div>
+                            <form id="seenForm" method="post"></form>
+                            <div>
+                                <button type="button" class="btn btn-success" onclick="CloseNews(@news.Id)">Seen</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">@news.Body</p>
-                    <p class="card-footer">
-                        Project: @news.ProjectName,
-                        Posted On: @news.DatePosted
-                    </p>
-                </div>
-            </div>
             }
         </div>
         <hr />
-        }
-        else
-        {
+    }
+    else
+    {
 
-        }
-        @if (Model.Assignments.Count() > 0)
-        {
+    }
+    @if (Model.Assignments.Count() > 0)
+    {
         <h4>Assignments</h4>
         <div class="card-columns">
             @foreach (var assignment in Model.Assignments)
             {
-            <div class="card border-left-warning shadow mb-4" style="width: 18rem;">
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">@assignment.Title</h5>
-                    <hr />
-                    <h6 class="card-subtitle mb-2 text-muted">Bug: @assignment.BugName</h6>
+                <div class="card border-left-warning shadow mb-4 col-md3">
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">@assignment.Title</h5>
+                        <hr />
+                        <h6 class="card-subtitle mb-2 text-muted">Bug: @assignment.BugName</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@assignment.Description</p>
+                        <p class="card-footer">
+                            Created on: @assignment.CreatedOn,
+                            Due date: @assignment.DueDate
+                        </p>
+                        <a class="btn btn-primary" asp-controller="Bugs" asp-action="Details" asp-route-id="@assignment.BugId">Bug Details</a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">@assignment.Description</p>
-                    <p class="card-footer">
-                        Created on: @assignment.CreatedOn,
-                        Due date: @assignment.DueDate
-                    </p>
-                    <a class="btn btn-primary" asp-controller="Bugs" asp-action="Details" asp-route-id="@assignment.BugId">Bug Details</a>
-                </div>
-            </div>
             }
         </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function CloseNews(newsId) {
+            var token = $("#seenForm input[name=__RequestVerificationToken]").val();
+            var json = { newsId: newsId };
+            $.ajax({
+                url: "/api/Seen",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    document.getElementById(newsId).style.display = "none";
+                }
+            });
         }
-    </div>
+
+    </script>
+}

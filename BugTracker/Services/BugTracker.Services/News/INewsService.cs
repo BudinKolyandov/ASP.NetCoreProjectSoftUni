@@ -12,5 +12,7 @@
         IEnumerable<T> GetAllForUser<T>(string userId, int? count = null);
 
         object CompanyCheck(string id);
+
+        Task<int> SeenChange(int newsId, string id);
     }
 }

@@ -9,6 +9,7 @@
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
     using BugTracker.Web.ViewModels.News;
+    using Microsoft.EntityFrameworkCore;
 
     public class NewsService : INewsService
     {
@@ -40,7 +41,27 @@
                 ProjectId = model.ProjectId,
                 PosterId = userId,
             };
-            await this.context.News.AddAsync(news);
+
+            this.context.News.Add(news);
+            await this.context.SaveChangesAsync();
+            var companies = this.context.CompaniesUsers.Where(x => x.UserId == userId);
+            List<string> ids = new List<string>();
+            foreach (var company in companies)
+            {
+                ids.Add(company.UserId);
+            }
+
+            foreach (var id in ids)
+            {
+                var newsUser = new UserNews
+                {
+                    NewsId = news.Id,
+                    UserId = id,
+                    Seen = false,
+                };
+                await this.context.UsersNews.AddAsync(newsUser);
+            }
+
             await this.context.SaveChangesAsync();
             return news.Id;
         }
@@ -53,28 +74,34 @@
                 return null;
             }
 
-            var companies = this.context.CompaniesUsers.Where(x => x.UserId == user.Id);
-            List<string> ids = new List<string>();
-            foreach (var company in companies)
+            var newsUsers = this.context.UsersNews.Where(x => x.UserId == userId);
+            List<int> newsIds = new List<int>();
+            List<string> userIds = new List<string>();
+            foreach (var news in newsUsers)
             {
-                ids.Add(company.CompanyId);
-            }
-
-            var projects = this.context.Projects.Where(x => ids.Contains(x.CompanyId));
-
-            foreach (var project in projects)
-            {
-                ids.Add(project.Id);
+                if (!news.Seen)
+                {
+                    newsIds.Add(news.NewsId);
+                }
             }
 
             IQueryable<News> query = this.context.News
-                .Where(x => ids.Contains(x.ProjectId));
+                .Where(x => newsIds.Contains(x.Id));
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
             }
 
             return query.To<T>().ToList();
+        }
+
+        public async Task<int> SeenChange(int newsId, string id)
+        {
+            var userNews = this.context.UsersNews.Where(x => x.UserId == id && x.NewsId == newsId).FirstOrDefault();
+            userNews.Seen = true;
+            this.context.UsersNews.Update(userNews);
+            await this.context.SaveChangesAsync();
+            return userNews.NewsId;
         }
     }
 }

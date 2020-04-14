@@ -31,6 +31,8 @@
 
         public DbSet<ProjectUser> ProjectsUsers { get; set; }
 
+        public DbSet<UserNews> UsersNews { get; set; }
+
         public DbSet<CompanyUser> CompaniesUsers { get; set; }
 
         public DbSet<JoinRequest> JoinsRequests { get; set; }
@@ -56,6 +58,21 @@
 
                 pu.HasOne(x => x.User)
                 .WithMany(x => x.Projects)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<UserNews>(pu =>
+            {
+                pu.HasKey(x => new { x.NewsId, x.UserId });
+
+                pu.HasOne(x => x.News)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.NewsId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                pu.HasOne(x => x.User)
+                .WithMany(x => x.News)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             });

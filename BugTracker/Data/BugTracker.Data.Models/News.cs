@@ -1,9 +1,15 @@
 ﻿namespace BugTracker.Data.Models
 {
     using System;
+    using System.Collections.Generic;
 
     public class News
     {
+        public News()
+        {
+            this.Users = new HashSet<UserNews>();
+        }
+
         public int Id { get; set; }
 
         public string ProjectId { get; set; }
@@ -19,5 +25,7 @@
         public string Body { get; set; }
 
         public DateTime DatePosted { get; set; }
+
+        public virtual ICollection<UserNews> Users { get; set; }
     }
 }

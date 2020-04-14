@@ -13,6 +13,7 @@
             this.Projects = new HashSet<ProjectUser>();
             this.Companies = new HashSet<CompanyUser>();
             this.Assignments = new HashSet<AssignmentUser>();
+            this.News = new HashSet<UserNews>();
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
@@ -30,6 +31,8 @@
         public virtual ICollection<CompanyUser> Companies { get; set; }
 
         public virtual ICollection<AssignmentUser> Assignments { get; set; }
+
+        public virtual ICollection<UserNews> News { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
