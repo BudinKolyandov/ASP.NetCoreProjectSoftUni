@@ -1,5 +1,6 @@
 ﻿namespace BugTracker.Web.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@
     [Authorize]
     public class ProjectsController : Controller
     {
+        private const int ItemsPerPage = 5;
+
         private readonly IProjectsService projectsService;
         private readonly UserManager<User> userManager;
 
@@ -24,7 +27,7 @@
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var user = await this.userManager.GetUserAsync(this.User);
             var companyCheck = this.projectsService.UserHasCompany(user.UserName);
@@ -36,13 +39,21 @@
 
             var viewModel = new IndexViewModel
             {
-                Projects = this.projectsService.GetAllProjectsByUserEmail<IndexProjectViewModel>(user.UserName),
+                Projects = this.projectsService.GetAllProjectsByUserEmail<IndexProjectViewModel>(user.UserName, ItemsPerPage, (page - 1) * ItemsPerPage),
             };
 
+            var count = this.projectsService.GetCount();
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
+            viewModel.CurrentPage = page;
             return this.View(viewModel);
         }
 
-        public IActionResult Details(string id)
+        public IActionResult Details(string id, int page = 1, int? take = null, int skip = 0)
         {
             var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
             if (project == null)
@@ -50,17 +61,32 @@
                 return this.NotFound();
             }
 
-            var completedBugs = project.Bugs
-                .Where(x => x.Status == Data.Models.Enums.Status.Closed).ToList();
-            project.Bugs = project.Bugs
-                .Where(x => x.Status != Data.Models.Enums.Status.Closed)
-                .OrderBy(x => x.Priority)
-                .ThenBy(x => x.Severity)
-                .ToList();
-            foreach (var completedBug in completedBugs)
+            if (take.HasValue)
             {
-                project.Bugs.Add(completedBug);
+                project.Bugs = project.Bugs
+                    .OrderBy(x => x.Priority)
+                    .ThenBy(x => x.Severity)
+                    .Skip(skip)
+                    .Take(take.Value)
+                    .ToList();
             }
+            else
+            {
+                project.Bugs = project.Bugs
+                    .OrderBy(x => x.Priority)
+                    .ThenBy(x => x.Severity)
+                    .Skip(skip)
+                    .ToList();
+            }
+
+            var count = project.Bugs.Count();
+            project.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (project.PagesCount == 0)
+            {
+                project.PagesCount = 1;
+            }
+
+            project.CurrentPage = page;
 
             return this.View(project);
         }

@@ -9,7 +9,7 @@
     {
         Task<AddProjectInputModel> Create(string name, string description, string username, string companyId);
 
-        IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? count = null);
+        IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? take = null, int skip = 0);
 
         bool UserHasCompany(string username);
 
@@ -20,5 +20,7 @@
         string Join(string userEmail, JoinProjectViewModel model);
 
         Task<ReportBugProjectInputModel> Report(string userEmail, ReportBugProjectInputModel model);
+
+        public int GetCount();
     }
 }

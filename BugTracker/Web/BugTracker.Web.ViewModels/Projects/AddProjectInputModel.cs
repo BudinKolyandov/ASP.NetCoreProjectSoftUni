@@ -15,6 +15,7 @@
         [DisplayName("Project Name*")]
         public string ProjectName { get; set; }
 
+        [Required]
         [DisplayName("Description*")]
         public string Description { get; set; }
 

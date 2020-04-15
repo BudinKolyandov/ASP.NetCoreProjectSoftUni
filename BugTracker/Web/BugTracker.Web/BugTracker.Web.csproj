@@ -8,6 +8,17 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Administration\Data\**" />
+    <Compile Remove="Areas\Administration\Models\**" />
+    <Content Remove="Areas\Administration\Data\**" />
+    <Content Remove="Areas\Administration\Models\**" />
+    <EmbeddedResource Remove="Areas\Administration\Data\**" />
+    <EmbeddedResource Remove="Areas\Administration\Models\**" />
+    <None Remove="Areas\Administration\Data\**" />
+    <None Remove="Areas\Administration\Models\**" />
+  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
@@ -37,8 +48,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Administration\Data\" />
-    <Folder Include="Areas\Administration\Models\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 

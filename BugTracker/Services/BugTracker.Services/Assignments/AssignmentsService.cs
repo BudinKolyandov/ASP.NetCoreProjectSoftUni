@@ -10,6 +10,7 @@
     using BugTracker.Services.Mapping;
     using BugTracker.Services.Messaging;
     using BugTracker.Web.ViewModels.Assignments;
+    using Common;
     using Microsoft.EntityFrameworkCore.Internal;
 
     public class AssignmentsService : IAssignmentsService
@@ -72,7 +73,7 @@
             assignment.Assignees.Add(assignmentUser);
             await this.context.Assignments.AddAsync(assignment);
             await this.context.SaveChangesAsync();
-            await this.emailSender.SendEmailAsync(assignedBy.Email, assignedBy.FullName, user.Email, "New assignment", $"You have a new Assignment regarding {project.Name}!");
+            await this.emailSender.SendEmailAsync(GlobalConstants.SendGridEmail, assignedBy.FullName, user.Email, "New assignment", $"You have a new Assignment regarding {project.Name}!");
             return assignment.Id;
         }
 

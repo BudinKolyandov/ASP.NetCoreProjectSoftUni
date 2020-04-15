@@ -16,6 +16,10 @@
 
         public string Description { get; set; }
 
+        public int PagesCount { get; set; }
+
+        public int CurrentPage { get; set; }
+
         public ICollection<DetailsProjectBugViewModel> Bugs { get; set; }
     }
 }

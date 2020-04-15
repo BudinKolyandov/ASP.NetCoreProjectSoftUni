@@ -60,7 +60,7 @@
             return model;
         }
 
-        public IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? count = null)
+        public IEnumerable<T> GetAllProjectsByUserEmail<T>(string userEmail, int? take = null, int skip = 0)
         {
             var user = this.context.Users.Where(x => x.Email == userEmail).First();
             if (user == null)
@@ -76,10 +76,13 @@
             }
 
             var projects = this.context.Projects.Where(x => ids.Contains(x.CompanyId));
-            IQueryable<Project> query = projects.OrderByDescending(x => x.Bugs.Count).ThenBy(x => x.Name);
-            if (count.HasValue)
+            IQueryable<Project> query = projects
+                .OrderByDescending(x => x.Bugs.Count)
+                .ThenBy(x => x.Name)
+                .Skip(skip);
+            if (take.HasValue)
             {
-                query = query.Take(count.Value);
+                query = query.Take(take.Value);
             }
 
             return query.To<T>().ToList();
@@ -175,6 +178,11 @@
             this.context.RemoveRange(bugs);
             this.context.Projects.Remove(project);
             await this.context.SaveChangesAsync();
+        }
+
+        public int GetCount()
+        {
+            return this.context.Projects.Count();
         }
     }
 }

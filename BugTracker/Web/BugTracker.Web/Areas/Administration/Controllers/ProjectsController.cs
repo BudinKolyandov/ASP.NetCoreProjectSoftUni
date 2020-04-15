@@ -59,7 +59,7 @@
             var project = await this.projectsService.Create(projectViewModel.ProjectName, projectViewModel.Description, user.UserName, projectViewModel.Name);
             if (project == null)
             {
-                return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+                return this.BadRequest();
             }
 
             return this.RedirectToAction("Details", "Projects", new { id = project.Id, area = string.Empty });

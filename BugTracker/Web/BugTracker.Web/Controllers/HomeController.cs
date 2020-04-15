@@ -18,18 +18,15 @@
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
         private readonly UserManager<User> userManager;
         private readonly IAssignmentsService assignmentsService;
         private readonly INewsService newsService;
 
         public HomeController(
-            ILogger<HomeController> logger,
             UserManager<User> userManager,
             IAssignmentsService assignmentsService,
             INewsService newsService)
         {
-            this.logger = logger;
             this.userManager = userManager;
             this.assignmentsService = assignmentsService;
             this.newsService = newsService;
