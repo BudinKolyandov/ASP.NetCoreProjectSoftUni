@@ -62,7 +62,7 @@
                 return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
             }
 
-            return this.RedirectToAction("AdminIndex", "Companies");
+            return this.RedirectToAction("Details", "Projects", new { id = project.Id, area = string.Empty });
         }
 
         public IActionResult Delete(string id)

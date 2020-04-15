@@ -44,10 +44,16 @@
 
             this.context.News.Add(news);
             await this.context.SaveChangesAsync();
-            var companies = this.context.CompaniesUsers.Where(x => x.UserId == userId);
+            var project = this.context.Projects.Where(x => x.Id == model.ProjectId).First();
+            var companies = this.context.CompaniesUsers.Where(x => x.CompanyId == project.CompanyId);
             List<string> ids = new List<string>();
             foreach (var company in companies)
             {
+                if (ids.Contains(company.UserId))
+                {
+                    continue;
+                }
+
                 ids.Add(company.UserId);
             }
 

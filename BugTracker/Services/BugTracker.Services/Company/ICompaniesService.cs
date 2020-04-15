@@ -22,7 +22,13 @@
 
         IEnumerable<T> GetAll<T>(int? count = null);
 
-        IEnumerable<T> GetAllForAdminUser<T>(string userId, int? count = null);
+        IEnumerable<T> GetAllPaged<T>(int? take = null, int skip = 0);
+
+        int GetCount();
+
+        int GetCountForAdmin(string userId);
+
+        IEnumerable<T> GetAllForAdminUser<T>(string userId, int? take = null, int skip = 0);
 
         IEnumerable<T> GetAllForUsersForAproval<T>(string userId, int? count = null);
 

@@ -10,6 +10,7 @@
     using BugTracker.Services.Mapping;
     using BugTracker.Services.Messaging;
     using BugTracker.Web.ViewModels.Companies;
+    using Common;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
@@ -90,19 +91,6 @@
             return query.To<T>().ToList();
         }
 
-        public IEnumerable<T> GetAllForAdminUser<T>(string userId, int? count = null)
-        {
-            IQueryable<Company> query = this.context.Companies
-                .Where(x => x.AdminId == userId)
-                .OrderBy(x => x.Name);
-            if (count.HasValue)
-            {
-                query = query.Take(count.Value);
-            }
-
-            return query.To<T>().ToList();
-        }
-
         public T GetById<T>(string id)
         {
             var company = this.context.Companies
@@ -133,7 +121,7 @@
             }
 
             var admin = this.context.Users.Where(x => x.Id == company.AdminId).FirstOrDefault();
-            await this.emailSender.SendEmailAsync(user.Email, user.FullName, admin.Email, "Join Company", $"Hello,{Environment.NewLine}{user.FullName} wants to join your company {company.Name}. You can Aprove or Decline from the administration page in your profile!");
+            await this.emailSender.SendEmailAsync(GlobalConstants.SendGridEmail, "BugTracker", admin.Email, "You have pending Join company requests", $"Hello,{Environment.NewLine}{user.FullName} wants to join your company {company.Name}. You can Approve or Decline from the administration page in your profile!");
             await this.userManager.AddToRoleAsync(user, "AwaitingAproval");
 
             var joinRequest = new JoinRequest
@@ -176,6 +164,43 @@
             company.Employees.Add(companyUser);
             await this.context.SaveChangesAsync();
             return company.Id;
+        }
+
+        public IEnumerable<T> GetAllPaged<T>(int? take = null, int skip = 0)
+        {
+            var query = this.context.Companies
+                .OrderBy(x => x.Name)
+                .Skip(skip);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetAllForAdminUser<T>(string userId, int? take = null, int skip = 0)
+        {
+            IQueryable<Company> query = this.context.Companies
+                .Where(x => x.AdminId == userId)
+                .OrderBy(x => x.Name)
+                .Skip(skip);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public int GetCount()
+        {
+            return this.context.Companies.Count();
+        }
+
+        public int GetCountForAdmin(string userid)
+        {
+            return this.context.Companies.Count(x => x.AdminId == userid);
         }
     }
 }

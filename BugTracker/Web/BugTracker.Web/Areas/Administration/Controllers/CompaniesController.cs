@@ -1,5 +1,6 @@
 ﻿namespace BugTracker.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
@@ -13,6 +14,8 @@
     [Area("Administration")]
     public class CompaniesController : Controller
     {
+        private const int ItemsPerPage = 3;
+
         private readonly ICompaniesService service;
         private readonly UserManager<User> userManager;
 
@@ -24,13 +27,22 @@
             this.userManager = userManager;
         }
 
-        public IActionResult AdminIndex()
+        public IActionResult AdminIndex(int page = 1)
         {
-            var user = this.userManager.GetUserId(this.User);
+            var userId = this.userManager.GetUserId(this.User);
             var viewModel = new IndexViewModel
             {
-                Companies = this.service.GetAllForAdminUser<IndexCompanyViewModel>(user),
+                Companies = this.service.GetAllForAdminUser<IndexCompanyViewModel>(userId, ItemsPerPage, (page - 1) * ItemsPerPage),
             };
+
+            var count = this.service.GetCountForAdmin(userId);
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
+            viewModel.CurrentPage = page;
             return this.View(viewModel);
         }
 

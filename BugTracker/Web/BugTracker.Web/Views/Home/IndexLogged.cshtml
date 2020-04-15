@@ -7,6 +7,11 @@
 <div class="text-center text-dark">
     <h1 class="display-4">Welcome back</h1>
     <hr />
+    @if(Model.News.Count() <= 0 && Model.Assignments.Count() <= 0)
+    {
+        <p class="display-4">There are no news or assignments for you yet.</p>
+    }
+
     @if (Model.News.Count() > 0)
     {
         <h4>News</h4>

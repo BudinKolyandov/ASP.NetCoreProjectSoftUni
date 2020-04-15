@@ -1,5 +1,6 @@
 ﻿namespace BugTracker.Web.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
@@ -12,6 +13,8 @@
     [Authorize]
     public class CompaniesController : Controller
     {
+        private const int ItemsPerPage = 3;
+
         private readonly ICompaniesService service;
         private readonly UserManager<User> userManager;
 
@@ -23,12 +26,21 @@
             this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             var viewModel = new IndexViewModel
             {
-                Companies = this.service.GetAll<IndexCompanyViewModel>(),
+                Companies = this.service.GetAllPaged<IndexCompanyViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage),
             };
+
+            var count = this.service.GetCount();
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
+            viewModel.CurrentPage = page;
             return this.View(viewModel);
         }
 
