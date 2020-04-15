@@ -12,10 +12,6 @@
 
         public int Id { get; set; }
 
-        public string ProjectId { get; set; }
-
-        public virtual Project Project { get; set; }
-
         public string PosterId { get; set; }
 
         public virtual User User { get; set; }

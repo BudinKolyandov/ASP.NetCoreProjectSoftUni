@@ -4,19 +4,19 @@
     ViewData["Title"] = "Bug Details";
 }
 
-    <div class="container text-center container-fluid">
-        <h1 class="col-lg-12">BugName: @Model.Name</h1>
-        <div class="d-flex text-center flex-wrap flex-row bd-highlight mb-3">
-            <div class="col-lg-6">
-                <h4>@Html.DisplayNameFor(model => model.ReporterFullName)</h4>
-                <p>@Html.DisplayFor(model => model.ReporterFullName)</p>
-            </div>
-            <div class="col-lg-6">
-                <h4>@Html.DisplayNameFor(model => model.DueDate)</h4>
-                <p>@Html.DisplayFor(model => model.DueDate)</p>
-            </div>
+<div class="container text-center container-fluid">
+    <h1 class="col-lg-12">BugName: @Model.Name</h1>
+    <div class="d-flex text-center flex-wrap flex-row bd-highlight mb-3">
+        <div class="col-lg-6">
+            <h4>@Html.DisplayNameFor(model => model.ReporterFullName)</h4>
+            <p>@Html.DisplayFor(model => model.ReporterFullName)</p>
+        </div>
+        <div class="col-lg-6">
+            <h4>@Html.DisplayNameFor(model => model.DueDate)</h4>
+            <p>@Html.DisplayFor(model => model.DueDate)</p>
         </div>
     </div>
+</div>
 <div>
     <hr />
     <div class="container container-fluid">
@@ -108,21 +108,34 @@
         </div>
         <br />
         <div>
-            @if (Model.Assignments.Count != 0)
+            @if (Model.Assignments.Count != 0 && Model.Assignments.Any(x=>x.Completed == false))
             {
                 <h2 class="row-12 text-center">Assignments:</h2>
                 @foreach (var assignment in Model.Assignments)
                 {
-                    <dl class="row">
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.Title)</dt>
-                        <dt class="col-sm-6">@Html.DisplayNameFor(model => assignment.Description)</dt>
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
-                    </dl>
-                    <dl class="row">
-                        <dd class="col-sm-3">@Html.DisplayFor(model => assignment.Title)</dd>
-                        <dd class="col-sm-6">@Html.DisplayFor(model => assignment.Description)</dd>
-                        <dd class="col-sm-3">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
-                    </dl>
+                    if (assignment.Completed)
+                    {
+                        continue;
+                    }
+
+                    <div id="@assignment.Id">
+                        <dl class="row">
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.Title)</dt>
+                            <dt class="col-sm-6">@Html.DisplayNameFor(model => assignment.Description)</dt>
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
+                        </dl>
+                        <dl class="row">
+                            <dd class="col-sm-3">@Html.DisplayFor(model => assignment.Title)</dd>
+                            <dd class="col-sm-6">@Html.DisplayFor(model => assignment.Description)</dd>
+                            <dd class="col-sm-3">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
+                        </dl>
+                        <div class="row justify-content-center">
+                            <form id="completedForm" method="post"></form>
+                            <div>
+                                <button type="button" class="btn btn-success" onclick="CompleteAssignment(@assignment.Id)">Mark as Complete</button>
+                            </div>
+                        </div>
+                    </div>
                 }
                 <hr />
             }
@@ -160,3 +173,24 @@
     <a class="btn btn-primary" asp-action="Edit" asp-controller="Bugs" asp-route-id="@Model.Id">Edit</a>
     <a class="btn btn-primary" asp-action="Details" asp-controller="Projects" asp-route-id="@Model.ProjectId">Back to Project details</a>
 </div>
+
+@section Scripts {
+    <script>
+        function CompleteAssignment(assignmentId) {
+            var token = $("#completedForm input[name=__RequestVerificationToken]").val();
+            var json = { assignmentId: assignmentId };
+            $.ajax({
+                url: "/api/CompleteAssignment",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    document.getElementById(assignmentId).style.display = "none";
+                }
+            });
+        }
+
+    </script>
+}

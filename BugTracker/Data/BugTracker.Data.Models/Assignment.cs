@@ -34,6 +34,8 @@
 
         public DateTime DueDate { get; set; }
 
+        public bool Completed { get; set; }
+
         public virtual ICollection<AssignmentUser> Assignees { get; set; }
     }
 }

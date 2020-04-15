@@ -3,21 +3,21 @@
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
-    using BugTracker.Services.News;
-    using BugTracker.Web.ViewModels.News;
+    using BugTracker.Services.Assignments;
+    using BugTracker.Web.ViewModels.Assignments;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
     [Route("api/[controller]")]
-    public class SeenController : ControllerBase
+    public class CompleteAssignmentController : ControllerBase
     {
-        private readonly INewsService newsService;
+        private readonly IAssignmentsService newsService;
         private readonly UserManager<User> userManager;
 
-        public SeenController(
-            INewsService newsService,
+        public CompleteAssignmentController(
+            IAssignmentsService newsService,
             UserManager<User> userManager)
         {
             this.newsService = newsService;
@@ -26,7 +26,7 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<NewsResponseModel>> Seen(NewsInputModel inputModel)
+        public async Task<ActionResult<AssignmentResponseModel>> Complete(AssignmentInputModel inputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -34,13 +34,13 @@
             }
 
             var userId = this.userManager.GetUserId(this.User);
-            var result = await this.newsService.SeenChange(inputModel.NewsId, userId);
+            var result = await this.newsService.CompleteAssignment(inputModel.AssignmentId, userId);
             if (result == 0)
             {
                 return this.BadRequest();
             }
 
-            return new NewsResponseModel { NewsId = result };
+            return new AssignmentResponseModel { AssignmentId = result };
         }
     }
 }

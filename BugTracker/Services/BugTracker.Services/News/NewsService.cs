@@ -38,7 +38,6 @@
                 Headline = model.Headline,
                 Body = model.Body,
                 DatePosted = DateTime.UtcNow,
-                ProjectId = model.ProjectId,
                 PosterId = userId,
             };
 
@@ -104,6 +103,11 @@
         public async Task<int> SeenChange(int newsId, string id)
         {
             var userNews = this.context.UsersNews.Where(x => x.UserId == id && x.NewsId == newsId).FirstOrDefault();
+            if (userNews == null)
+            {
+                return 0;
+            }
+
             userNews.Seen = true;
             this.context.UsersNews.Update(userNews);
             await this.context.SaveChangesAsync();

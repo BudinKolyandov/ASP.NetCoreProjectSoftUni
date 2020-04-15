@@ -81,7 +81,7 @@
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             await this.projectsService.DeleteProject(id);
-            return this.RedirectToAction("IndexAdmin", "Companies");
+            return this.RedirectToAction("AdminIndex", "Companies");
         }
     }
 }

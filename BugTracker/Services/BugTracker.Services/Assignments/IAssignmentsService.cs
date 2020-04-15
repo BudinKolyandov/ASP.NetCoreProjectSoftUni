@@ -12,5 +12,7 @@
         Task<int> CreateAssignnment(string userId, CreateAssignmentInputModel model);
 
         IEnumerable<T> GetAllForUser<T>(string userId, int? count = null);
+
+        Task<int> CompleteAssignment(int assignmentId, string userId);
     }
 }

@@ -4,14 +4,16 @@ using BugTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BugTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200415100204_AddedCompeltedToAssignments")]
+    partial class AddedCompeltedToAssignments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,9 +110,6 @@ namespace BugTracker.Data.Migrations
 
                     b.Property<int>("AssignmentId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Completed")
-                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "AssignmentId");
 
@@ -277,12 +276,17 @@ namespace BugTracker.Data.Migrations
                     b.Property<string>("PosterId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -621,6 +625,10 @@ namespace BugTracker.Data.Migrations
                     b.HasOne("BugTracker.Data.Models.Company", null)
                         .WithMany("News")
                         .HasForeignKey("CompanyId");
+
+                    b.HasOne("BugTracker.Data.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId");
 
                     b.HasOne("BugTracker.Data.Models.User", "User")
                         .WithMany()

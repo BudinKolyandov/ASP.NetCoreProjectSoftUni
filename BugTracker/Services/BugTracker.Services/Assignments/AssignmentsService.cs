@@ -25,6 +25,22 @@
             this.emailSender = emailSender;
         }
 
+        public async Task<int> CompleteAssignment(int assignmentId, string userId)
+        {
+            var assignment = this.context.Assignments.Where(x => x.Id == assignmentId).FirstOrDefault();
+            var assignmentUser = this.context.AssignmentsUsers.Where(x => x.AssignmentId == assignmentId && x.UserId == userId).FirstOrDefault();
+            if (assignment == null || assignmentUser == null)
+            {
+                return 0;
+            }
+
+            assignment.Completed = true;
+            assignmentUser.Completed = true;
+            this.context.Assignments.Update(assignment);
+            await this.context.SaveChangesAsync();
+            return assignment.Id;
+        }
+
         public async Task<int> CreateAssignnment(string userId, CreateAssignmentInputModel model)
         {
             var assignment = new Assignment
@@ -63,7 +79,7 @@
         public IEnumerable<T> GetAllForUser<T>(string userId, int? count = null)
         {
             IQueryable<Assignment> query = this.context.Assignments
-                .Where(x => x.Assignees.Any(x => x.UserId == userId))
+                .Where(x => x.Assignees.Any(x => x.UserId == userId) && x.Completed == false)
                 .OrderBy(x => x.CreatedOn);
             if (count.HasValue)
             {

@@ -76,7 +76,7 @@
             }
 
             var projects = this.context.Projects.Where(x => ids.Contains(x.CompanyId));
-            IQueryable<Project> query = projects.OrderBy(x => x.Name);
+            IQueryable<Project> query = projects.OrderByDescending(x => x.Bugs.Count).ThenBy(x => x.Name);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -165,6 +165,14 @@
         public async Task DeleteProject(string id)
         {
             var project = await this.context.Projects.FindAsync(id);
+            var bugs = this.context.Bugs.Where(x => x.ProjectId == project.Id);
+            foreach (var bug in bugs)
+            {
+                this.context.RemoveRange(this.context.BugsHistories.Where(x => x.BugId == bug.Id));
+                this.context.RemoveRange(this.context.Assignments.Where(x => x.BugId == bug.Id));
+            }
+
+            this.context.RemoveRange(bugs);
             this.context.Projects.Remove(project);
             await this.context.SaveChangesAsync();
         }

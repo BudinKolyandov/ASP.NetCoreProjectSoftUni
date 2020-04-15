@@ -50,11 +50,17 @@
                 return this.NotFound();
             }
 
+            var completedBugs = project.Bugs
+                .Where(x => x.Status == Data.Models.Enums.Status.Closed).ToList();
             project.Bugs = project.Bugs
                 .Where(x => x.Status != Data.Models.Enums.Status.Closed)
                 .OrderBy(x => x.Priority)
                 .ThenBy(x => x.Severity)
                 .ToList();
+            foreach (var completedBug in completedBugs)
+            {
+                project.Bugs.Add(completedBug);
+            }
 
             return this.View(project);
         }

@@ -57,7 +57,33 @@
                 <tbody>
                     @foreach (var bug in Model.Bugs)
                     {
-                        @if (bug.Priority.ToString() == "High")
+                        @if (bug.Status.ToString() == "Closed")
+                        {
+                            <tr style="transform: rotate(0);" class="table-success text-dark">
+                                <td>
+                                    @Html.DisplayName(bug.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.DueDate.ToString("d"))
+                                </td>
+                                <td>
+                                    @Html.DisplayName(bug.Assigned)
+                                </td>
+                                <th scope="row">
+                                    <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
+                                </th>
+                            </tr>
+                        }
+                        else if (bug.Priority.ToString() == "High")
                         {
                             <tr style="transform: rotate(0);" class="table-danger text-dark">
                                 <td>
@@ -142,6 +168,10 @@
     }
 </div>
 <div>
+    @if(this.User.IsInRole("CompanyAdministrator"))
+    {
+        <a class="btn btn-danger" asp-area="Administration" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    }
     <a class="btn btn-primary" asp-action="Report" asp-route-id="@Model.Id">Report a bug</a>
     <a class="btn btn-primary" asp-action="Index">Back to your Projects</a>
 </div>
