@@ -27,11 +27,14 @@
                 <th style="width: 15%">
                     @Html.DisplayNameFor(model => projectData.Name)
                 </th>
-                <th style="width: 65%">
+                <th style="width: 55%">
                     @Html.DisplayNameFor(model => projectData.Description)
                 </th>
                 <th style="width: 10%">
-                    @Html.DisplayNameFor(model => projectData.Bugs)
+                    @Html.DisplayNameFor(model => projectData.ActiveBugsCount)
+                </th>
+                <th style="width: 10%">
+                    @Html.DisplayNameFor(model => projectData.ClosedBugsCount)
                 </th>
                 <th style="width: 10%" class="text-hide">
 
@@ -45,11 +48,14 @@
                 <td style="width: 15%">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td style="width: 65%">
+                <td style="width: 55%">
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td style="width: 10%">
-                    @Html.DisplayFor(modelItem => item.Bugs.Count)
+                    @Html.DisplayFor(modelItem => item.ActiveBugsCount)
+                </td>
+                <td style="width: 10%">
+                    @Html.DisplayFor(modelItem => item.ClosedBugsCount)
                 </td>
                 <td style="width: 10%">
                     <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
@@ -72,7 +78,7 @@
             {
                 <li class="page-item">
                     <a class="page-link"
-                       asp-route-name="Companies"
+                       asp-route-name="Projects"
                        asp-route-page="@(this.Model.CurrentPage - 1)">Previous</a>
                 </li>
             }
@@ -81,7 +87,7 @@
                 var active = i == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @active">
                     <a class="page-link"
-                       asp-route-name="Companies"
+                       asp-route-name="Projects"
                        asp-route-page="@i">@i</a>
                 </li>
             }
@@ -95,7 +101,7 @@
             {
                 <li class="page-item">
                     <a class="page-link"
-                       asp-route-name="Companies"
+                       asp-route-name="Projects"
                        asp-route-page="@(this.Model.CurrentPage + 1)">Next</a>
                 </li>
             }

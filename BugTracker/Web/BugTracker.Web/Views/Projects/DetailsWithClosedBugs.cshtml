@@ -57,9 +57,9 @@
                 <tbody>
                     @foreach (var bug in Model.Bugs)
                     {
-                        if (bug.Priority.ToString() == "High")
+                        @if (bug.Status.ToString() == "Closed")
                         {
-                            <tr style="transform: rotate(0);" class="table-danger text-dark">
+                            <tr style="transform: rotate(0);" class="table-success text-dark">
                                 <td>
                                     @Html.DisplayName(bug.Name)
                                 </td>
@@ -83,57 +83,9 @@
                                 </th>
                             </tr>
                         }
-                        else if (bug.Priority.ToString() == "Medium")
+                        else
                         {
-                            <tr style="transform: rotate(0);" class="table-warning text-dark">
-                                <td>
-                                    @Html.DisplayName(bug.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(bug.DueDate.ToString("d"))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(bug.Assigned)
-                                </td>
-                                <th scope="row">
-                                    <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                                </th>
-                            </tr>
-                        }
-                        else if (bug.Priority.ToString() == "Low")
-                        {
-                            <tr style="transform: rotate(0);" class="table-secondary text-dark">
-                                <td>
-                                    @Html.DisplayName(bug.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Priority), bug.Priority))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Status), bug.Status))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(Enum.GetName(typeof(BugTracker.Data.Models.Enums.Severity), bug.Severity))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(bug.DueDate.ToString("d"))
-                                </td>
-                                <td>
-                                    @Html.DisplayName(bug.Assigned)
-                                </td>
-                                <th scope="row">
-                                    <a class="stretched-link text-info" asp-action="Details" asp-controller="Bugs" asp-route-id="@bug.Id">Bug Details</a>
-                                </th>
-                            </tr>
+
                         }
                     }
                 </tbody>
@@ -153,7 +105,7 @@
             {
                 <li class="page-item">
                     <a class="page-link"
-                       href="@Url.Action("Details", "Projects", new { id = Model.Id, page = (this.Model.CurrentPage - 1) })">Previous</a>
+                       href="@Url.Action("DetailsWithClosedBugs", "Projects", new { id = Model.Id, page = (this.Model.CurrentPage - 1) })">Previous</a>
                 </li>
             }
             @for (int i = 1; i <= this.Model.PagesCount; i++)
@@ -161,7 +113,7 @@
                 var active = i == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @active">
                     <a class="page-link"
-                       href="@Url.Action("Details", "Projects", new { id = Model.Id, page = @i })">@i</a>
+                       href="@Url.Action("DetailsWithClosedBugs", "Projects", new { id = Model.Id, page = @i })">@i</a>
                 </li>
             }
             @if (Model.CurrentPage == Model.PagesCount)
@@ -174,14 +126,14 @@
             {
                 <li class="page-item">
                     <a class="page-link"
-                       href="@Url.Action("Details", "Projects", new { id = Model.Id, page = (this.Model.CurrentPage + 1) })">Next</a>
+                       href="@Url.Action("DetailsWithClosedBugs", "Projects", new { id = Model.Id, page = (this.Model.CurrentPage + 1) })">Next</a>
                 </li>
             }
         </ul>
     </nav>
 </div>
 <div class="row justify-content-center">
-    <a class="btn btn-success" asp-action="DetailsWithClosedBugs" asp-route-id="@Model.Id">Show all Closed bugs</a>
+    <a class="btn btn-success" asp-action="Details" asp-route-id="@Model.Id">Shall active bugs</a>
 </div>
 
 <div>

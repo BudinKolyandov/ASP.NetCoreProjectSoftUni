@@ -53,7 +53,7 @@
             return this.View(viewModel);
         }
 
-        public IActionResult Details(string id, int page = 1, int? take = null, int skip = 0)
+        public IActionResult Details(string id, int page = 1)
         {
             var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
             if (project == null)
@@ -61,25 +61,35 @@
                 return this.NotFound();
             }
 
-            if (take.HasValue)
+            var projectBugs = this.projectsService.GetByIdWithBugs<DetailsProjectBugViewModel>(id, ItemsPerPage, (page - 1) * ItemsPerPage);
+
+            var count = project.Bugs.Where(x => x.Status != Data.Models.Enums.Status.Closed).Count();
+            project.Bugs = projectBugs;
+
+            project.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (project.PagesCount == 0)
             {
-                project.Bugs = project.Bugs
-                    .OrderBy(x => x.Priority)
-                    .ThenBy(x => x.Severity)
-                    .Skip(skip)
-                    .Take(take.Value)
-                    .ToList();
-            }
-            else
-            {
-                project.Bugs = project.Bugs
-                    .OrderBy(x => x.Priority)
-                    .ThenBy(x => x.Severity)
-                    .Skip(skip)
-                    .ToList();
+                project.PagesCount = 1;
             }
 
-            var count = project.Bugs.Count();
+            project.CurrentPage = page;
+
+            return this.View(project);
+        }
+
+        public IActionResult DetailsWithClosedBugs(string id, int page = 1)
+        {
+            var project = this.projectsService.GetById<DetailsProjectViewModel>(id);
+            if (project == null)
+            {
+                return this.NotFound();
+            }
+
+            var projectBugs = this.projectsService.GetByIdWithClosedBugs<DetailsProjectBugViewModel>(id, ItemsPerPage, (page - 1) * ItemsPerPage);
+
+            var count = project.Bugs.Where(x => x.Status == Data.Models.Enums.Status.Closed).Count();
+            project.Bugs = projectBugs;
+
             project.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
             if (project.PagesCount == 0)
             {

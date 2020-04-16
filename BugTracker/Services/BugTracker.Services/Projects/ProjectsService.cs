@@ -91,8 +91,39 @@
         public T GetById<T>(string id)
         {
             var project = this.context.Projects
-                .Where(x => x.Id == id).To<T>().FirstOrDefault();
+                .Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
             return project;
+        }
+
+        public IEnumerable<T> GetByIdWithBugs<T>(string id, int? take = null, int skip = 0)
+        {
+            IQueryable<Bug> query = this.context.Bugs
+                .Where(x => x.ProjectId == id && x.Status != Data.Models.Enums.Status.Closed)
+                .OrderBy(x => x.Priority)
+                .ThenBy(x => x.Severity)
+                .Skip(skip);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetByIdWithClosedBugs<T>(string id, int? take = null, int skip = 0)
+        {
+            IQueryable<Bug> query = this.context.Bugs
+                .Where(x => x.ProjectId == id && x.Status == Data.Models.Enums.Status.Closed)
+                .OrderBy(x => x.Priority)
+                .ThenBy(x => x.Severity)
+                .Skip(skip);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
         }
 
         public string Join(string userEmail, JoinProjectViewModel model)

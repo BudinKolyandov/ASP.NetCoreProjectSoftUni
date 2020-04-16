@@ -20,6 +20,6 @@
 
         public int CurrentPage { get; set; }
 
-        public ICollection<DetailsProjectBugViewModel> Bugs { get; set; }
+        public IEnumerable<DetailsProjectBugViewModel> Bugs { get; set; }
     }
 }
