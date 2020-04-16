@@ -63,6 +63,7 @@
 
             var projectBugs = this.projectsService.GetByIdWithBugs<DetailsProjectBugViewModel>(id, ItemsPerPage, (page - 1) * ItemsPerPage);
 
+            project.ClosedBugsCount = project.Bugs.Where(x => x.Status == Data.Models.Enums.Status.Closed).Count();
             var count = project.Bugs.Where(x => x.Status != Data.Models.Enums.Status.Closed).Count();
             project.Bugs = projectBugs;
 
@@ -85,6 +86,7 @@
                 return this.NotFound();
             }
 
+            project.ActiveBugsCount = project.Bugs.Where(x => x.Status != Data.Models.Enums.Status.Closed).Count();
             var projectBugs = this.projectsService.GetByIdWithClosedBugs<DetailsProjectBugViewModel>(id, ItemsPerPage, (page - 1) * ItemsPerPage);
 
             var count = project.Bugs.Where(x => x.Status == Data.Models.Enums.Status.Closed).Count();

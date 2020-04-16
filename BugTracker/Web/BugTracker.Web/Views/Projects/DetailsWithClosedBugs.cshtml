@@ -130,9 +130,14 @@
             </ul>
         </nav>
     }
-    <div class="row justify-content-center">
-        <a class="btn btn-success" asp-action="Details" asp-route-id="@Model.Id">Shall active bugs</a>
-    </div>
+
+    @if (Model.ActiveBugsCount > 0)
+    {
+        <div class="row justify-content-center">
+            <a class="btn btn-success" asp-action="Details" asp-route-id="@Model.Id">Shall active bugs</a>
+        </div>
+    }
+
 
 
 </div>

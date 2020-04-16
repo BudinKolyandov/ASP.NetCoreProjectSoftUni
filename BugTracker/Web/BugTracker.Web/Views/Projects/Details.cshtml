@@ -178,9 +178,12 @@
             </ul>
         </nav>
     }
+    @if (Model.ClosedBugsCount > 0)
+    {
     <div class="row justify-content-center">
         <a class="btn btn-success" asp-action="DetailsWithClosedBugs" asp-route-id="@Model.Id">Show all Closed bugs</a>
     </div>
+    }
 
 </div>
 

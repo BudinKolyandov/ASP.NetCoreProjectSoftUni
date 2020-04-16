@@ -20,6 +20,10 @@
 
         public int CurrentPage { get; set; }
 
+        public int ClosedBugsCount { get; set; }
+
+        public int ActiveBugsCount { get; set; }
+
         public IEnumerable<DetailsProjectBugViewModel> Bugs { get; set; }
     }
 }
