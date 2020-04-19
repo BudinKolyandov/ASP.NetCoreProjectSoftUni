@@ -159,7 +159,7 @@
 
             var joinRequest = this.context.JoinsRequests.Where(x => x.UserId == userId && x.CompanyId == companyId).First();
             this.context.JoinsRequests.Remove(joinRequest);
-            await this.userManager.RemoveFromRolesAsync(user, new List<string> { "AwaitingAproval" });
+            await this.userManager.RemoveFromRoleAsync(user, "AwaitingAproval");
             user.Companies.Add(companyUser);
             company.Employees.Add(companyUser);
             await this.context.SaveChangesAsync();
