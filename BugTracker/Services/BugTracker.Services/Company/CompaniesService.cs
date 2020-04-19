@@ -202,5 +202,19 @@
         {
             return this.context.Companies.Count(x => x.AdminId == userid);
         }
+
+        public IEnumerable<T> GetByIdWithPagination<T>(string id, int? take = null, int skip = 0)
+        {
+            IQueryable<Project> query = this.context.Projects
+                .Where(x => x.CompanyId == id)
+                .OrderBy(x => x.Name)
+                .Skip(skip);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
     }
 }

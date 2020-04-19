@@ -1,6 +1,7 @@
 ﻿namespace BugTracker.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using BugTracker.Data.Models;
@@ -44,7 +45,7 @@
             return this.View(viewModel);
         }
 
-        public IActionResult Details(string id)
+        public IActionResult Details(string id, int page = 1)
         {
             var company = this.service.GetById<DetailsCompanyViewModel>(id);
             if (company == null)
@@ -52,6 +53,17 @@
                 return this.NotFound();
             }
 
+            var companyProjects = this.service.GetByIdWithPagination<ProjectCompanyViewModel>(id, ItemsPerPage, (page - 1) * ItemsPerPage);
+            var count = company.Projects.Count();
+            company.Projects = companyProjects;
+
+            company.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (company.PagesCount == 0)
+            {
+                company.PagesCount = 1;
+            }
+
+            company.CurrentPage = page;
             return this.View(company);
         }
 

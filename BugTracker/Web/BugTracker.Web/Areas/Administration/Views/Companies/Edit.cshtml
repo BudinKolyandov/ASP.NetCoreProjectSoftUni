@@ -42,9 +42,6 @@
                     @Html.DisplayNameFor(model => projectInfo.Description)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => projectInfo.Status)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => projectInfo.Bugs)
                 </th>
             </tr>
@@ -60,9 +57,6 @@
                         @Html.DisplayFor(modelItem => project.Description)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => project.Status)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => project.Bugs.Count)
                     </td>
                 </tr>
@@ -73,6 +67,7 @@
 
 <div>
     <a class="btn btn-primary" asp-action="Create" asp-controller="Projects" asp-route-id="@Model.Id">Create a Project</a>
+    <a class="btn btn-danger" asp-area="Administration" asp-controller="Companies" asp-action="Delete" asp-route-id="@Model.Id">Delete the company</a>
     <a class="btn btn-primary" asp-action="AdminIndex">Back to Companies list</a>
 </div>
 

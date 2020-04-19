@@ -13,6 +13,10 @@
 
         public string Description { get; set; }
 
-        public virtual ICollection<ProjectCompanyViewModel> Projects { get; set; }
+        public int PagesCount { get; set; }
+
+        public int CurrentPage { get; set; }
+
+        public virtual IEnumerable<ProjectCompanyViewModel> Projects { get; set; }
     }
 }

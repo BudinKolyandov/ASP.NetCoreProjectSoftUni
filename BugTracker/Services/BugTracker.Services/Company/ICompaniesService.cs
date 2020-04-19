@@ -16,6 +16,8 @@
 
         T GetById<T>(string id);
 
+        IEnumerable<T> GetByIdWithPagination<T>(string id, int? take = null, int skip = 0);
+
         Task EditCompany(EditCompanyInputModel model);
 
         Task DeleteCompany(string id);

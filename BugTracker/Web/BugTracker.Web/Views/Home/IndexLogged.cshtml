@@ -26,7 +26,9 @@
                         <p class="card-text">@news.Body</p>
                         <p class="card-footer">
                             Project: @news.ProjectName,
-                            Posted On: @news.DatePosted
+                            <br />
+                            Due date:
+                            <time datetime="@news.DatePosted.ToString("O")"></time>
                         </p>
                         <div>
                             <form id="seenForm" method="post"></form>
@@ -59,8 +61,11 @@
                     <div class="card-body">
                         <p class="card-text">@assignment.Description</p>
                         <p class="card-footer">
-                            Created on: @assignment.CreatedOn,
-                            Due date: @assignment.DueDate
+                            Added On:
+                            <time datetime="@assignment.CreatedOn.ToString("O")"></time>
+                            <br />
+                            Due date:
+                            <time datetime="@assignment.DueDate.ToString("O")"></time>
                         </p>
                         <a class="btn btn-primary" asp-controller="Bugs" asp-action="Details" asp-route-id="@assignment.BugId">Bug Details</a>
                     </div>

@@ -12,11 +12,13 @@
 }
 else
 {
+<div class="card-columns">
     @foreach (var item in Model)
     {
         <div class="card border-left-info text-center shadow mb-4" style="width: 18rem;">
             <div class="card-header py-3">
                 <h5 class="m-0 font-weight-bold text-primary">Company name<br />@item.CompanyName</h5>
+                <hr />
                 <h5 class="m-0 font-weight-bold text-primary">User name<br />@item.UserFullName</h5>
             </div>
             <div class="card-body">
@@ -35,4 +37,5 @@ else
             </div>
         </div>
     }
+</div>
 }

@@ -156,7 +156,7 @@
                         <dd class="col-sm-2">@Html.DisplayFor(model => history.ChangedValueName)</dd>
                         <dd class="col-sm-4">@Html.DisplayFor(model => history.OldValue)</dd>
                         <dd class="col-sm-4">@Html.DisplayFor(model => history.NewValue)</dd>
-                        <dd class="col-sm-2">@Html.DisplayFor(model => history.ModifiedOn)</dd>
+                        <dd class="col-sm-2"><time datetime="@history.ModifiedOn.ToString("O")"></time></dd>
                     </dl>
                 }
             }
