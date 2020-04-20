@@ -126,35 +126,6 @@
             return query.To<T>().ToList();
         }
 
-        public string Join(string userEmail, JoinProjectViewModel model)
-        {
-            var user = this.context.Users.Where(x => x.Email == userEmail).First();
-            if (user == null)
-            {
-                return null;
-            }
-
-            var projectUser = new ProjectUser
-            {
-                Project = this.context.Projects.First(x => x.Id == model.Id),
-                ProjectId = model.Id,
-                UserId = user.Id,
-            };
-            if (user.Projects.Contains(projectUser))
-            {
-                return null;
-            }
-
-            this.context.ProjectsUsers.Add(projectUser);
-            this.context.Projects
-                .First(x => x.Id == model.Id)
-                .Developers.Add(projectUser);
-            this.context.Users.First(x => x.Email == userEmail)
-                .Projects.Add(projectUser);
-            this.context.SaveChanges();
-            return model.Id;
-        }
-
         public async Task<ReportBugProjectInputModel> Report(string userEmail, ReportBugProjectInputModel model)
         {
             var user = await this.context.Users.FirstOrDefaultAsync(x => x.Email == userEmail);

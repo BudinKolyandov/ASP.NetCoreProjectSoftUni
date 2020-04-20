@@ -9,7 +9,6 @@
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
     using BugTracker.Web.ViewModels.News;
-    using Microsoft.EntityFrameworkCore;
 
     public class NewsService : INewsService
     {

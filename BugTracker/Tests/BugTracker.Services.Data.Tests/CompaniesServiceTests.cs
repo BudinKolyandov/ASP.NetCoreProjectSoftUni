@@ -29,7 +29,7 @@
             var resultPaged = mockService.GetAllPaged<DetailsCompanyViewModel>(2, 0);
 
             Assert.Equal(2, resultPaged.Count());
-            Assert.Equal(3, result.Count());
+            Assert.Equal(4, result.Count());
         }
 
         [Fact]
@@ -38,7 +38,7 @@
             CompaniesService mockService = this.ServiceSetup();
             var result = mockService.GetAllForAdminUser<DetailsCompanyViewModel>("1");
 
-            Assert.Equal(1, result.Count());
+            Assert.Equal(2, result.Count());
         }
 
         [Fact]
@@ -74,7 +74,7 @@
         public void CompanyExistShoudBeFalseWhenIdDoesntExistAndTrueWhenExists()
         {
             CompaniesService mockService = this.ServiceSetup();
-            var falseResult = mockService.CompanyExists("Company4");
+            var falseResult = mockService.CompanyExists("Company20");
             Assert.False(falseResult);
 
             var trueResult = mockService.CompanyExists("Company3");
@@ -297,6 +297,13 @@
                     Name = "Company3",
                     Description = "Company3",
                     AdminId = "3",
+                },
+                new Company
+                {
+                    Id = "Company4",
+                    Name = "Company4",
+                    Description = "Company4",
+                    AdminId = "1",
                 },
             };
 

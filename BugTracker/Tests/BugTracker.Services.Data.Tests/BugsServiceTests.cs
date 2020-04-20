@@ -2,141 +2,57 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
     using System.Reflection;
     using System.Threading.Tasks;
 
     using BugTracker.Data;
     using BugTracker.Data.Models;
+    using BugTracker.Services.Bugs;
     using BugTracker.Services.Mapping;
-    using BugTracker.Services.Projects;
     using BugTracker.Web.ViewModels;
-    using BugTracker.Web.ViewModels.Projects;
-    using Microsoft.AspNetCore.Identity;
+    using BugTracker.Web.ViewModels.Bugs;
     using Microsoft.EntityFrameworkCore;
-    using Moq;
     using Xunit;
 
-    public class ProjectsServiceTests
+    public class BugsServiceTests
     {
         [Fact]
-        public async Task CrateShouldAddToDatabase()
+        public async Task AddBugChangeShouldAddValueChangeInBugHistories()
         {
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserRoleStore = mockUserStore.As<IUserRoleStore<User>>();
-            var userManager = new UserManager<User>(mockUserStore.Object, null, null, null, null, null, null, null, null);
-
-            mockUserRoleStore.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>(), System.Threading.CancellationToken.None)).Returns(Task.FromResult(0)).Verifiable();
-
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                            .Options;
-            var context = new ApplicationDbContext(options);
-            context.Roles.Add(new ApplicationRole
+            var service = this.ServiceSetup();
+            await service.AddBugChange(new AddBuggChangeInputModel
             {
-                Name = "ProjectAdministrator",
+                Id = "Bug1",
+                Name = "Change1",
+                ChangedValueName = "Value",
+                OldValue = "OldValue",
+                NewValue = "NewValue",
             });
-            context.Users.AddRange(this.GetSampleUsers());
-            context.Companies.AddRange(this.GetSampleCompanies());
-            context.Projects.AddRange(this.GetSampleProjects());
-            context.SaveChanges();
-            var mockService = new ProjectsService(context, userManager);
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-            await mockService.Create("ProjectCreate", "ProjectCreate", "User1", "Company1");
-            Assert.Equal(4, context.Projects.Count());
+            var bug = service.GetById<DetailsBugsViewModel>("Bug1");
+            Assert.NotEmpty(bug.BugHistories);
         }
 
         [Fact]
-        public void GetAllProjectsByUserEmailShouldRetunrOnlyUserProjects()
+        public async Task EditBugShouldEditTheBug()
         {
             var service = this.ServiceSetup();
-            var collection = service.GetAllProjectsByUserEmail<IndexProjectViewModel>("User1");
-            Assert.Equal(3, collection.Count());
-        }
-
-        [Fact]
-        public void GetByIdShouldReturnOneProject()
-        {
-            var service = this.ServiceSetup();
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            Assert.Equal("Project1", project.Id);
-        }
-
-        [Fact]
-        public async Task ReportShouldAddBugToProject()
-        {
-            var service = this.ServiceSetup();
-
-            await service.Report("User1", new ReportBugProjectInputModel
+            await service.EditBug(new EditBugViewModel
             {
-                Name = "NewBug",
-                Description = "NewBug",
-                ProjectId = "Project1",
-                ProjectName = "Project1",
-                DueDate = DateTime.UtcNow.Date,
-                Priority = BugTracker.Data.Models.Enums.Priority.High,
-                Severity = BugTracker.Data.Models.Enums.Severity.Critical,
-                Status = BugTracker.Data.Models.Enums.Status.New,
+                Id = "Bug1",
+                Name = "ChangedName",
+                Description = "ChangedDescription",
             });
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            Assert.True(project.Bugs.Count() > 0);
+            var bug = service.GetById<DetailsBugsViewModel>("Bug1");
+            Assert.Equal("ChangedName", bug.Name);
+            Assert.Equal("ChangedDescription", bug.Description);
         }
 
-        [Fact]
-        public void UserHasCompanyReturnsFalseWhenUserIsNotInUserCompanies()
-        {
-            var service = this.ServiceSetup();
-            var result = service.UserHasCompany("User2");
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void UserHasCompanyReturnsTrueWhenUserIsInUserCompanies()
-        {
-            var service = this.ServiceSetup();
-            var result = service.UserHasCompany("User1");
-            Assert.True(result);
-        }
-
-        [Fact]
-        public async Task DeleteProjectShouldDeleteFromDb()
-        {
-            var service = this.ServiceSetup();
-            await service.DeleteProject("Project1");
-            var result = service.GetById<DetailsProjectViewModel>("Project1");
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public void GetByIdWithBugsShouldGetOnlyOpenedBugs()
-        {
-            var service = this.ServiceSetup();
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            var result = service.GetByIdWithBugs<DetailsProjectBugViewModel>("Project1");
-            project.Bugs = result;
-
-            Assert.Equal(2, project.Bugs.Count());
-        }
-
-        [Fact]
-        public void GetByIdWithBugsShouldGetOnlyClosedBugs()
-        {
-            var service = this.ServiceSetup();
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            var result = service.GetByIdWithClosedBugs<DetailsProjectBugViewModel>("Project1");
-            project.Bugs = result;
-
-            Assert.Equal(2, project.Bugs.Count());
-        }
-
-        private ProjectsService ServiceSetup()
+        private BugsService ServiceSetup()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                             .Options;
             var context = new ApplicationDbContext(options);
-            var mockService = new ProjectsService(context, null);
             context.Roles.AddRange(this.GetSampleRoles());
             context.Users.AddRange(this.GetSampleUsers());
             context.Companies.AddRange(this.GetSampleCompanies());
@@ -146,6 +62,7 @@
             context.Bugs.AddRange(this.GetSampleBugs());
             context.SaveChanges();
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+            var mockService = new BugsService(context);
             return mockService;
         }
 

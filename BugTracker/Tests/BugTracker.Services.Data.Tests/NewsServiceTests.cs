@@ -3,140 +3,69 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using System.Reflection;
     using System.Threading.Tasks;
 
     using BugTracker.Data;
     using BugTracker.Data.Models;
     using BugTracker.Services.Mapping;
-    using BugTracker.Services.Projects;
+    using BugTracker.Services.News;
     using BugTracker.Web.ViewModels;
-    using BugTracker.Web.ViewModels.Projects;
-    using Microsoft.AspNetCore.Identity;
+    using BugTracker.Web.ViewModels.Assignments;
+    using BugTracker.Web.ViewModels.News;
     using Microsoft.EntityFrameworkCore;
-    using Moq;
     using Xunit;
 
-    public class ProjectsServiceTests
+    public class NewsServiceTests
     {
         [Fact]
-        public async Task CrateShouldAddToDatabase()
+        public void CompanyCheckShouldBeNulleWhenUserIsNotInACompany()
         {
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserRoleStore = mockUserStore.As<IUserRoleStore<User>>();
-            var userManager = new UserManager<User>(mockUserStore.Object, null, null, null, null, null, null, null, null);
+            var service = this.ServiceSetup();
+            var id = service.CompanyCheck("3");
+            Assert.Null(id);
+        }
 
-            mockUserRoleStore.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>(), System.Threading.CancellationToken.None)).Returns(Task.FromResult(0)).Verifiable();
+        [Fact]
+        public void CompanyCheckShouldHaveValueWhenUserIsInACompany()
+        {
+            var service = this.ServiceSetup();
+            var id = service.CompanyCheck("1");
+            Assert.NotNull(id);
+        }
 
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                            .Options;
-            var context = new ApplicationDbContext(options);
-            context.Roles.Add(new ApplicationRole
+        [Fact]
+        public void CreateNewsShouldAddNewsToDbAndUsers()
+        {
+            var service = this.ServiceSetup();
+            var id = service.CreateNews("1", new CreateNewsInputModel
             {
-                Name = "ProjectAdministrator",
-            });
-            context.Users.AddRange(this.GetSampleUsers());
-            context.Companies.AddRange(this.GetSampleCompanies());
-            context.Projects.AddRange(this.GetSampleProjects());
-            context.SaveChanges();
-            var mockService = new ProjectsService(context, userManager);
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-            await mockService.Create("ProjectCreate", "ProjectCreate", "User1", "Company1");
-            Assert.Equal(4, context.Projects.Count());
-        }
-
-        [Fact]
-        public void GetAllProjectsByUserEmailShouldRetunrOnlyUserProjects()
-        {
-            var service = this.ServiceSetup();
-            var collection = service.GetAllProjectsByUserEmail<IndexProjectViewModel>("User1");
-            Assert.Equal(3, collection.Count());
-        }
-
-        [Fact]
-        public void GetByIdShouldReturnOneProject()
-        {
-            var service = this.ServiceSetup();
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            Assert.Equal("Project1", project.Id);
-        }
-
-        [Fact]
-        public async Task ReportShouldAddBugToProject()
-        {
-            var service = this.ServiceSetup();
-
-            await service.Report("User1", new ReportBugProjectInputModel
-            {
-                Name = "NewBug",
-                Description = "NewBug",
                 ProjectId = "Project1",
-                ProjectName = "Project1",
-                DueDate = DateTime.UtcNow.Date,
-                Priority = BugTracker.Data.Models.Enums.Priority.High,
-                Severity = BugTracker.Data.Models.Enums.Severity.Critical,
-                Status = BugTracker.Data.Models.Enums.Status.New,
+                Headline = "CreatedNews",
+                Body = "CreatedNews",
             });
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            Assert.True(project.Bugs.Count() > 0);
+            var allForUser = service.GetAllForUser<IndexLoggedNewsViewModel>("1");
+            Assert.NotNull(id);
+            Assert.Equal(4, allForUser.Count());
         }
 
         [Fact]
-        public void UserHasCompanyReturnsFalseWhenUserIsNotInUserCompanies()
+        public async Task SeenChangeShouldChangeSeenToTrue()
         {
             var service = this.ServiceSetup();
-            var result = service.UserHasCompany("User2");
-            Assert.False(result);
+            var id = await service.SeenChange(1, "1");
+            var allForUser = service.GetAllForUser<IndexLoggedNewsViewModel>("1");
+
+            Assert.Equal(2, allForUser.Count());
         }
 
-        [Fact]
-        public void UserHasCompanyReturnsTrueWhenUserIsInUserCompanies()
-        {
-            var service = this.ServiceSetup();
-            var result = service.UserHasCompany("User1");
-            Assert.True(result);
-        }
-
-        [Fact]
-        public async Task DeleteProjectShouldDeleteFromDb()
-        {
-            var service = this.ServiceSetup();
-            await service.DeleteProject("Project1");
-            var result = service.GetById<DetailsProjectViewModel>("Project1");
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public void GetByIdWithBugsShouldGetOnlyOpenedBugs()
-        {
-            var service = this.ServiceSetup();
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            var result = service.GetByIdWithBugs<DetailsProjectBugViewModel>("Project1");
-            project.Bugs = result;
-
-            Assert.Equal(2, project.Bugs.Count());
-        }
-
-        [Fact]
-        public void GetByIdWithBugsShouldGetOnlyClosedBugs()
-        {
-            var service = this.ServiceSetup();
-            var project = service.GetById<DetailsProjectViewModel>("Project1");
-            var result = service.GetByIdWithClosedBugs<DetailsProjectBugViewModel>("Project1");
-            project.Bugs = result;
-
-            Assert.Equal(2, project.Bugs.Count());
-        }
-
-        private ProjectsService ServiceSetup()
+        private NewsService ServiceSetup()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                             .Options;
             var context = new ApplicationDbContext(options);
-            var mockService = new ProjectsService(context, null);
+            var mockService = new NewsService(context);
             context.Roles.AddRange(this.GetSampleRoles());
             context.Users.AddRange(this.GetSampleUsers());
             context.Companies.AddRange(this.GetSampleCompanies());
@@ -144,9 +73,123 @@
             context.JoinsRequests.AddRange(this.GetSampleJoinRequests());
             context.CompaniesUsers.AddRange(this.GetSampleCompaniesUsers());
             context.Bugs.AddRange(this.GetSampleBugs());
+            context.Assignments.AddRange(this.GetSampleAssignments());
+            context.AssignmentsUsers.AddRange(this.GetSampleAssignmentUsers());
+            context.News.AddRange(this.GetSampleNews());
+            context.UsersNews.AddRange(this.GetSampleUserNews());
             context.SaveChanges();
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
             return mockService;
+        }
+
+        private List<UserNews> GetSampleUserNews()
+        {
+            var output = new List<UserNews>
+            {
+                new UserNews
+                {
+                    UserId = "1",
+                    NewsId = 1,
+                    Seen = false,
+                },
+                new UserNews
+                {
+                    UserId = "1",
+                    NewsId = 2,
+                    Seen = false,
+                },
+                new UserNews
+                {
+                    UserId = "1",
+                    NewsId = 3,
+                    Seen = false,
+                },
+            };
+            return output;
+        }
+
+        private List<News> GetSampleNews()
+        {
+            var output = new List<News>
+            {
+                new News
+                {
+                    Id = 1,
+                    Headline = "News1",
+                    Body = "News1",
+                    PosterId = "1",
+                    DatePosted = DateTime.UtcNow,
+                },
+                new News
+                {
+                    Id = 2,
+                    Headline = "News2",
+                    Body = "News2",
+                    PosterId = "1",
+                    DatePosted = DateTime.UtcNow,
+                },
+                new News
+                {
+                    Id = 3,
+                    Headline = "News3",
+                    Body = "News3",
+                    PosterId = "1",
+                    DatePosted = DateTime.UtcNow,
+                },
+            };
+            return output;
+        }
+
+        private List<AssignmentUser> GetSampleAssignmentUsers()
+        {
+            var output = new List<AssignmentUser>
+            {
+                new AssignmentUser
+                {
+                    AssignmentId = 1,
+                    UserId = "1",
+                },
+                new AssignmentUser
+                {
+                    AssignmentId = 2,
+                    UserId = "1",
+                },
+                new AssignmentUser
+                {
+                    AssignmentId = 3,
+                    UserId = "1",
+                },
+            };
+            return output;
+        }
+
+        private List<Assignment> GetSampleAssignments()
+        {
+            var output = new List<Assignment>
+            {
+                new Assignment
+                {
+                    Id = 1,
+                    AssignedById = "1",
+                    BugId = "Bug1",
+                    Title = "Assignment1",
+                },
+                new Assignment
+                {
+                    Id = 2,
+                    AssignedById = "1",
+                    BugId = "Bug1",
+                    Title = "Assignment2",
+                },
+                new Assignment
+                {
+                    Id = 3,
+                    AssignedById = "1",
+                    BugId = "Bug1",
+                    Title = "Assignment3",
+                },
+            };
+            return output;
         }
 
         private List<JoinRequest> GetSampleJoinRequests()
@@ -290,6 +333,11 @@
                 {
                     CompanyId = "Company3",
                     UserId = "1",
+                },
+                new CompanyUser
+                {
+                    CompanyId = "Company1",
+                    UserId = "2",
                 },
             };
             return output;
