@@ -1,5 +1,6 @@
 ﻿namespace BugTracker.Web
 {
+    using System;
     using System.Reflection;
 
     using BugTracker.Data;
@@ -59,6 +60,10 @@
                     options.CheckConsentNeeded = context => true;
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(0);
+            });
 
             services.AddMvc(options =>
             {
@@ -69,6 +74,21 @@
                 options.HeaderName = "X-CSRF-TOKEN";
             });
             services.AddRazorPages();
+
+            services.AddAuthentication()
+                .AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = this.configuration.GetValue<string>("Authentication:Microsoft:ClientId");
+                microsoftOptions.ClientSecret = this.configuration.GetValue<string>("Authentication:Microsoft:ClientSecret");
+            })
+                .AddGoogle("google", opt =>
+                {
+                    var googleAuth = this.configuration.GetSection("Authentication:Google");
+
+                    opt.ClientId = googleAuth["ClientId"];
+                    opt.ClientSecret = googleAuth["ClientSecret"];
+                    opt.SignInScheme = IdentityConstants.ExternalScheme;
+                });
 
             services.AddSingleton(this.configuration);
 
