@@ -38,6 +38,7 @@
                 Body = model.Body,
                 DatePosted = DateTime.UtcNow,
                 PosterId = userId,
+                ProjectId = model.ProjectId,
             };
 
             this.context.News.Add(news);
