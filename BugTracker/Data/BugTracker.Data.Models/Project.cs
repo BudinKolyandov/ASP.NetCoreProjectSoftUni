@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class Project
     {
@@ -14,8 +15,14 @@
 
         public string Id { get; set; }
 
+        [Required]
+        [MinLength(3)]
+        [MaxLength(30)]
         public string Name { get; set; }
 
+        [Required]
+        [MinLength(3)]
+        [MaxLength(30)]
         public string Description { get; set; }
 
         public string AdminId { get; set; }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class News
     {
@@ -20,8 +21,14 @@
 
         public virtual Project Project { get; set; }
 
+        [Required]
+        [MinLength(2)]
+        [MaxLength(30)]
         public string Headline { get; set; }
 
+        [Required]
+        [MinLength(2)]
+        [MaxLength(30)]
         public string Body { get; set; }
 
         public DateTime DatePosted { get; set; }
