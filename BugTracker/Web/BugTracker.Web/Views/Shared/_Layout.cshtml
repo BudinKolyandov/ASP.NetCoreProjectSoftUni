@@ -17,7 +17,7 @@
 </head>
 <body id="page-top">
     <header>
-        <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-white topbar mb-4 static-top shadow">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom shadow mb-3">
             <div class="container">
                 @if (SignInManager.IsSignedIn(User))
                 {
@@ -53,6 +53,7 @@
         </nav>
     </header>
     <div class="container">
+        <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -64,20 +65,12 @@
         </div>
     </footer>
 
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <script src="~/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
-
-    <script src="~/vendor/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="~/vendor/jquery/dist/jquery.js" asp-append-version="true"></script>
+    <script src="~/vendor/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+    <script src="~/vendor/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+    <script src="~/vendor/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
     <script src="~/vendor/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
-
-    <script src="~/js/site.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
