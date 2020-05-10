@@ -23,75 +23,75 @@
         <div class="text-center mx-auto card-columns bd-highlight col-12 mb-3">
             @if (Model.Priority.ToString() == "High")
             {
-                <div class="card bg-danger text-white shadow">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Priority)
-                        <div>@Html.DisplayFor(model => model.Priority)</div>
-                    </div>
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Priority)
+                    <div>@Html.DisplayFor(model => model.Priority)</div>
                 </div>
+            </div>
             }
             @if (Model.Priority.ToString() == "Medium")
             {
-                <div class="card bg-warning text-white shadow">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Priority)
-                        <div>@Html.DisplayFor(model => model.Priority)</div>
-                    </div>
+            <div class="card bg-warning text-white shadow">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Priority)
+                    <div>@Html.DisplayFor(model => model.Priority)</div>
                 </div>
+            </div>
             }
             @if (Model.Priority.ToString() == "Low")
             {
-                <div class="card bg-dark text-white shadow">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Priority)
-                        <div>@Html.DisplayFor(model => model.Priority)</div>
-                    </div>
+            <div class="card bg-dark text-white shadow">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Priority)
+                    <div>@Html.DisplayFor(model => model.Priority)</div>
                 </div>
+            </div>
             }
             @if (Model.Severity.ToString() == "Critical")
             {
-                <div class="card bg-danger text-white shadow offset-sm-1">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Severity)
-                        <div>@Html.DisplayFor(model => model.Severity)</div>
-                    </div>
+            <div class="card bg-danger text-white shadow offset-sm-1">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Severity)
+                    <div>@Html.DisplayFor(model => model.Severity)</div>
                 </div>
+            </div>
             }
             @if (Model.Severity.ToString() == "Major")
             {
-                <div class="card bg-warning text-white shadow offset-sm-1">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Severity)
-                        <div>@Html.DisplayFor(model => model.Severity)</div>
-                    </div>
+            <div class="card bg-warning text-white shadow offset-sm-1">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Severity)
+                    <div>@Html.DisplayFor(model => model.Severity)</div>
                 </div>
+            </div>
             }
             @if (Model.Severity.ToString() == "Moderate")
             {
-                <div class="card bg-dark text-white shadow offset-sm-1">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Severity)
-                        <div>@Html.DisplayFor(model => model.Severity)</div>
-                    </div>
+            <div class="card bg-dark text-white shadow offset-sm-1">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Severity)
+                    <div>@Html.DisplayFor(model => model.Severity)</div>
                 </div>
+            </div>
             }
             @if (Model.Severity.ToString() == "Minor")
             {
-                <div class="card bg-secondary text-white shadow offset-sm-1">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Severity)
-                        <div>@Html.DisplayFor(model => model.Severity)</div>
-                    </div>
+            <div class="card bg-secondary text-white shadow offset-sm-1">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Severity)
+                    <div>@Html.DisplayFor(model => model.Severity)</div>
                 </div>
+            </div>
             }
             @if (Model.Severity.ToString() == "Trivial")
             {
-                <div class="card bg-info text-white shadow offset-sm-1">
-                    <div class="card-body">
-                        @Html.DisplayNameFor(model => model.Severity)
-                        <div>@Html.DisplayFor(model => model.Severity)</div>
-                    </div>
+            <div class="card bg-info text-white shadow offset-sm-1">
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.Severity)
+                    <div>@Html.DisplayFor(model => model.Severity)</div>
                 </div>
+            </div>
             }
             <div class="card bg shadow offset-sm-1">
                 <div class="card-body">
@@ -110,55 +110,77 @@
         <div>
             @if (Model.Assignments.Count != 0 && Model.Assignments.Any(x=>x.Completed == false))
             {
-                <h2 class="row-12 text-center">Assignments:</h2>
-                @foreach (var assignment in Model.Assignments)
+            <h2 class="row-12 text-center">Assignments:</h2>
+            @foreach (var assignment in Model.Assignments)
                 {
                     if (assignment.Completed)
                     {
                         continue;
                     }
 
-                    <div id="@assignment.Id">
-                        <dl class="row">
-                            <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.Title)</dt>
-                            <dt class="col-sm-6">@Html.DisplayNameFor(model => assignment.Description)</dt>
-                            <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
-                        </dl>
-                        <dl class="row">
-                            <dd class="col-sm-3">@Html.DisplayFor(model => assignment.Title)</dd>
-                            <dd class="col-sm-6">@Html.DisplayFor(model => assignment.Description)</dd>
-                            <dd class="col-sm-3">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
-                        </dl>
-                        <div class="row justify-content-center">
-                            <form id="completedForm" method="post"></form>
-                            <div>
-                                <button type="button" class="btn btn-success" onclick="CompleteAssignment(@assignment.Id)">Mark as Complete</button>
-                            </div>
-                        </div>
+            <div id="@assignment.Id">
+                <dl class="row">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.Title)</dt>
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => assignment.Description)</dt>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => assignment.AssignedByUserName)</dt>
+                </dl>
+                <dl class="row">
+                    <dd class="col-sm-3">@Html.DisplayFor(model => assignment.Title)</dd>
+                    <dd class="col-sm-6">@Html.DisplayFor(model => assignment.Description)</dd>
+                    <dd class="col-sm-3">@Html.DisplayFor(model => assignment.AssignedByUserName)</dd>
+                </dl>
+                <div class="row justify-content-center">
+                    <form id="completedForm" method="post"></form>
+                    <div>
+                        <button type="button" class="btn btn-success" onclick="CompleteAssignment(@assignment.Id)">Mark as Complete</button>
                     </div>
+                </div>
+            </div>
                 }
-                <hr />
+            <hr />
             }
         </div>
         <div>
             @if (Model.BugHistories.Count != 0)
             {
-                <h2 class="row-12 text-center">Bug History:</h2>
-                @foreach (var history in Model.BugHistories)
+            <h2 class="row-12 text-center">Bug History:</h2>
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Value Name
+                        </th>
+                        <th scope="col">
+                            Old Value
+                        </th>
+                        <th scope="col">
+                            New Value
+                        </th>
+                        <th scope="col">
+                            Modified On
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var history in Model.BugHistories)
                 {
-                    <dl class="row">
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => history.ChangedValueName)</dt>
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => history.OldValue)</dt>
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => history.NewValue)</dt>
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => history.ModifiedOn)</dt>
-                    </dl>
-                    <dl class="row">
-                        <dd class="col-sm-2">@Html.DisplayFor(model => history.ChangedValueName)</dd>
-                        <dd class="col-sm-3">@Html.DisplayFor(model => history.OldValue)</dd>
-                        <dd class="col-sm-3">@Html.DisplayFor(model => history.NewValue)</dd>
-                        <dd class="col-sm-2"><time datetime="@history.ModifiedOn.ToString("O")"></time></dd>
-                    </dl>
-                }
+                    <tr style="transform: rotate(0);" class="bg-info text-white">
+                        <td>
+                            @Html.DisplayFor(model => history.ChangedValueName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => history.OldValue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => history.NewValue)
+                        </td>
+                        <td>
+                            <time datetime="@history.ModifiedOn.ToString("O")"></time>
+                        </td>
+                    </tr>
+                 }
+                </tbody>
+            </table>
             }
         </div>
     </div>
@@ -168,7 +190,7 @@
     <a class="btn btn-primary" asp-action="AddChange" asp-controller="Bugs" asp-route-id="@Model.Id">Add change to Bug history</a>
     @if (this.User.IsInRole("CompanyAdministrator") || this.User.IsInRole("ProjectAdministrator"))
     {
-        <a class="btn btn-primary" asp-area="Administration" asp-controller="Assignments" asp-action="Create" asp-route-id="@Model.Id">Create Assignment</a>
+    <a class="btn btn-primary" asp-area="Administration" asp-controller="Assignments" asp-action="Create" asp-route-id="@Model.Id">Create Assignment</a>
     }
     <a class="btn btn-primary" asp-action="Edit" asp-controller="Bugs" asp-route-id="@Model.Id">Edit</a>
     <a class="btn btn-primary" asp-action="Details" asp-controller="Projects" asp-route-id="@Model.ProjectId">Back to Project details</a>
