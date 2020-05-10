@@ -148,14 +148,14 @@
                 {
                     <dl class="row">
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => history.ChangedValueName)</dt>
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => history.OldValue)</dt>
-                        <dt class="col-sm-4">@Html.DisplayNameFor(model => history.NewValue)</dt>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => history.OldValue)</dt>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => history.NewValue)</dt>
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => history.ModifiedOn)</dt>
                     </dl>
                     <dl class="row">
                         <dd class="col-sm-2">@Html.DisplayFor(model => history.ChangedValueName)</dd>
-                        <dd class="col-sm-4">@Html.DisplayFor(model => history.OldValue)</dd>
-                        <dd class="col-sm-4">@Html.DisplayFor(model => history.NewValue)</dd>
+                        <dd class="col-sm-3">@Html.DisplayFor(model => history.OldValue)</dd>
+                        <dd class="col-sm-3">@Html.DisplayFor(model => history.NewValue)</dd>
                         <dd class="col-sm-2"><time datetime="@history.ModifiedOn.ToString("O")"></time></dd>
                     </dl>
                 }
