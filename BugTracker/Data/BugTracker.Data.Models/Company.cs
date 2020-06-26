@@ -23,7 +23,7 @@
 
         [Required]
         [MinLength(3)]
-        [MaxLength(30)]
+        [MaxLength(60)]
         public string Description { get; set; }
 
         public string AdminId { get; set; }

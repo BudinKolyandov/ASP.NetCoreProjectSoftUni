@@ -15,10 +15,15 @@
 
         [Required]
         [DisplayName("Title*")]
+        [MinLength(3)]
+        [MaxLength(30)]
+
         public string Title { get; set; }
 
         [Required]
         [DisplayName("Description*")]
+        [MinLength(3)]
+        [MaxLength(160)]
         public string Description { get; set; }
 
         [Required]

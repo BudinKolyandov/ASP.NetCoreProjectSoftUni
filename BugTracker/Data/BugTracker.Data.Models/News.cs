@@ -28,7 +28,7 @@
 
         [Required]
         [MinLength(2)]
-        [MaxLength(30)]
+        [MaxLength(160)]
         public string Body { get; set; }
 
         public DateTime DatePosted { get; set; }

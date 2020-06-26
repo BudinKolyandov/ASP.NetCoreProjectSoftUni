@@ -13,10 +13,13 @@
 
         [Required(ErrorMessage = "The Name field is required.")]
         [Display(Name = "Name*")]
+
         public string Name { get; set; }
 
         [Required(ErrorMessage = "The Description field is required.")]
         [Display(Name = "Description*")]
+        [MinLength(3)]
+        [MaxLength(160)]
         public string Description { get; set; }
 
         public string ProjectId { get; set; }

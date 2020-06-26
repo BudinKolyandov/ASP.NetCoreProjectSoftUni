@@ -30,7 +30,7 @@
 
         [Required]
         [MinLength(3)]
-        [MaxLength(30)]
+        [MaxLength(160)]
         public string Description { get; set; }
 
         public DateTime CreatedOn { get; set; }
