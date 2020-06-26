@@ -4,7 +4,6 @@
 @inject UserManager<User> UserManager
 
     <ul class="navbar-nav">
-        <li class="topbar-divider d-none d-sm-block"></li>
         @if (SignInManager.IsSignedIn(User))
         {
             @if (this.User.IsInRole("CompanyAdministrator"))
